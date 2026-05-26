@@ -87,9 +87,10 @@ function fixMobileLandscape() {
     const height = window.innerHeight;
 
     if (width > height && width <= 980) {
-        // 11.1 Hard scale down to 0.48 to force the card and player into view,
-        // allowing the background roses to frame the screen completely.
-        letter.style.transform = `translate(-50%, -50%) scale(0.48)`;
+        // 11.1 Dynamically scale based on height to ensure player and roses stay visible,
+        // while browser natively allows pinch-to-zoom at any moment.
+        const safeScale = height / 740;
+        letter.style.transform = `translate(-50%, -50%) scale(${Math.min(safeScale, 0.55)})`;
         letter.style.transformOrigin = 'center center';
     } else {
         // 11.2 Maintain standard dimensions for portrait and desktop views
