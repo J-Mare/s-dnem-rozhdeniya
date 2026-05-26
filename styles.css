@@ -11,10 +11,12 @@ body {
     overflow: hidden;
     background: black;
     font-family: 'Cormorant Garamond', serif;
+    width: 100vw;
+    height: 100vh;
 }
 
 /* ==========================================
-   2. PAGES & BACKGROUNDS (PC VERZIJA)
+   2. PAGES & BACKGROUNDS
    ========================================== */
 .page {
     position: fixed;
@@ -26,6 +28,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
 }
 
 .page.active {
@@ -34,7 +38,7 @@ body {
 }
 
 #intro {
-    background: url('assets/picturepage1.png') center center/contain no-repeat;
+    background: url('assets/picturepage1.png') center center/cover no-repeat;
     width: 100vw;
     height: 100vh;
 }
@@ -313,10 +317,9 @@ body {
 }
 
 /* ==========================================
-   10. RESPONSIVE DESIGN (PUN CORNER-TO-CORNER EFFEKAT)
+   10. RESPONSIVE DESIGN (AUTOMATSKO SKALIRANJE)
    ========================================== */
-@media (max-width: 768px) {
-    /* Blokiramo pomeranje i fiksiramo pozadinu sa ružama */
+@media (max-width: 900px) {
     .page {
         position: fixed !important;
         inset: 0 !important;
@@ -328,24 +331,22 @@ body {
         justify-content: center !important;
     }
 
-    #opened {
+    #opened, #intro {
         background-size: cover !important;
         background-position: center center !important;
     }
 
-    /* KARTICA: Drži sve elemente u paketu i automatski se smanjuje bez lomljenja */
     .letter {
         position: absolute !important;
-        top: 50% !important;
+        top: 45% !important;
         left: 50% !important;
-        /* Računamo precizno skaliranje: širina ekrana telefona podeljena sa 780 piksela */
-        transform: translate(-50%, -50%) scale(calc(100vw / 780)) !important; 
+        /* Smanjuje ceo PC raspored u pravoj razmeri, ostavljajući ruže sa strana */
+        transform: translate(-50%, -50%) scale(calc(100vw / 820)) !important; 
         transform-origin: center center !important;
-        width: 660px !important; /* Vraćamo originalnu PC širinu čestitke */
+        width: 660px !important; 
         animation: none !important;
     }
 
-    /* Vraćamo sve originalne PC vrednosti jer ih transform: scale() sam smanjuje */
     .paper {
         display: flex !important;
         flex-direction: row-reverse !important; 
@@ -355,41 +356,6 @@ body {
         width: 100% !important;
     }
 
-    .content { 
-        flex: 1.2 !important; 
-        width: auto !important; 
-    }
-
-    #message { 
-        font-size: 20px !important; 
-        line-height: 1.5 !important; 
-        text-align: left !important;
-    }
-    
-    .photo-frame { 
-        transform: rotate(3deg) !important; 
-        width: 185px !important; 
-        min-width: 185px !important; 
-        padding: 10px 10px 42px 10px !important;
-    }
-    
-    .photo-frame img { 
-        height: 215px !important; 
-    }
-
-    #signature {
-        font-size: 22px !important;
-        bottom: 8px !important;
-    }
-
-    .clip {
-        width: 14px !important;
-        height: 34px !important;
-        top: -12px !important;
-        left: 45% !important;
-    }
-
-    /* PLEJER: Ostaje savršeno vezan i centriran odmah ispod ivice kartice */
     .player-container { 
         position: absolute !important; 
         bottom: -65px !important; 
@@ -397,14 +363,5 @@ body {
         left: 50% !important;
         transform: translateX(-50%) !important;
         margin: 0 !important;
-    }
-
-    /* Prva uvodna stranica */
-    .glass {
-        font-size: 26px !important;
-        padding: 14px 28px !important;
-    }
-    .rose {
-        font-size: 55px !important;
     }
 }
