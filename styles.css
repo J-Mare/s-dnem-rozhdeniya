@@ -48,8 +48,7 @@ body {
 }
 
 #opened {
-    background: url('assets/picturepage2.png') center center/contain no-repeat; 
-    background-color: #000000;
+    background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat; 
     width: 100vw;
     height: 100vh;
 }
