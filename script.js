@@ -73,3 +73,30 @@ if (progressContainer && music) {
         if (duration) music.currentTime = (clickX / width) * duration;
     });
 }
+
+/* ==========================================
+   10. MOBILE LANDSCAPE RESPONSIVE FIX
+   ========================================== */
+function fixMobileLandscape() {
+    const letter = document.querySelector('.letter');
+    if (!letter) return;
+
+    // 10.1 Check if the screen is wider than it is tall (Landscape mode)
+    // and if the device width is small (indicating a mobile phone)
+    if (window.innerWidth > window.innerHeight && window.innerWidth <= 950) {
+        // 10.2 Dynamically calculate the safe scale ratio based on phone height
+        const safeScale = window.innerHeight / 640;
+        letter.style.transform = `translate(-50%, -50%) scale(${Math.min(safeScale, 0.78)})`;
+        letter.style.transformOrigin = 'center center';
+    } else {
+        // 10.3 Reset to standard PC layout if on desktop or portrait mode
+        letter.style.transform = 'translate(-50%, -50%) scale(1)';
+    }
+}
+
+// 10.4 Run the fix on load, on resize, and when user interacts with the page
+window.addEventListener('load', fixMobileLandscape);
+window.addEventListener('resize', fixMobileLandscape);
+document.addEventListener('click', () => {
+    setTimeout(fixMobileLandscape, 150);
+});
