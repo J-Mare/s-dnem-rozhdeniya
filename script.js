@@ -23,7 +23,6 @@ document.querySelector('.click-area').addEventListener('click', ()=>{
 
     setTimeout(()=>{
         opened.classList.add('active');
-        fixMobileLandscape();
     },1000);
 });
 
@@ -73,35 +72,4 @@ if (progressContainer && music) {
         const duration = music.duration;
         if (duration) music.currentTime = (clickX / width) * duration;
     });
-}
-
-/* ==========================================
-   11. MOBILE LANDSCAPE RESPONSIVE FIX
-   ========================================== */
-function fixMobileLandscape() {
-    const letter = document.querySelector('.letter');
-    if (!letter) return;
-
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    if (width > height && width <= 980) {
-        const safeScale = height / 740;
-        letter.style.transform = `translate(-50%, -50%) scale(${Math.min(safeScale, 0.55)})`;
-        letter.style.transformOrigin = 'center center';
-        document.body.style.overflow = 'auto';
-    } else {
-        letter.style.transform = 'translate(-50%, -50%) scale(1)';
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-window.addEventListener('load', fixMobileLandscape);
-window.addEventListener('resize', fixMobileLandscape);
-
-const layoutObserver = new ResizeObserver(() => {
-    fixMobileLandscape();
-});
-if (opened) {
-    layoutObserver.observe(opened);
 }
