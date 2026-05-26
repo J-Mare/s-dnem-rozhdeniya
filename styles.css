@@ -38,15 +38,16 @@ body {
 }
 
 #intro {
-    /* Vraćamo contain jer u desktop modu on najbolje pakuje buket na sredinu bez širenja */
+    /* FIX ZA PC I TEL: contain i fiksne proporcije sprečavaju rastezanje i širenje buketa */
     background: url('assets/picturepage1.png') center center/contain no-repeat;
     background-color: #000000;
     width: 100vw;
     height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #opened {
-    /* Cover puni pozadinu ružama od ivice do ivice */
     background: url('assets/picturepage2.png') center center/cover no-repeat; 
     width: 100vw;
     height: 100vh;
@@ -98,7 +99,7 @@ body {
 }
 
 /* ==========================================
-   4. FLORIST CARD (Fiksne PC proporcije za savršen centar)
+   4. FLORIST CARD
    ========================================== */
 .letter {
     position: absolute;
@@ -317,4 +318,17 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+/* ==========================================
+   10. KONAČNA POPRAVKA SAMO ZA HORIZONTALNI MOD NA TEL
+   ========================================== */
+@media (max-width: 900px) and (orientation: landscape) {
+    /* Kada se telefon okrene bočno, pošto je ekran plitak, 
+       uz pomoć scale() funkcije bezbedno smanjujemo celu čestitku na 78% veličine.
+       To je kompenzacija koja vraća ruže u vidno polje i odozgo i odozdo! */
+    .letter {
+        transform: translate(-50%, -50%) scale(0.78) !important;
+        transform-origin: center center !important;
+    }
 }
