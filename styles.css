@@ -95,7 +95,7 @@ body {
    ========================================== */
 .letter {
     position: absolute;
-    top: 45%; 
+    top: 46%; 
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: 20;
@@ -257,33 +257,83 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (DRŽI ŠIROKI OBLIK NA MOBILNOM)
+   8. RESPONSIVE DESIGN (DOKTORSKA MOBILNA VERZIJA)
    ========================================== */
-@media(max-width:900px) and (orientation: portrait) {
-    /* Ako devojka drži telefon uspravno, rotiramo celu čestitku za 90 stepeni da izgleda BAŠ KAO NA PC-ju */
-    .letter {
-        transform: translate(-50%, -50%) rotate(90deg) scale(0.58) !important;
-        width: 660px !important;
-    }
-
+@media(max-width:900px) {
     #opened {
-        /* Rotiramo i pozadinu za 90 stepeni da venac prati telefon */
-        background-size: cover !important;
-        background-position: center center !important;
+        /* POPRAVKA: Puštamo stranu da može da ide na dole ako tekst traži prostor, a pozadina se ponavlja */
+        position: absolute !important;
+        overflow-y: auto !important; 
+        -webkit-overflow-scrolling: touch;
+        background-size: 100% auto !important;
+        background-repeat: repeat-y !important;
+        background-position: top center !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        display: block !important; /* Menjamo flex u block da dozvolimo skrolovanje elemenata */
+        padding: 60px 0 !important;
     }
-    
-    .music-btn {
-        top: 15px;
-        right: 15px;
-        font-size: 16px;
-    }
-}
 
-@media(max-width:900px) and (orientation: landscape) {
-    /* Ako devojka sama okrene telefon horizontalno, samo je blago smanjimo da savršeno upadne u ekran */
     .letter {
-        transform: translate(-50%, -46%) scale(0.55) !important;
-        width: 660px !important;
+        /* POPRAVKA: Vadimo je iz fiksnog centra ekrana da bi mogla normalno da klizi na dole kako se tekst kuca */
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: 90vw !important;
+        margin: 0 auto !important;
+    }
+
+    .paper {
+        flex-direction: column-reverse !important; 
+        padding: 25px 20px !important; 
+        gap: 20px !important;
+        min-height: auto !important;
+    }
+
+    .content { 
+        width: 100% !important; 
+    }
+
+    #message { 
+        font-size: 18px !important; /* Idealna veličina krasnopisa na telefonu */
+        line-height: 1.45 !important;
+        text-align: center !important; 
+    }
+
+    #message::after { 
+        text-align: center; 
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    .photo-frame { 
+        transform: rotate(2deg) !important; 
+        padding: 8px 8px 34px 8px !important; 
+        width: 150px !important; /* Stabilna širina slike na telefonu */
+        min-width: 150px !important; 
+        margin: 0 auto !important; /* Centriramo polaroid iznad teksta */
+    }
+
+    .photo-frame img { 
+        height: 180px !important; 
+    }
+
+    #signature { 
+        font-size: 18px !important; 
+        bottom: 5px !important; 
+    }
+
+    .glass { 
+        font-size: 22px; 
+    }
+
+    .player-container { 
+        position: relative !important;
+        bottom: auto !important;
+        margin: 20px auto 0 auto !important; /* Postavlja plejer čisto na dno ispod cele kartice */
+        width: 90% !important; 
+        padding: 10px 20px !important;
     }
 }
 
