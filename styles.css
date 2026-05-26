@@ -321,14 +321,11 @@ body {
 }
 
 /* ==========================================
-   10. KONAČNA POPRAVKA SAMO ZA HORIZONTALNI MOD NA TEL
+   10.
    ========================================== */
-@media (max-width: 900px) and (orientation: landscape) {
-    /* Kada se telefon okrene bočno, pošto je ekran plitak, 
-       uz pomoć scale() funkcije bezbedno smanjujemo celu čestitku na 78% veličine.
-       To je kompenzacija koja vraća ruže u vidno polje i odozgo i odozdo! */
+@media (orientation: landscape) and (max-device-width: 950px), (orientation: landscape) and (max-width: 950px) {
     .letter {
-        transform: translate(-50%, -50%) scale(0.78) !important;
+        transform: translate(-50%, -50%) scale(0.75) !important;
         transform-origin: center center !important;
     }
 }
