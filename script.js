@@ -23,6 +23,8 @@ document.querySelector('.click-area').addEventListener('click', ()=>{
 
     setTimeout(()=>{
         opened.classList.add('active');
+        // Force evaluation right when page 2 opens
+        fixMobileLandscape();
     },1000);
 });
 
@@ -81,22 +83,30 @@ function fixMobileLandscape() {
     const letter = document.querySelector('.letter');
     if (!letter) return;
 
-    // 10.1 Check if the screen is wider than it is tall (Landscape mode)
-    // and if the device width is small (indicating a mobile phone)
-    if (window.innerWidth > window.innerHeight && window.innerWidth <= 950) {
-        // 10.2 Dynamically calculate the safe scale ratio based on phone height
-        const safeScale = window.innerHeight / 640;
-        letter.style.transform = `translate(-50%, -50%) scale(${Math.min(safeScale, 0.78)})`;
+    // 10.1 Check actual viewport bounds to catch landscape orientation
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    if (width > height && width <= 980) {
+        // 10.2 Strict mathematical calculation based on active phone height
+        // Adjusted divisor to 680 to force smaller size and save background view
+        const safeScale = height / 680;
+        letter.style.transform = `translate(-50%, -50%) scale(${Math.min(safeScale, 0.70)})`;
         letter.style.transformOrigin = 'center center';
     } else {
-        // 10.3 Reset to standard PC layout if on desktop or portrait mode
+        // 10.3 Maintain flawless center design on desktop and portrait models
         letter.style.transform = 'translate(-50%, -50%) scale(1)';
     }
 }
 
-// 10.4 Run the fix on load, on resize, and when user interacts with the page
+// 10.4 Safe global layout tracking setup
 window.addEventListener('load', fixMobileLandscape);
 window.addEventListener('resize', fixMobileLandscape);
-document.addEventListener('click', () => {
-    setTimeout(fixMobileLandscape, 150);
+
+// 10.5 High-utility observer to track lazy rendering bugs
+const layoutObserver = new ResizeObserver(() => {
+    fixMobileLandscape();
 });
+if (opened) {
+    layoutObserver.observe(opened);
+}
