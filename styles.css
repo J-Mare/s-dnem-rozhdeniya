@@ -48,8 +48,7 @@ body {
 }
 
 #opened {
-    /* Popravka: Menjamo sa cover na 100% auto i dodajemo crnu boju pozadine za savršenu dubinu */
-    background: url('assets/picturepage2.png') center center/100% auto no-repeat; 
+    background: url('assets/picturepage2.png') center center/contain no-repeat; 
     background-color: #000000;
     width: 100vw;
     height: 100vh;
