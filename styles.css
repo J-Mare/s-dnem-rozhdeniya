@@ -48,10 +48,20 @@ body {
 }
 
 #opened {
+    /* 1. FABRIČKO PODEŠAVANJE ZA PC: 100vw 100vh daje onu brutalnu dubinu bez zuma */
     background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat; 
     width: 100vw;
     height: 100vh;
 }
+
+/* 2. SPECIJALNO SAMO ZA TELEFONE: Čim detektuje mobilni ekran, 
+   prebacuje sliku u stabilan 'cover' mod da ne bude spljoštena (fup) */
+@media (max-device-width: 950px), (max-width: 950px) {
+    #opened {
+        background-size: cover !important;
+    }
+}
+
 
 .overlay {
     position: absolute;
