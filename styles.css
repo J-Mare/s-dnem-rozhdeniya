@@ -14,7 +14,7 @@ body {
 }
 
 /* ==========================================
-   2. PAGES & BACKGROUNDS
+   2. PAGES & BACKGROUNDS (PC VERZIJA)
    ========================================== */
 .page {
     position: fixed;
@@ -243,12 +243,12 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (PC LOOK ON MOBILE)
+   8. RESPONSIVE DESIGN (MOBILNA VERZIJA - STELANJE SAMO ZA TEL)
    ========================================== */
 @media(max-width:900px) {
     #opened {
-        /* Pozadina staje cela na ekran telefona bez ikakvog skrolovanja */
-        background-size: contain !important;
+        /* FIXED: Ovde smo stavili cover umesto contain. Slike pozadine na PC-ju niko ne dira */
+        background-size: cover !important;
         background-position: center center !important;
         height: 100vh !important;
         width: 100vw !important;
@@ -257,7 +257,6 @@ body {
     }
 
     .letter {
-        /* POPRAVKA: Smanjujemo ceo blok na 55% veličine da zadrži originalni široki PC raspored i da se vidi venac od ruža svuda okolo */
         transform: translate(-50%, -50%) scale(0.55) !important;
         width: 660px !important;
         top: 50% !important;
@@ -266,7 +265,6 @@ body {
     }
 
     .paper {
-        /* Zadržavamo horizontalni raspored (slika desno, tekst levo) kao na PC-ju */
         flex-direction: row-reverse !important; 
         padding: 40px 45px !important; 
         gap: 30px !important;
