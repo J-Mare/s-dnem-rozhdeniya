@@ -1,103 +1,326 @@
-const intro = document.getElementById('intro');
-const opened = document.getElementById('opened');
-const music = document.getElementById('bg-music');
-const musicToggle = document.getElementById('music-toggle');
+/* ==========================================
+   1. RESET AND BASE STYLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* Player elements */
-const playerPlay = document.getElementById('player-play');
-const progressBar = document.getElementById('progress-bar');
-const progressContainer = document.querySelector('.progress-container');
-const letterContainer = document.querySelector('.letter');
+body {
+    overflow: hidden;
+    background: black;
+    font-family: 'Cormorant Garamond', serif;
+}
 
-document.getElementById('message').innerText = window.customMessage;
-document.getElementById('signature').innerText = window.customSignature;
+/* ==========================================
+   2. PAGES & BACKGROUNDS
+   ========================================== */
+.page {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: 1.5s ease;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-/* Dynamic resolution scanner and scaler */
-function autoScaleScreen() {
-    if (!letterContainer) return;
+.page.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#intro {
+    background: url('assets/picturepage1.png') center center/contain no-repeat;
+    width: 100vw;
+    height: 100vh;
+}
+
+#opened {
+    background: url('assets/picturepage2.png') center center/contain no-repeat; 
+    width: 100vw;
+    height: 100vh;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent !important; 
+}
+
+.overlay.dark {
+    background: transparent !important;
+}
+
+/* ==========================================
+   3. INTRO HERO ELEMENTS
+   ========================================== */
+.hero {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 10;
+    text-align: center;
+}
+
+.glass {
+    padding: 18px 34px;
+    border-radius: 50px;
+    background: rgba(0,0,0,.50);
+    backdrop-filter: blur(10px);
+    font-size: 32px;
+    color: #f6d6ac;
+    box-shadow: 0 0 30px rgba(0,0,0,.4);
+}
+
+.rose {
+    font-size: 65px;
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+}
+
+.click-area {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    z-index: 50;
+}
+
+/* ==========================================
+   4. FLORIST CARD (Fiksiran Spoljni Okvir)
+   ========================================== */
+.letter {
+    position: absolute;
+    top: 50% !important; 
+    left: 50% !important;
+    /* JS ce kontrolisati transformaciju odavde bez kvarenja centra */
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 20;
+    width: 660px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: center center !important;
+}
+
+.paper {
+    position: relative;
+    width: 100% !important; 
+    height: auto !important; 
+    min-height: 400px !important;
+    padding: 40px 45px !important; 
+    border-radius: 2px !important; 
+    display: flex !important;
+    flex-direction: row-reverse !important; 
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 30px !important;
+    left: 0 !important;
+    top: 0 !important;
     
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    
-    /* If screen size is smaller than PC layout, calculate ideal scale factor */
-    if (windowWidth < 900 || windowHeight < 600) {
-        const widthScale = windowWidth / 760; /* Targets comfortable margins on edges */
-        const heightScale = windowHeight / 560; /* Targets space for timeline player */
-        const perfectScale = Math.min(widthScale, heightScale, 0.85); /* Finds optimal bounding box */
+    background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%) !important; 
+    border: 1px solid rgba(100, 70, 40, 0.22) !important;
+
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.55),
+        0 25px 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 40px rgba(70, 40, 15, 0.2) !important;
         
-        letterContainer.style.transform = `translate(-50%, -50%) scale(${perfectScale})`;
-    } else {
-        letterContainer.style.transform = `translate(-50%, -50%) scale(1)`;
+    /* Animaciju prelaza smo stavili samo na papir da ne rusi JS poziciju */
+    animation: showPaper 1.2s ease forward;
+}
+
+.paper:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: .07; 
+    pointer-events: none;
+    background: url('https://transparenttextures.com');
+    mix-blend-mode: multiply;
+    z-index: 1;
+}
+
+/* ==========================================
+   5. CONTENT & MESSAGE
+   ========================================== */
+.content {
+    flex: 1.2 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    position: relative;
+    z-index: 3;
+}
+
+#message {
+    white-space: pre-wrap;
+    font-size: 20px !important; 
+    line-height: 1.5 !important;
+    color: #2b1407 !important; 
+    font-family: 'Marck Script', cursive;
+    text-align: left;
+    text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2) !important;
+}
+
+#message::after {
+    content: '🌹';
+    display: block;
+    font-size: 22px;
+    margin-top: 12px;
+    text-align: left;
+}
+
+/* ==========================================
+   6. PHOTO FRAME & IMAGE (Polaroid)
+   ========================================== */
+.photo-frame {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    background: #ffffff !important; 
+    padding: 10px 10px 42px 10px !important; 
+    transform: rotate(3deg) !important; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35) !important;
+    z-index: 4;
+    width: 185px !important; 
+    min-width: 185px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.photo-frame img {
+    width: 100% !important;
+    height: 215px !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.clip {
+    position: absolute;
+    top: -12px;
+    left: 45%;
+    transform: rotate(-6deg) !important;
+    width: 14px;
+    height: 34px;
+    border: 1.5px solid #8a8a8a !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+    box-shadow: -1px 1px 2px rgba(0,0,0,0.15) !important;
+}
+
+.clip::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: 6px;
+    height: 20px;
+    border-right: 1.5px solid #666;
+    border-radius: 0 6px 6px 0;
+}
+
+#signature {
+    position: absolute !important;
+    bottom: 8px !important;
+    margin-top: 0 !important;
+    width: 90% !important;
+    text-align: center !important;
+    font-size: 22px !important;
+    color: #2b1407 !important;
+    font-family: 'Marck Script', cursive;
+}
+
+/* ==========================================
+   7. ANIMATIONS
+   ========================================== */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+@keyframes showPaper {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 
-/* Run resolution scanner immediately and on window resize events */
-window.addEventListener('resize', autoScaleScreen);
-window.addEventListener('load', autoScaleScreen);
-autoScaleScreen();
+/* ==========================================
+   8. CORNER MUSIC BUTTON STYLING
+   ========================================== */
+.music-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(246, 214, 172, 0.3);
+    color: #f6d6ac;
+    font-size: 20px;
+    padding: 10px 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+}
+.music-btn:hover { background: rgba(0, 0, 0, 0.7); transform: scale(1.1); }
+.music-btn.muted { opacity: 0.5; text-decoration: line-through; }
 
-document.querySelector('.click-area').addEventListener('click', ()=>{
-    intro.classList.remove('active');
-
-    setTimeout(() => {
-        if (music) {
-            music.volume = 0.3; 
-            music.play().catch(error => console.log("Audio play blocked:", error));
-            if (playerPlay) playerPlay.innerText = '⏸';
-        }
-    }, 2500);
-
-    setTimeout(()=>{
-        opened.classList.add('active');
-        autoScaleScreen(); /* Recalculate precisely when page activates */
-    },1000);
-});
-
-/* Synced control for buttons */
-function updateButtonStates() {
-    if (music.paused) {
-        if (playerPlay) playerPlay.innerText = '▶';
-        if (musicToggle) {
-            musicToggle.classList.add('muted');
-            musicToggle.innerText = '🔇';
-        }
-    } else {
-        if (playerPlay) playerPlay.innerText = '⏸';
-        if (musicToggle) {
-            musicToggle.classList.remove('muted');
-            musicToggle.innerText = '🎵';
-        }
-    }
+/* ==========================================
+   9. TIMELINE PLAYER
+   ========================================== */
+.player-container {
+    position: absolute !important; 
+    bottom: -65px; 
+    width: 480px; 
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(244, 236, 216, 0.12);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    z-index: 25;
 }
 
-if (musicToggle && music) {
-    musicToggle.addEventListener('click', () => {
-        if (music.paused) music.play();
-        else music.pause();
-        updateButtonStates();
-    });
+.player-btn {
+    background: transparent;
+    border: none;
+    color: #e4ce9f;
+    font-size: 18px;
+    cursor: pointer;
+    width: 25px;
+    transition: transform 0.2s;
+}
+.player-btn:hover { transform: scale(1.15); }
+
+.progress-container {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
 }
 
-if (playerPlay && music) {
-    playerPlay.addEventListener('click', () => {
-        if (music.paused) music.play();
-        else music.pause();
-        updateButtonStates();
-    });
-}
-
-if (music && progressBar) {
-    music.addEventListener('timeupdate', () => {
-        const percentage = (music.currentTime / music.duration) * 100;
-        progressBar.style.width = percentage + '%';
-    });
-}
-
-if (progressContainer && music) {
-    progressContainer.addEventListener('click', (e) => {
-        const width = progressContainer.clientWidth;
-        const clickX = e.offsetX;
-        const duration = music.duration;
-        if (duration) music.currentTime = (clickX / width) * duration;
-    });
+.progress {
+    height: 100%;
+    width: 0%;
+    background: #e4ce9f; 
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
