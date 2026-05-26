@@ -242,7 +242,7 @@ body {
 }
 
 /* ==========================================
-   9. CORNER MUSIC BUTTON STYLING
+   8. CORNER MUSIC BUTTON STYLING
    ========================================== */
 .music-btn {
     position: absolute;
@@ -264,7 +264,7 @@ body {
 .music-btn.muted { opacity: 0.5; text-decoration: line-through; }
 
 /* ==========================================
-   10. TIMELINE PLAYER
+   9. TIMELINE PLAYER
    ========================================== */
 .player-container {
     position: absolute !important; 
@@ -313,16 +313,18 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (NAJBOLJE REŠENJE ZA TELEFONE)
+   10. RESPONSIVE DESIGN (AUTOMATSKO SKALIRANJE)
    ========================================== */
 @media (max-width: 768px) {
     .page {
-        position: absolute !important; /* Omogućava skrolovanje ako je telefon manji */
-        min-height: 100vh !important;
-        height: auto !important;
-        padding: 20px 15px 40px 15px !important; /* Dajemo prostora odozgo i odozdo */
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow: hidden !important;
         display: flex !important;
-        align-items: flex-start !important; /* Da se ne lepi za sam vrh */
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     #opened {
@@ -330,76 +332,67 @@ body {
         background-position: center center !important;
     }
 
-    /* Kartica više nije blokirana na 660px, već se prilagođava širini telefona */
     .letter {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 400px !important; /* Idealna širina za ekran telefona */
-        margin: 40px auto 0 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        /* Automatska lupa kalkulacija spram širine ekrana telefona */
+        transform: translate(-50%, -50%) scale(calc(100vw / 740)) !important; 
+        transform-origin: center center !important;
+        width: 660px !important; 
+        animation: none !important;
     }
 
-    /* KLJUČNA PROMENA: Slažemo elemente u kolonu (prvo tekst, pa meda) */
     .paper {
-        display: flex !important;
-        flex-direction: column !important; 
-        padding: 30px 20px !important; 
-        gap: 20px !important;
-        align-items: center !important;
-        min-height: auto !important;
+        flex-direction: row-reverse !important; 
+        padding: 40px 45px !important; 
+        gap: 30px !important;
+        min-height: 400px !important;
         width: 100% !important;
     }
 
     .content { 
-        flex: none !important; 
-        width: 100% !important; 
+        flex: 1.2 !important; 
+        width: auto !important; 
     }
 
     #message { 
-        font-size: 19px !important; /* Tekst ostaje krupan i prelep za čitanje */
+        font-size: 20px !important; 
         line-height: 1.5 !important; 
         text-align: left !important;
     }
     
-    /* Polaroid mede ide ispod teksta, ispravljamo rotaciju da ne seče ivice */
     .photo-frame { 
-        transform: rotate(0deg) !important; 
-        width: 175px !important; 
-        min-width: 175px !important; 
+        transform: rotate(3deg) !important; 
+        width: 185px !important; 
+        min-width: 185px !important; 
         padding: 10px 10px 42px 10px !important;
-        margin-top: 10px !important;
     }
     
     .photo-frame img { 
-        height: 200px !important; 
+        height: 215px !important; 
     }
 
     #signature {
-        font-size: 20px !important;
+        font-size: 22px !important;
         bottom: 8px !important;
     }
 
-    /* Plejer se postavlja prirodno ISPOD žute kartice, poravnat na sredini */
     .player-container { 
-        position: relative !important; 
-        bottom: auto !important; 
-        width: 100% !important; 
-        max-width: 400px !important; /* Iste je širine kao i žuta kartica */
-        margin: 20px auto 0 auto !important;
-        left: auto !important;
-        transform: none !important;
+        position: absolute !important; 
+        bottom: -65px !important; 
+        width: 480px !important; 
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin: 0 !important;
     }
 
-    /* Smanjujemo uvodni krug sa prve stranice da ne bude preveliki za telefon */
     .glass {
-        font-size: 22px !important;
-        padding: 12px 24px !important;
+        font-size: 24px !important;
+        padding: 14px 28px !important;
     }
     .rose {
-        font-size: 50px !important;
+        font-size: 55px !important;
     }
 }
+
