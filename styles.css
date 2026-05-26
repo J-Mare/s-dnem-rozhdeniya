@@ -40,7 +40,7 @@ body {
 }
 
 #opened {
-    background: url('assets/picturepage2.png') center center/contain no-repeat; 
+    background: url('assets/picturepage2.png') center center/cover no-repeat; 
     width: 100vw;
     height: 100vh;
 }
@@ -91,20 +91,19 @@ body {
 }
 
 /* ==========================================
-   4. FLORIST CARD (Fiksiran Spoljni Okvir)
+   4. FLORIST CARD
    ========================================== */
 .letter {
     position: absolute;
-    top: 50% !important; 
-    left: 50% !important;
-    /* JS ce kontrolisati transformaciju odavde bez kvarenja centra */
-    transform: translate(-50%, -50%) scale(1);
+    top: 46%; 
+    left: 50%;
+    transform: translate(-50%,-50%);
     z-index: 20;
+    animation: show 1.5s ease;
     width: 660px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform-origin: center center !important;
 }
 
 .paper {
@@ -129,9 +128,6 @@ body {
         0 10px 30px rgba(0, 0, 0, 0.55),
         0 25px 60px rgba(0, 0, 0, 0.7),
         inset 0 0 40px rgba(70, 40, 15, 0.2) !important;
-        
-    /* Animaciju prelaza smo stavili samo na papir da ne rusi JS poziciju */
-    animation: showPaper 1.2s ease forward;
 }
 
 .paper:before {
@@ -143,6 +139,10 @@ body {
     background: url('https://transparenttextures.com');
     mix-blend-mode: multiply;
     z-index: 1;
+}
+
+.paper::after {
+    display: none !important;
 }
 
 /* ==========================================
@@ -245,17 +245,83 @@ body {
     50% { transform: scale(1.08); }
 }
 
-@keyframes showPaper {
+@keyframes show {
     from {
         opacity: 0;
+        transform: translate(-50%,-45%) scale(.85);
     }
     to {
         opacity: 1;
+        transform: translate(-50%,-50%) scale(1);
     }
 }
 
 /* ==========================================
-   8. CORNER MUSIC BUTTON STYLING
+   8. RESPONSIVE DESIGN (SPOJENI PROPORCIONALNI MOBILNI LOOK)
+   ========================================== */
+@media(max-width:900px) {
+    #opened {
+        background-size: cover !important;
+        background-position: center center !important;
+        height: 100vh !important;
+        width: 100vw !important;
+    }
+
+    .letter {
+        transform: translate(-50%, -50%) scale(0.55) !important;
+        width: 660px !important;
+        top: 50% !important;
+        left: 50% !important;
+        position: absolute !important;
+    }
+
+    .paper {
+        flex-direction: row-reverse !important; 
+        padding: 40px 45px !important; 
+        gap: 30px !important;
+    }
+
+    .content { 
+        flex: 1.2 !important;
+        width: auto !important; 
+    }
+
+    #message { 
+        font-size: 20px !important; 
+        line-height: 1.5 !important;
+        text-align: left !important; 
+    }
+
+    #message::after { 
+        text-align: left !important; 
+        font-size: 22px !important;
+    }
+
+    .photo-frame { 
+        transform: rotate(3deg) !important; 
+        padding: 10px 10px 42px 10px !important; 
+        width: 185px !important; 
+        min-width: 185px !important; 
+    }
+
+    .photo-frame img { 
+        height: 215px !important; 
+    }
+
+    #signature { 
+        font-size: 22px !important; 
+        bottom: 8px !important; 
+    }
+
+    .player-container { 
+        position: absolute !important;
+        bottom: -65px !important;
+        width: 480px !important; 
+    }
+}
+
+/* ==========================================
+   9. CORNER MUSIC BUTTON STYLING
    ========================================== */
 .music-btn {
     position: absolute;
@@ -277,7 +343,7 @@ body {
 .music-btn.muted { opacity: 0.5; text-decoration: line-through; }
 
 /* ==========================================
-   9. TIMELINE PLAYER
+   10. TIMELINE PLAYER
    ========================================== */
 .player-container {
     position: absolute !important; 
