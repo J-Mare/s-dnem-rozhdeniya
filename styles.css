@@ -14,7 +14,7 @@ body {
 }
 
 /* ==========================================
-   2. PAGES & BACKGROUNDS (PC verzija - Contain svuda)
+   2. PAGES & BACKGROUNDS
    ========================================== */
 .page {
     position: fixed;
@@ -95,7 +95,7 @@ body {
    ========================================== */
 .letter {
     position: absolute;
-    top: 50%; 
+    top: 45%; 
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: 20;
@@ -257,69 +257,33 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (MOBILNA VERZIJA - PRESVALIČENO KAO PRVA STRANA)
+   8. RESPONSIVE DESIGN (DRŽI ŠIROKI OBLIK NA MOBILNOM)
    ========================================== */
-@media(max-width:900px) {
+@media(max-width:900px) and (orientation: portrait) {
+    /* Ako devojka drži telefon uspravno, rotiramo celu čestitku za 90 stepeni da izgleda BAŠ KAO NA PC-ju */
+    .letter {
+        transform: translate(-50%, -50%) rotate(90deg) scale(0.58) !important;
+        width: 660px !important;
+    }
+
     #opened {
-        /* POPRAVKA: Potpuno isto podešavanje kao na prvoj strani, slika staje cela bez ikakvog sečenja i razvlačenja */
-        background-size: contain !important;
+        /* Rotiramo i pozadinu za 90 stepeni da venac prati telefon */
+        background-size: cover !important;
         background-position: center center !important;
     }
+    
+    .music-btn {
+        top: 15px;
+        right: 15px;
+        font-size: 16px;
+    }
+}
 
+@media(max-width:900px) and (orientation: landscape) {
+    /* Ako devojka sama okrene telefon horizontalno, samo je blago smanjimo da savršeno upadne u ekran */
     .letter {
-        width: 88vw; 
-        top: 50%;
-    }
-
-    .paper {
-        flex-direction: column-reverse !important; 
-        padding: 20px 15px !important; 
-        gap: 15px !important;
-        min-height: auto !important;
-    }
-
-    .content { 
-        width: 100% !important; 
-    }
-
-    #message { 
-        font-size: 15px !important; 
-        line-height: 1.4 !important;
-        text-align: center !important; 
-    }
-
-    #message::after { 
-        text-align: center; 
-        font-size: 18px;
-        margin-top: 8px;
-    }
-
-    .photo-frame { 
-        transform: rotate(2deg) !important; 
-        padding: 6px 6px 28px 6px !important; 
-        width: 120px !important; 
-        min-width: 120px !important; 
-    }
-
-    .photo-frame img { 
-        height: 140px !important; 
-    }
-
-    #signature { 
-        font-size: 15px !important; 
-        bottom: 4px !important; 
-    }
-
-    .glass { 
-        font-size: 22px; 
-    }
-
-    .player-container { 
-        position: relative !important;
-        bottom: auto !important;
-        margin-top: 15px !important;
-        width: 95% !important; 
-        padding: 8px 15px !important;
+        transform: translate(-50%, -46%) scale(0.55) !important;
+        width: 660px !important;
     }
 }
 
