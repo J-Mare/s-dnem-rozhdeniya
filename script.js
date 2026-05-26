@@ -77,33 +77,31 @@ if (progressContainer && music) {
 }
 
 /* ==========================================
-   10. MOBILE LANDSCAPE RESPONSIVE FIX
+   11. MOBILE LANDSCAPE RESPONSIVE FIX
    ========================================== */
 function fixMobileLandscape() {
     const letter = document.querySelector('.letter');
     if (!letter) return;
 
-    // 10.1 Check actual viewport bounds to catch landscape orientation
     const width = window.innerWidth;
     const height = window.innerHeight;
 
     if (width > height && width <= 980) {
-        // 10.2 Strict mathematical calculation based on active phone height
-        // Adjusted divisor to 680 to force smaller size and save background view
-        const safeScale = height / 680;
-        letter.style.transform = `translate(-50%, -50%) scale(${Math.min(safeScale, 0.70)})`;
+        // 11.1 Hard scale down to 0.48 to force the card and player into view,
+        // allowing the background roses to frame the screen completely.
+        letter.style.transform = `translate(-50%, -50%) scale(0.48)`;
         letter.style.transformOrigin = 'center center';
     } else {
-        // 10.3 Maintain flawless center design on desktop and portrait models
+        // 11.2 Maintain standard dimensions for portrait and desktop views
         letter.style.transform = 'translate(-50%, -50%) scale(1)';
     }
 }
 
-// 10.4 Safe global layout tracking setup
+// 11.3 Safe global layout tracking setup
 window.addEventListener('load', fixMobileLandscape);
 window.addEventListener('resize', fixMobileLandscape);
 
-// 10.5 High-utility observer to track lazy rendering bugs
+// 11.4 Observer to enforce scaling instantly on page change
 const layoutObserver = new ResizeObserver(() => {
     fixMobileLandscape();
 });
