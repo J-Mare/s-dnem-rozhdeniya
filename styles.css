@@ -1,3 +1,6 @@
+/* ==========================================
+   1. RESET AND BASE STYLES
+   ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -10,6 +13,9 @@ body {
     font-family: 'Cormorant Garamond', serif;
 }
 
+/* ==========================================
+   2. PAGES & BACKGROUNDS (PC VERZIJA)
+   ========================================== */
 .page {
     position: fixed;
     inset: 0;
@@ -49,6 +55,9 @@ body {
     background: transparent !important;
 }
 
+/* ==========================================
+   3. INTRO HERO ELEMENTS
+   ========================================== */
 .hero {
     position: absolute;
     top: 50%; 
@@ -81,6 +90,9 @@ body {
     z-index: 50;
 }
 
+/* ==========================================
+   4. FLORIST CARD
+   ========================================== */
 .letter {
     position: absolute;
     top: 46%; 
@@ -124,6 +136,9 @@ body {
     z-index: 1;
 }
 
+/* ==========================================
+   5. CONTENT & MESSAGE
+   ========================================== */
 .content {
     flex: 1.2 !important;
     height: auto !important;
@@ -152,6 +167,9 @@ body {
     text-align: left;
 }
 
+/* ==========================================
+   6. PHOTO FRAME & IMAGE (Polaroid)
+   ========================================== */
 .photo-frame {
     position: relative !important;
     top: auto !important;
@@ -210,6 +228,9 @@ body {
     font-family: 'Marck Script', cursive;
 }
 
+/* ==========================================
+   7. ANIMATIONS
+   ========================================== */
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.08); }
@@ -220,9 +241,12 @@ body {
     to { opacity: 1; transform: translate(-50%,-50%) scale(1); }
 }
 
+/* ==========================================
+   8. RESPONSIVE DESIGN (MOBILNA VERZIJA - PRESVIKAN PC IZGLED SVE SA RUŽAMA)
+   ========================================== */
 @media(max-width:900px) {
     #opened {
-        background-size: cover !important;
+        background-size: contain !important;
         background-position: center center !important;
         height: 100vh !important;
         width: 100vw !important;
@@ -231,7 +255,7 @@ body {
     }
 
     .letter {
-        transform: translate(-50%, -50%) scale(0.55) !important;
+        transform: translate(-50%, -50%) scale(0.42) !important;
         width: 660px !important;
         top: 50% !important;
         left: 50% !important;
@@ -253,6 +277,9 @@ body {
     .player-container { position: absolute !important; bottom: -65px !important; width: 480px !important; }
 }
 
+/* ==========================================
+   9. CORNER MUSIC BUTTON STYLING
+   ========================================== */
 .music-btn {
     position: absolute;
     top: 25px;
@@ -269,7 +296,12 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     transition: all 0.3s ease;
 }
+.music-btn:hover { background: rgba(0, 0, 0, 0.7); transform: scale(1.1); }
+.music-btn.muted { opacity: 0.5; text-decoration: line-through; }
 
+/* ==========================================
+   10. TIMELINE PLAYER
+   ========================================== */
 .player-container {
     position: absolute !important; 
     bottom: -65px; 
