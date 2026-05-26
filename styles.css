@@ -326,29 +326,27 @@ body {
    10. MOBILE RESPONSIVE ENGINE (PERFECT SYMMETRY)
    ========================================== */
 @media (max-device-width: 950px), (max-width: 950px) {
-    /* Pozadina ostaje zakucana u savršenom centru bez ikakvog bežanja */
     #opened {
-        background-size: cover !important;
         background-position: center center !important;
     }
 
-    /* Otključavamo skrolovanje za prste */
     body {
         overflow: auto !important;
     }
 
-    /* 10.1 KADA TELEFON STOJI USPRAVNO (PORTRAIT)
-       Smanjujemo karticu na 0.85. Ovo oslobađa prostor sa leve i desne strane 
-       i vraća simetrične ruže i lampice direktno na ekran telefona! */
+    /* 10.1 PORTRAIT MODE STYLING */
     @media (orientation: portrait) {
         .letter {
-            transform: translate(-50%, -50%) scale(0.85) !important;
+            transform: translate(-50%, -50%) scale(1) !important;
             transform-origin: center center !important;
+        }
+        
+        #opened {
+            background-size: 145% 100vh !important;
         }
     }
 
-    /* 10.2 KADA SE TELEFON OKRENE U STRANU (LANDSCAPE)
-       Smanjujemo karticu jače na 0.58 da kompenzujemo plitak ekran */
+    /* 10.2 LANDSCAPE MODE STYLING */
     @media (orientation: landscape) {
         .letter {
             transform: translate(-50%, -50%) scale(0.58) !important;
@@ -356,4 +354,5 @@ body {
         }
     }
 }
+
 
