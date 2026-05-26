@@ -243,7 +243,7 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (POTPUNI MOBILNI RESTART)
+   8. RESPONSIVE DESIGN (FIXED WIDTH ON MOBILE)
    ========================================== */
 @media(max-width:900px) {
     #opened {
@@ -256,7 +256,7 @@ body {
         height: auto !important;
         min-height: 100vh !important;
         display: block !important; 
-        padding: 50px 0 !important;
+        padding: 40px 0 !important;
     }
 
     .letter {
@@ -264,15 +264,17 @@ body {
         top: auto !important;
         left: auto !important;
         transform: none !important;
-        width: 90vw !important;
+        /* POPRAVKA: Sabija čestitku na 86% širine ekrana telefona da ne beži van ivica */
+        width: 86vw !important; 
         margin: 0 auto !important;
     }
 
     .paper {
         flex-direction: column-reverse !important; 
-        padding: 25px 20px !important; 
+        padding: 25px 15px !important; 
         gap: 20px !important;
         min-height: auto !important;
+        width: 100% !important;
     }
 
     .content { 
@@ -280,31 +282,31 @@ body {
     }
 
     #message { 
-        font-size: 17px !important; 
+        font-size: 16px !important; /* Malo prilagođen font za užu čestitku */
         line-height: 1.45 !important;
         text-align: center !important; 
     }
 
     #message::after { 
         text-align: center; 
-        font-size: 20px;
+        font-size: 18px;
         margin-top: 10px;
     }
 
     .photo-frame { 
         transform: rotate(2deg) !important; 
-        padding: 8px 8px 34px 8px !important; 
-        width: 145px !important; 
-        min-width: 145px !important; 
+        padding: 6px 6px 30px 6px !important; 
+        width: 135px !important; /* Smanjen polaroid da savršeno upadne u uži ekran */
+        min-width: 135px !important; 
         margin: 0 auto !important; 
     }
 
     .photo-frame img { 
-        height: 175px !important; 
+        height: 160px !important; 
     }
 
     #signature { 
-        font-size: 17px !important; 
+        font-size: 16px !important; 
         bottom: 5px !important; 
     }
 
@@ -316,8 +318,8 @@ body {
         position: relative !important;
         bottom: auto !important;
         margin: 20px auto 0 auto !important; 
-        width: 90% !important; 
-        padding: 10px 20px !important;
+        width: 100% !important; /* Plejer prati novu širinu kartice */
+        padding: 10px 15px !important;
     }
 }
 
