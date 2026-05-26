@@ -55,15 +55,16 @@ body {
     height: 100vh;
 }
 
-/* KONAČAN FIX ZA USPRAVAN TELEFON: Vraća ruže sa leve i desne strane na ekran */
+/* KONAČNA POPRAVKA ZA USPRAVAN TELEFON: Ubija crne trake i vraća ruže */
 @media (max-device-width: 950px) and (orientation: portrait), (max-width: 950px) and (orientation: portrait) {
     #opened {
-        /* Primorava sliku da se skupi tačno u širinu telefona (100%), 
-           tako da ceo venac ruža sa strana ponovo ulazi u ekran i nema više sečenja! */
-        background-size: 100% auto !important;
+        /* 1. 'cover' puni ceo ekran po visini tako da NEMA više crnih traka (blek barova) odozgo i odozdo! */
+        background-size: cover !important;
+        /* 2. Pomeramo sliku malo ulevo (na 42%) umesto čistog centra (50%). 
+           Ovo magično uvlači prelepi venac ruža i lampica sa strane direktno na ekran telefona! */
+        background-position: 42% center !important;
     }
 }
-
 
 
 .overlay {
