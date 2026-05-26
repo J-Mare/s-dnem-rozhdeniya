@@ -1,0 +1,356 @@
+/* ==========================================
+   1. RESET AND BASE STYLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    background: black;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* ==========================================
+   2. PAGES & BACKGROUNDS
+   ========================================== */
+.page {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: 1.5s ease;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#intro {
+    background: url('assets/picturepage1.png') center center/contain no-repeat;
+    width: 100vw;
+    height: 100vh;
+}
+
+#opened {
+    background: url('assets/picturepage2.png') center center/contain no-repeat; 
+    width: 100vw;
+    height: 100vh;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent !important; 
+}
+
+.overlay.dark {
+    background: transparent !important;
+}
+
+/* ==========================================
+   3. INTRO HERO ELEMENTS
+   ========================================== */
+.hero {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 10;
+    text-align: center;
+}
+
+.glass {
+    padding: 18px 34px;
+    border-radius: 50px;
+    background: rgba(0,0,0,.50);
+    backdrop-filter: blur(10px);
+    font-size: 32px;
+    color: #f6d6ac;
+    box-shadow: 0 0 30px rgba(0,0,0,.4);
+}
+
+.rose {
+    font-size: 65px;
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+}
+
+.click-area {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    z-index: 50;
+}
+
+/* ==========================================
+   4. FLORIST CARD (Fixed Center Position)
+   ========================================== */
+.letter {
+    position: absolute;
+    top: 50%; /* Fixed: Placed back into perfect mathematical center */
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 20;
+    animation: show 1.5s ease;
+    width: 660px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.paper {
+    position: relative;
+    width: 100% !important; 
+    height: auto !important; 
+    min-height: 400px !important;
+    padding: 40px 45px !important; 
+    border-radius: 2px !important; 
+    display: flex !important;
+    flex-direction: row-reverse !important; 
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 30px !important;
+    left: 0 !important;
+    top: 0 !important;
+    
+    background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%) !important; 
+    border: 1px solid rgba(100, 70, 40, 0.22) !important;
+
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.55),
+        0 25px 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 40px rgba(70, 40, 15, 0.2) !important;
+}
+
+.paper:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: .07; 
+    pointer-events: none;
+    background: url('https://transparenttextures.com');
+    mix-blend-mode: multiply;
+    z-index: 1;
+}
+
+.paper::after {
+    display: none !important;
+}
+
+/* ==========================================
+   5. CONTENT & MESSAGE
+   ========================================== */
+.content {
+    flex: 1.2 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    position: relative;
+    z-index: 3;
+}
+
+#message {
+    white-space: pre-wrap;
+    font-size: 20px !important; 
+    line-height: 1.5 !important;
+    color: #2b1407 !important; 
+    font-family: 'Marck Script', cursive;
+    text-align: left;
+    text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2) !important;
+}
+
+#message::after {
+    content: '🌹';
+    display: block;
+    font-size: 22px;
+    margin-top: 12px;
+    text-align: left;
+}
+
+/* ==========================================
+   6. PHOTO FRAME & IMAGE (Polaroid)
+   ========================================== */
+.photo-frame {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    background: #ffffff !important; 
+    padding: 10px 10px 42px 10px !important; 
+    transform: rotate(3deg) !important; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35) !important;
+    z-index: 4;
+    width: 185px !important; 
+    min-width: 185px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.photo-frame img {
+    width: 100% !important;
+    height: 215px !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.clip {
+    position: absolute;
+    top: -12px;
+    left: 45%;
+    transform: rotate(-6deg) !important;
+    width: 14px;
+    height: 34px;
+    border: 1.5px solid #8a8a8a !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+    box-shadow: -1px 1px 2px rgba(0,0,0,0.15) !important;
+}
+
+.clip::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: 6px;
+    height: 20px;
+    border-right: 1.5px solid #666;
+    border-radius: 0 6px 6px 0;
+}
+
+#signature {
+    position: absolute !important;
+    bottom: 8px !important;
+    margin-top: 0 !important;
+    width: 90% !important;
+    text-align: center !important;
+    font-size: 22px !important;
+    color: #2b1407 !important;
+    font-family: 'Marck Script', cursive;
+}
+
+/* ==========================================
+   7. ANIMATIONS
+   ========================================== */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+        transform: translate(-50%,-45%) scale(.85);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%,-50%) scale(1);
+    }
+}
+
+/* ==========================================
+   8. RESPONSIVE DESIGN (MOBILE)
+   ========================================== */
+@media(max-width:900px) {
+    .letter {
+        width: 92vw;
+        top: 50%;
+    }
+    .paper {
+        flex-direction: column-reverse !important; 
+        padding: 35px 22px !important;
+        gap: 25px !important;
+    }
+    .content { width: 100% !important; }
+    #message { font-size: 19px !important; text-align: center !important; }
+    #message::after { text-align: center; }
+    .photo-frame { transform: rotate(2deg) !important; padding-bottom: 35px !important; width: 165px !important; min-width: 165px !important; }
+    .photo-frame img { height: 195px !important; }
+    #signature { font-size: 19px !important; bottom: 6px !important; }
+    .glass { font-size: 24px; }
+    .player-container { 
+        position: relative !important;
+        bottom: auto !important;
+        margin-top: 20px !important;
+        width: 90% !important; 
+    }
+}
+
+/* ==========================================
+   9. CORNER MUSIC BUTTON STYLING
+   ========================================== */
+.music-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(246, 214, 172, 0.3);
+    color: #f6d6ac;
+    font-size: 20px;
+    padding: 10px 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+}
+.music-btn:hover { background: rgba(0, 0, 0, 0.7); transform: scale(1.1); }
+.music-btn.muted { opacity: 0.5; text-decoration: line-through; }
+
+/* ==========================================
+   10. TIMELINE PLAYER (Fixed Position)
+   ========================================== */
+.player-container {
+    position: absolute !important; /* Fixed: Takes player out of flow to prevent paper shifting */
+    bottom: -65px; /* Fixed: Places it perfectly in the wooden gap beneath the paper */
+    width: 480px; /* Made slightly cleaner and narrower to perfectly fit the gap */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(244, 236, 216, 0.12);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    z-index: 25;
+}
+
+.player-btn {
+    background: transparent;
+    border: none;
+    color: #e4ce9f;
+    font-size: 18px;
+    cursor: pointer;
+    width: 25px;
+    transition: transform 0.2s;
+}
+.player-btn:hover { transform: scale(1.15); }
+
+.progress-container {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: #e4ce9f; 
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

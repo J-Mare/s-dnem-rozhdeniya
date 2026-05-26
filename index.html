@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1001 Roses</title>
+
+<link rel="preconnect" href="https://googleapis.com">
+<link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://googleapis.com/css2?family=Marck+Script&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<audio id="bg-music" src="assets/music.mp3" loop></audio>
+
+<section id="intro" class="page active">
+
+<div class="overlay"></div>
+
+<div class="hero">
+    <div class="glass">
+        Нажми на любую розу
+    </div>
+
+    <div class="rose">🌹</div>
+</div>
+
+<div class="click-area"></div>
+
+</section>
+
+<section id="opened" class="page">
+
+<button id="music-toggle" class="music-btn">🎵</button>
+
+<div class="overlay dark"></div>
+
+<div class="letter">
+
+    <div class="paper">
+
+        <div class="photo-frame">
+            <img src="picture.png" alt="photo">
+            <div class="clip"></div>
+
+            <div id="signature"></div>
+        </div>
+
+        <div class="content">
+            <div id="message"></div>
+        </div>
+
+    </div>
+
+    <div class="player-container">
+        <button id="player-play" class="player-btn">▶</button>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress"></div>
+        </div>
+    </div>
+
+</div>
+
+</section>
+
+<script src="message.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
