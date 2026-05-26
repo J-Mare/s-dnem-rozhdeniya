@@ -87,22 +87,27 @@ function fixMobileLandscape() {
     const height = window.innerHeight;
 
     if (width > height && width <= 980) {
-        // 11.1 Dynamically scale based on height to ensure player and roses stay visible,
-        // while browser natively allows pinch-to-zoom at any moment.
+        // 11.1 Dynamically scale based on height to ensure player and roses stay visible
         const safeScale = height / 740;
         letter.style.transform = `translate(-50%, -50%) scale(${Math.min(safeScale, 0.55)})`;
         letter.style.transformOrigin = 'center center';
+
+        // 11.2 Force enable scrolling and pinch-zooming for landscape mobile views
+        document.body.style.overflow = 'auto';
     } else {
-        // 11.2 Maintain standard dimensions for portrait and desktop views
+        // 11.3 Maintain standard dimensions for portrait and desktop views
         letter.style.transform = 'translate(-50%, -50%) scale(1)';
+
+        // 11.4 Enforce scrolling lock for ideal fof-fixed desktop presentation
+        document.body.style.overflow = 'hidden';
     }
 }
 
-// 11.3 Safe global layout tracking setup
+// 11.5 Safe global layout tracking setup
 window.addEventListener('load', fixMobileLandscape);
 window.addEventListener('resize', fixMobileLandscape);
 
-// 11.4 Observer to enforce scaling instantly on page change
+// 11.6 Observer to enforce scaling instantly on page change
 const layoutObserver = new ResizeObserver(() => {
     fixMobileLandscape();
 });
