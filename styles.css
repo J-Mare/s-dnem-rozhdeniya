@@ -45,16 +45,6 @@ body {
     height: 100vh;
 }
 
-.overlay {
-    position: absolute;
-    inset: 0;
-    background: transparent !important; 
-}
-
-.overlay.dark {
-    background: transparent !important;
-}
-
 /* ==========================================
    3. INTRO HERO ELEMENTS
    ========================================== */
@@ -139,10 +129,6 @@ body {
     background: url('https://transparenttextures.com');
     mix-blend-mode: multiply;
     z-index: 1;
-}
-
-.paper::after {
-    display: none !important;
 }
 
 /* ==========================================
@@ -257,11 +243,10 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (DOKTORSKA MOBILNA VERZIJA)
+   8. RESPONSIVE DESIGN (POTPUNI MOBILNI RESTART)
    ========================================== */
 @media(max-width:900px) {
     #opened {
-        /* POPRAVKA: Puštamo stranu da može da ide na dole ako tekst traži prostor, a pozadina se ponavlja */
         position: absolute !important;
         overflow-y: auto !important; 
         -webkit-overflow-scrolling: touch;
@@ -270,12 +255,11 @@ body {
         background-position: top center !important;
         height: auto !important;
         min-height: 100vh !important;
-        display: block !important; /* Menjamo flex u block da dozvolimo skrolovanje elemenata */
-        padding: 60px 0 !important;
+        display: block !important; 
+        padding: 50px 0 !important;
     }
 
     .letter {
-        /* POPRAVKA: Vadimo je iz fiksnog centra ekrana da bi mogla normalno da klizi na dole kako se tekst kuca */
         position: relative !important;
         top: auto !important;
         left: auto !important;
@@ -296,7 +280,7 @@ body {
     }
 
     #message { 
-        font-size: 18px !important; /* Idealna veličina krasnopisa na telefonu */
+        font-size: 17px !important; 
         line-height: 1.45 !important;
         text-align: center !important; 
     }
@@ -310,17 +294,17 @@ body {
     .photo-frame { 
         transform: rotate(2deg) !important; 
         padding: 8px 8px 34px 8px !important; 
-        width: 150px !important; /* Stabilna širina slike na telefonu */
-        min-width: 150px !important; 
-        margin: 0 auto !important; /* Centriramo polaroid iznad teksta */
+        width: 145px !important; 
+        min-width: 145px !important; 
+        margin: 0 auto !important; 
     }
 
     .photo-frame img { 
-        height: 180px !important; 
+        height: 175px !important; 
     }
 
     #signature { 
-        font-size: 18px !important; 
+        font-size: 17px !important; 
         bottom: 5px !important; 
     }
 
@@ -331,7 +315,7 @@ body {
     .player-container { 
         position: relative !important;
         bottom: auto !important;
-        margin: 20px auto 0 auto !important; /* Postavlja plejer čisto na dno ispod cele kartice */
+        margin: 20px auto 0 auto !important; 
         width: 90% !important; 
         padding: 10px 20px !important;
     }
