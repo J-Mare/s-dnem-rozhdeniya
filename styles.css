@@ -257,24 +257,25 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (FIXED MOBILE BACKGROUND)
+   8. RESPONSIVE DESIGN (FINAL MOBILE FIX)
    ========================================== */
 @media(max-width:900px) {
     #opened {
-        /* POPRAVKA: Prilagođava venac od ruža i lampice tako da se ne razvlače divljački, već stanu celi u ekran telefona */
-        background-size: 100% auto !important;
+        /* Popravka pozadine na telefonu: contain garantuje da slika stane cela i da se ne razvlači */
+        background-size: contain !important;
         background-position: center center !important;
     }
 
     .letter {
-        width: 94vw;
+        width: 88vw; /* Malo uža širina da ne gazi venac od ruža sa strana */
         top: 50%;
     }
 
     .paper {
         flex-direction: column-reverse !important; 
-        padding: 30px 20px !important;
-        gap: 20px !important;
+        padding: 20px 15px !important; /* Maksimalno smanjen padding da oslobodimo prostor za tekst i sliku */
+        gap: 15px !important;
+        min-height: auto !important;
     }
 
     .content { 
@@ -282,28 +283,31 @@ body {
     }
 
     #message { 
-        font-size: 18px !important; 
+        font-size: 15px !important; /* Smanjena veličina slova da tekst stane u uski ekran telefona */
+        line-height: 1.4 !important;
         text-align: center !important; 
     }
 
     #message::after { 
         text-align: center; 
+        font-size: 18px;
+        margin-top: 8px;
     }
 
     .photo-frame { 
         transform: rotate(2deg) !important; 
-        padding-bottom: 35px !important; 
-        width: 160px !important; 
-        min-width: 160px !important; 
+        padding: 6px 6px 28px 6px !important; /* Smanjen polaroid okvir */
+        width: 120px !important; /* Smanjena širina slike da bi stala na ekran preko teksta */
+        min-width: 120px !important; 
     }
 
     .photo-frame img { 
-        height: 185px !important; 
+        height: 140px !important; 
     }
 
     #signature { 
-        font-size: 18px !important; 
-        bottom: 6px !important; 
+        font-size: 15px !important; 
+        bottom: 4px !important; 
     }
 
     .glass { 
@@ -315,6 +319,7 @@ body {
         bottom: auto !important;
         margin-top: 15px !important;
         width: 95% !important; 
+        padding: 8px 15px !important;
     }
 }
 
