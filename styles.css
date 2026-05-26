@@ -38,12 +38,15 @@ body {
 }
 
 #intro {
-    background: url('assets/picturepage1.png') center center/cover no-repeat;
+    /* Vraćamo contain jer u desktop modu on najbolje pakuje buket na sredinu bez širenja */
+    background: url('assets/picturepage1.png') center center/contain no-repeat;
+    background-color: #000000;
     width: 100vw;
     height: 100vh;
 }
 
 #opened {
+    /* Cover puni pozadinu ružama od ivice do ivice */
     background: url('assets/picturepage2.png') center center/cover no-repeat; 
     width: 100vw;
     height: 100vh;
@@ -60,17 +63,15 @@ body {
 }
 
 /* ==========================================
-   3. INTRO HERO ELEMENTS (AUTOMATSKA RAZMERA ZA PRVI PAGE)
+   3. INTRO HERO ELEMENTS
    ========================================== */
 .hero {
     position: absolute;
     top: 50%; 
     left: 50%;
-    /* Ova min() funkcija meri širinu i visinu ekrana i savršeno umanjuje natpis na telefonu, a drži ga velikim na PC-u */
-    transform: translate(-50%,-50%) scale(min(calc(100vw / 800), calc(100vh / 600), 1)) !important;
+    transform: translate(-50%,-50%);
     z-index: 10;
     text-align: center;
-    width: 450px;
 }
 
 .glass {
@@ -81,7 +82,6 @@ body {
     font-size: 32px;
     color: #f6d6ac;
     box-shadow: 0 0 30px rgba(0,0,0,.4);
-    white-space: nowrap;
 }
 
 .rose {
@@ -98,16 +98,13 @@ body {
 }
 
 /* ==========================================
-   4. FLORIST CARD (AUTOMATSKA RAZMERA ZA DRUGI PAGE)
+   4. FLORIST CARD (Fiksne PC proporcije za savršen centar)
    ========================================== */
 .letter {
     position: absolute;
     top: 46%; 
     left: 50%;
-    /* MAGIJA: Ako ekran postane prenizak ili preuzak (bilo na PC-u ili telefonu), 
-       ova formula automatski skuplja čestitku i plejer, čuvajući venac od ruža okolo! */
-    transform: translate(-50%,-50%) scale(min(calc(100vw / 780), calc(100vh / 580), 1)) !important;
-    transform-origin: center center !important;
+    transform: translate(-50%,-50%);
     z-index: 20;
     animation: show 1.5s ease;
     width: 660px;
