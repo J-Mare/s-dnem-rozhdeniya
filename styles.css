@@ -313,9 +313,10 @@ body {
 }
 
 /* ==========================================
-   10. RESPONSIVE DESIGN (AUTOMATSKO SKALIRANJE)
+   10. RESPONSIVE DESIGN (PUN CORNER-TO-CORNER EFFEKAT)
    ========================================== */
 @media (max-width: 768px) {
+    /* Blokiramo pomeranje i fiksiramo pozadinu sa ružama */
     .page {
         position: fixed !important;
         inset: 0 !important;
@@ -332,18 +333,21 @@ body {
         background-position: center center !important;
     }
 
+    /* KARTICA: Drži sve elemente u paketu i automatski se smanjuje bez lomljenja */
     .letter {
         position: absolute !important;
         top: 50% !important;
         left: 50% !important;
-        /* Automatska lupa kalkulacija spram širine ekrana telefona */
-        transform: translate(-50%, -50%) scale(calc(100vw / 740)) !important; 
+        /* Računamo precizno skaliranje: širina ekrana telefona podeljena sa 780 piksela */
+        transform: translate(-50%, -50%) scale(calc(100vw / 780)) !important; 
         transform-origin: center center !important;
-        width: 660px !important; 
+        width: 660px !important; /* Vraćamo originalnu PC širinu čestitke */
         animation: none !important;
     }
 
+    /* Vraćamo sve originalne PC vrednosti jer ih transform: scale() sam smanjuje */
     .paper {
+        display: flex !important;
         flex-direction: row-reverse !important; 
         padding: 40px 45px !important; 
         gap: 30px !important;
@@ -378,6 +382,14 @@ body {
         bottom: 8px !important;
     }
 
+    .clip {
+        width: 14px !important;
+        height: 34px !important;
+        top: -12px !important;
+        left: 45% !important;
+    }
+
+    /* PLEJER: Ostaje savršeno vezan i centriran odmah ispod ivice kartice */
     .player-container { 
         position: absolute !important; 
         bottom: -65px !important; 
@@ -387,12 +399,12 @@ body {
         margin: 0 !important;
     }
 
+    /* Prva uvodna stranica */
     .glass {
-        font-size: 24px !important;
+        font-size: 26px !important;
         padding: 14px 28px !important;
     }
     .rose {
         font-size: 55px !important;
     }
 }
-
