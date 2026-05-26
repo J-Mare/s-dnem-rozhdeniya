@@ -55,18 +55,6 @@ body {
     height: 100vh;
 }
 
-/* KONAČNA POPRAVKA ZA USPRAVAN TELEFON: Ubija crne trake i vraća ruže */
-@media (max-device-width: 950px) and (orientation: portrait), (max-width: 950px) and (orientation: portrait) {
-    #opened {
-        /* 1. 'cover' puni ceo ekran po visini tako da NEMA više crnih traka (blek barova) odozgo i odozdo! */
-        background-size: cover !important;
-        /* 2. Pomeramo sliku malo ulevo (na 42%) umesto čistog centra (50%). 
-           Ovo magično uvlači prelepi venac ruža i lampica sa strane direktno na ekran telefona! */
-        background-position: 42% center !important;
-    }
-}
-
-
 .overlay {
     position: absolute;
     inset: 0;
@@ -335,11 +323,37 @@ body {
 }
 
 /* ==========================================
-   10. MOBILE LANDSCAPE RESPONSIVE FIX
+   10. MOBILE RESPONSIVE ENGINE (PERFECT SYMMETRY)
    ========================================== */
-@media (max-device-width: 950px) and (orientation: landscape), (max-width: 950px) and (orientation: landscape) {
-    .letter {
-        transform: translate(-50%, -50%) scale(0.58) !important;
-        transform-origin: center center !important;
+@media (max-device-width: 950px), (max-width: 950px) {
+    /* Pozadina ostaje zakucana u savršenom centru bez ikakvog bežanja */
+    #opened {
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+
+    /* Otključavamo skrolovanje za prste */
+    body {
+        overflow: auto !important;
+    }
+
+    /* 10.1 KADA TELEFON STOJI USPRAVNO (PORTRAIT)
+       Smanjujemo karticu na 0.85. Ovo oslobađa prostor sa leve i desne strane 
+       i vraća simetrične ruže i lampice direktno na ekran telefona! */
+    @media (orientation: portrait) {
+        .letter {
+            transform: translate(-50%, -50%) scale(0.85) !important;
+            transform-origin: center center !important;
+        }
+    }
+
+    /* 10.2 KADA SE TELEFON OKRENE U STRANU (LANDSCAPE)
+       Smanjujemo karticu jače na 0.58 da kompenzujemo plitak ekran */
+    @media (orientation: landscape) {
+        .letter {
+            transform: translate(-50%, -50%) scale(0.58) !important;
+            transform-origin: center center !important;
+        }
     }
 }
+
