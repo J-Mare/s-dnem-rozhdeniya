@@ -342,7 +342,7 @@ body {
         }
         
         #opened {
-            background-size: 145% 100vh !important;
+            background-size: calc(100vh * 1.35) 100vh !important;
         }
     }
 
@@ -354,5 +354,3 @@ body {
         }
     }
 }
-
-
