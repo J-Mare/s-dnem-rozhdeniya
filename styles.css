@@ -11,6 +11,8 @@ body {
     overflow: hidden;
     background: black;
     font-family: 'Cormorant Garamond', serif;
+    width: 100vw;
+    height: 100vh;
 }
 
 /* ==========================================
@@ -26,6 +28,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
 }
 
 .page.active {
@@ -34,13 +38,13 @@ body {
 }
 
 #intro {
-    background: url('assets/picturepage1.png') center center/cover no-repeat; /* Popravljeno: cover da nema crnih štrafti */
+    background: url('assets/picturepage1.png') center center/cover no-repeat;
     width: 100vw;
     height: 100vh;
 }
 
 #opened {
-    background: url('assets/picturepage2.png') center center/cover no-repeat; /* Popravljeno: cover da nema crnih štrafti */
+    background: url('assets/picturepage2.png') center center/cover no-repeat; 
     width: 100vw;
     height: 100vh;
 }
@@ -56,15 +60,17 @@ body {
 }
 
 /* ==========================================
-   3. INTRO HERO ELEMENTS
+   3. INTRO HERO ELEMENTS (AUTOMATSKA RAZMERA ZA PRVI PAGE)
    ========================================== */
 .hero {
     position: absolute;
     top: 50%; 
     left: 50%;
-    transform: translate(-50%,-50%);
+    /* Ova min() funkcija meri širinu i visinu ekrana i savršeno umanjuje natpis na telefonu, a drži ga velikim na PC-u */
+    transform: translate(-50%,-50%) scale(min(calc(100vw / 800), calc(100vh / 600), 1)) !important;
     z-index: 10;
     text-align: center;
+    width: 450px;
 }
 
 .glass {
@@ -75,6 +81,7 @@ body {
     font-size: 32px;
     color: #f6d6ac;
     box-shadow: 0 0 30px rgba(0,0,0,.4);
+    white-space: nowrap;
 }
 
 .rose {
@@ -91,13 +98,16 @@ body {
 }
 
 /* ==========================================
-   4. FLORIST CARD (Fixed Center Position)
+   4. FLORIST CARD (AUTOMATSKA RAZMERA ZA DRUGI PAGE)
    ========================================== */
 .letter {
     position: absolute;
     top: 46%; 
     left: 50%;
-    transform: translate(-50%,-50%);
+    /* MAGIJA: Ako ekran postane prenizak ili preuzak (bilo na PC-u ili telefonu), 
+       ova formula automatski skuplja čestitku i plejer, čuvajući venac od ruža okolo! */
+    transform: translate(-50%,-50%) scale(min(calc(100vw / 780), calc(100vh / 580), 1)) !important;
+    transform-origin: center center !important;
     z-index: 20;
     animation: show 1.5s ease;
     width: 660px;
@@ -120,14 +130,9 @@ body {
     gap: 30px !important;
     left: 0 !important;
     top: 0 !important;
-    
     background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%) !important; 
     border: 1px solid rgba(100, 70, 40, 0.22) !important;
-
-    box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.55),
-        0 25px 60px rgba(0, 0, 0, 0.7),
-        inset 0 0 40px rgba(70, 40, 15, 0.2) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(70, 40, 15, 0.2) !important;
 }
 
 .paper:before {
@@ -139,10 +144,6 @@ body {
     background: url('https://transparenttextures.com');
     mix-blend-mode: multiply;
     z-index: 1;
-}
-
-.paper::after {
-    display: none !important;
 }
 
 /* ==========================================
@@ -192,7 +193,7 @@ body {
     min-width: 185px !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
+    align-items: center;
 }
 
 .photo-frame img {
