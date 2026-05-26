@@ -48,19 +48,22 @@ body {
 }
 
 #opened {
-    /* 1. FABRIČKO PODEŠAVANJE ZA PC: 100vw 100vh daje onu brutalnu dubinu bez zuma */
+    /* Za PC ostaje tvoj savršeni 100vw 100vh koji daje dubinu bez zuma */
     background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat; 
+    background-color: #000000;
     width: 100vw;
     height: 100vh;
 }
 
-/* 2. SPECIJALNO SAMO ZA TELEFONE: Čim detektuje mobilni ekran, 
-   prebacuje sliku u stabilan 'cover' mod da ne bude spljoštena (fup) */
-@media (max-device-width: 950px), (max-width: 950px) {
+/* KONAČAN FIX ZA USPRAVAN TELEFON: Vraća ruže sa leve i desne strane na ekran */
+@media (max-device-width: 950px) and (orientation: portrait), (max-width: 950px) and (orientation: portrait) {
     #opened {
-        background-size: cover !important;
+        /* Primorava sliku da se skupi tačno u širinu telefona (100%), 
+           tako da ceo venac ruža sa strana ponovo ulazi u ekran i nema više sečenja! */
+        background-size: 100% auto !important;
     }
 }
+
 
 
 .overlay {
