@@ -329,3 +329,13 @@ body {
     top: 0;
     left: 0;
 }
+
+/* ==========================================
+   10. MOBILE LANDSCAPE RESPONSIVE FIX
+   ========================================== */
+@media (max-device-width: 950px) and (orientation: landscape), (max-width: 950px) and (orientation: landscape) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.58) !important;
+        transform-origin: center center !important;
+    }
+}
