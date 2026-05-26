@@ -324,9 +324,9 @@ body {
    10. RESPONSIVE LANDSCAPE FIX FOR MOBILE
    ========================================== */
 @media (orientation: landscape) and (max-device-width: 950px), (orientation: landscape) and (max-width: 950px) {
-    /* 10.1 Scale down the entire card and player when phone is turned horizontally */
+    /* 10.1 Dynamically scale the card based on the physical height of any phone screen */
     .letter {
-        transform: translate(-50%, -50%) scale(0.62) !important;
+        transform: translate(-50%, -50%) scale(calc(100vh / 660)) !important;
         transform-origin: center center !important;
     }
 }
