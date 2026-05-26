@@ -340,17 +340,17 @@ body {
             transform: translate(-50%, -50%) scale(1) !important;
             transform-origin: center center !important;
         }
-        
         #opened {
             background-size: calc(100vh * 1.35) 100vh !important;
         }
     }
+}
 
-    /* 10.2 LANDSCAPE MODE STYLING */
-    @media (orientation: landscape) {
-        .letter {
-            transform: translate(-50%, -50%) scale(0.58) !important;
-            transform-origin: center center !important;
-        }
+/* 10.2 STRICT LANDSCAPE CARD SCALE ONLY */
+@media (max-device-height: 550px) and (orientation: landscape), (max-height: 550px) and (orientation: landscape) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.48) !important;
+        transform-origin: center center !important;
     }
 }
+
