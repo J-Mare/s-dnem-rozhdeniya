@@ -243,83 +243,71 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (FIXED WIDTH ON MOBILE)
+   8. RESPONSIVE DESIGN (PC LOOK ON MOBILE)
    ========================================== */
 @media(max-width:900px) {
     #opened {
-        position: absolute !important;
-        overflow-y: auto !important; 
-        -webkit-overflow-scrolling: touch;
-        background-size: 100% auto !important;
-        background-repeat: repeat-y !important;
-        background-position: top center !important;
-        height: auto !important;
-        min-height: 100vh !important;
-        display: block !important; 
-        padding: 40px 0 !important;
+        /* Pozadina staje cela na ekran telefona bez ikakvog skrolovanja */
+        background-size: contain !important;
+        background-position: center center !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        position: fixed !important;
+        overflow: hidden !important;
     }
 
     .letter {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
-        /* POPRAVKA: Sabija čestitku na 86% širine ekrana telefona da ne beži van ivica */
-        width: 86vw !important; 
-        margin: 0 auto !important;
+        /* POPRAVKA: Smanjujemo ceo blok na 55% veličine da zadrži originalni široki PC raspored i da se vidi venac od ruža svuda okolo */
+        transform: translate(-50%, -50%) scale(0.55) !important;
+        width: 660px !important;
+        top: 50% !important;
+        left: 50% !important;
+        position: absolute !important;
     }
 
     .paper {
-        flex-direction: column-reverse !important; 
-        padding: 25px 15px !important; 
-        gap: 20px !important;
-        min-height: auto !important;
-        width: 100% !important;
+        /* Zadržavamo horizontalni raspored (slika desno, tekst levo) kao na PC-ju */
+        flex-direction: row-reverse !important; 
+        padding: 40px 45px !important; 
+        gap: 30px !important;
     }
 
     .content { 
-        width: 100% !important; 
+        flex: 1.2 !important;
+        width: auto !important; 
     }
 
     #message { 
-        font-size: 16px !important; /* Malo prilagođen font za užu čestitku */
-        line-height: 1.45 !important;
-        text-align: center !important; 
+        font-size: 20px !important; 
+        line-height: 1.5 !important;
+        text-align: left !important; 
     }
 
     #message::after { 
-        text-align: center; 
-        font-size: 18px;
-        margin-top: 10px;
+        text-align: left !important; 
+        font-size: 22px !important;
     }
 
     .photo-frame { 
-        transform: rotate(2deg) !important; 
-        padding: 6px 6px 30px 6px !important; 
-        width: 135px !important; /* Smanjen polaroid da savršeno upadne u uži ekran */
-        min-width: 135px !important; 
-        margin: 0 auto !important; 
+        transform: rotate(3deg) !important; 
+        padding: 10px 10px 42px 10px !important; 
+        width: 185px !important; 
+        min-width: 185px !important; 
     }
 
     .photo-frame img { 
-        height: 160px !important; 
+        height: 215px !important; 
     }
 
     #signature { 
-        font-size: 16px !important; 
-        bottom: 5px !important; 
-    }
-
-    .glass { 
-        font-size: 22px; 
+        font-size: 22px !important; 
+        bottom: 8px !important; 
     }
 
     .player-container { 
-        position: relative !important;
-        bottom: auto !important;
-        margin: 20px auto 0 auto !important; 
-        width: 100% !important; /* Plejer prati novu širinu kartice */
-        padding: 10px 15px !important;
+        position: absolute !important;
+        bottom: -65px !important;
+        width: 480px !important; 
     }
 }
 
