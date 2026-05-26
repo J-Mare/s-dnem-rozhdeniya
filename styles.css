@@ -242,11 +242,12 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (MOBILNA VERZIJA - PRESVIKAN PC IZGLED SVE SA RUŽAMA)
+   8. RESPONSIVE DESIGN (SVE POPRAVLJENO I ZA GORE I ZA DOLE)
    ========================================== */
 @media(max-width:900px) {
     #opened {
-        background-size: contain !important;
+        /* POPRAVKA: Razvlači ruže od ivice do ivice, nema više crnog prostora gore i dole */
+        background-size: cover !important;
         background-position: center center !important;
         height: 100vh !important;
         width: 100vw !important;
@@ -255,7 +256,7 @@ body {
     }
 
     .letter {
-        transform: translate(-50%, -50%) scale(0.42) !important;
+        transform: translate(-50%, -50%) scale(0.55) !important;
         width: 660px !important;
         top: 50% !important;
         left: 50% !important;
