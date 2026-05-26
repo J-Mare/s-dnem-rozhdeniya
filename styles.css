@@ -14,7 +14,7 @@ body {
 }
 
 /* ==========================================
-   2. PAGES & BACKGROUNDS
+   2. PAGES & BACKGROUNDS (PC verzija - Contain svuda)
    ========================================== */
 .page {
     position: fixed;
@@ -257,23 +257,23 @@ body {
 }
 
 /* ==========================================
-   8. RESPONSIVE DESIGN (FINAL MOBILE FIX)
+   8. RESPONSIVE DESIGN (MOBILNA VERZIJA - PRESVALIČENO KAO PRVA STRANA)
    ========================================== */
 @media(max-width:900px) {
     #opened {
-        /* Popravka pozadine na telefonu: contain garantuje da slika stane cela i da se ne razvlači */
+        /* POPRAVKA: Potpuno isto podešavanje kao na prvoj strani, slika staje cela bez ikakvog sečenja i razvlačenja */
         background-size: contain !important;
         background-position: center center !important;
     }
 
     .letter {
-        width: 88vw; /* Malo uža širina da ne gazi venac od ruža sa strana */
+        width: 88vw; 
         top: 50%;
     }
 
     .paper {
         flex-direction: column-reverse !important; 
-        padding: 20px 15px !important; /* Maksimalno smanjen padding da oslobodimo prostor za tekst i sliku */
+        padding: 20px 15px !important; 
         gap: 15px !important;
         min-height: auto !important;
     }
@@ -283,7 +283,7 @@ body {
     }
 
     #message { 
-        font-size: 15px !important; /* Smanjena veličina slova da tekst stane u uski ekran telefona */
+        font-size: 15px !important; 
         line-height: 1.4 !important;
         text-align: center !important; 
     }
@@ -296,8 +296,8 @@ body {
 
     .photo-frame { 
         transform: rotate(2deg) !important; 
-        padding: 6px 6px 28px 6px !important; /* Smanjen polaroid okvir */
-        width: 120px !important; /* Smanjena širina slike da bi stala na ekran preko teksta */
+        padding: 6px 6px 28px 6px !important; 
+        width: 120px !important; 
         min-width: 120px !important; 
     }
 
