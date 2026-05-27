@@ -40,7 +40,6 @@ body {
 }
 
 #intro {
-    /* contain cuva proporcije buketa bez rastezanja */
     background: url('assets/picturepage1.png') center center / contain no-repeat;
     background-color: #000000;
 }
@@ -51,7 +50,6 @@ body {
     z-index: 1;
 }
 
-/* Pozadinska slika sa animacijom tinjanja - iza svega */
 #opened::before {
     content: "";
     position: absolute;
@@ -159,7 +157,6 @@ body {
     text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
 }
 
-/* Ruzica ispod poruke */
 #message::after {
     content: '\1F339';
     display: block;
@@ -193,7 +190,6 @@ body {
     display: block;
 }
 
-/* Metalna spajalica iznad polaroida */
 .clip {
     position: absolute;
     top: -12px;
@@ -218,7 +214,6 @@ body {
     border-radius: 0 6px 6px 0;
 }
 
-/* Potpis ispod slike */
 #signature {
     position: absolute;
     bottom: 8px;
@@ -239,7 +234,13 @@ body {
     padding: 6px 6px 22px 6px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     z-index: 15;
-    transition: transform 0.3s ease;
+    /* 
+        VAZNO: transition je samo za box-shadow i opacity.
+        Transform se NE tranzicionira ovde jer JS kontrolise
+        poziciju tokom zoom animacije — ne sme da interferira.
+    */
+    transition: box-shadow 0.3s ease, opacity 0.3s ease;
+    cursor: zoom-in;
 }
 
 .mali-polaroid img {
@@ -248,22 +249,89 @@ body {
     object-fit: contain;
     background: #000000;
     display: block;
+    /* Sprecava da slika "uhvati" hover event tokom zoom-a */
+    pointer-events: none;
 }
 
+/*
+    HOVER: samo blagi glow efekat — BEZ transform/scale
+    da se polaroid ne pomera i ne konfliktuje sa zoom JS-om.
+    Originalni hover (scale + rotate reset) je uklonjen
+    jer JS sada preuzima kontrolu nad transform-om.
+*/
 .mali-polaroid:hover {
-    transform: scale(1.15) rotate(0deg) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
     z-index: 50;
-    cursor: pointer;
+    cursor: zoom-in;
 }
 
-/* Pozicije 4 mala polaroida */
+/* Pozicije 4 mala polaroida — transform rotate ostaje ovde */
 .slika-1 { top: 5%;    right: 28%; transform: rotate(-10deg); }
 .slika-2 { top: 15%;   right: 3%;  transform: rotate(15deg);  }
 .slika-3 { bottom: 12%; right: 28%; transform: rotate(8deg);  }
 .slika-4 { bottom: 5%;  right: 3%;  transform: rotate(-12deg); }
 
 /* ==========================================
-   9. MUZICKI DUGME I KLIZAC JACINE
+   9. ZOOM OVERLAY
+   ========================================== */
+.zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    /* Iznad svega osim uvecanog polaroida */
+    z-index: 998;
+    cursor: pointer;
+}
+
+.zoom-overlay.aktivni {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================
+   10. UVECAN POLAROID (zoom stanje)
+   ========================================== */
+/*
+    Kada JS doda klasu .uvecan, polaroid "leti" na sredinu ekrana.
+    position:fixed + top/left se postavljaju inline kroz JS,
+    ali finalna destinacija (centar) dolazi odavde.
+    
+    transition mora biti na .uvecan jer JS najpre skloni tranziciju,
+    postavi pocetnu poziciju, pa onda doda .uvecan — 
+    tada CSS tranzicija animira razliku.
+*/
+.mali-polaroid.uvecan {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) rotate(0deg) !important;
+    width: 320px !important;
+    height: auto !important;
+    z-index: 999 !important;
+    cursor: zoom-out;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7) !important;
+    transition: all 0.45s cubic-bezier(0.34, 1.1, 0.64, 1) !important;
+    padding: 12px 12px 45px 12px !important;
+}
+
+/* Slika unutar uvecanog polaroida - prilagodi visinu */
+.mali-polaroid.uvecan img {
+    width: 100%;
+    height: auto !important;
+    object-fit: cover !important;
+    background: #000 !important;
+}
+
+/* ==========================================
+   11. MUZICKI DUGME I KLIZAC JACINE
    ========================================== */
 .volume-container {
     position: absolute;
@@ -275,7 +343,6 @@ body {
     gap: 10px;
 }
 
-/* Resetuje apsolutnu poziciju dugmeta kad je unutar volume-container */
 .volume-container #music-toggle {
     position: static;
 }
@@ -315,13 +382,12 @@ body {
     opacity: 0.5;
 }
 
-/* Plesanje note dok muzika svira */
 .music-btn.playing {
     animation: plesiNota 2s infinite ease-in-out;
 }
 
 /* ==========================================
-   10. TIMELINE PLEJER
+   12. TIMELINE PLEJER
    ========================================== */
 .player-container {
     position: absolute;
@@ -373,7 +439,7 @@ body {
 }
 
 /* ==========================================
-   11. KARAOKE TEKST PESME
+   13. KARAOKE TEKST PESME
    ========================================== */
 #tekst-pesme {
     position: absolute;
@@ -397,103 +463,17 @@ body {
 }
 
 /* ==========================================
-   12. VATROMET OD SRCA (KLIK NA SLIKU)
+   14. VATROMET OD SRCA (KLIK NA SLIKU)
    ========================================== */
-
-/* FIX: Srca su position:fixed sa z-index:999999 ali nisu bila vidljiva
-   jer je @keyframes letiIizbledi bio zarobljen unutar nezatvorenog
-   @keyframes plesiNota bloka. Sada su oba ispravno odvojena. */
 .klik-srce {
     position: fixed;
     pointer-events: none;
     z-index: 999999;
     line-height: 1;
-    /* Centriranje emoji tacno na kursor */
     transform: translate(-50%, -50%);
     animation: letiIizbledi 1.2s forwards ease-out;
 }
 
 @keyframes letiIizbledi {
     0% {
-        transform: translate(-50%, -50%) scale(1) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        /* --x i --y su postavljeni inline kroz JS za svako srce */
-        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(45deg);
-        opacity: 0;
-    }
-}
-
-/* ==========================================
-   13. ANIMACIJE
-   ========================================== */
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50%       { transform: scale(1.08); }
-}
-
-@keyframes show {
-    from { opacity: 0; transform: translate(-50%, -45%) scale(0.85); }
-    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
-@keyframes tinjanjeSlike {
-    0%, 100% { filter: brightness(80%); }
-    50%       { filter: brightness(115%); }
-}
-
-/* FIX: Ovaj @keyframes je ranije bio nepropisno zatvoren - duplikat i
-   nedostajuca } su uzrokovali da browser ignorise .klik-srce i letiIizbledi */
-@keyframes plesiNota {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    25%       { transform: rotate(-15deg) scale(1.05); }
-    75%       { transform: rotate(15deg) scale(1.05); }
-}
-
-/* ==========================================
-   14. RESPONSIVE - LAPTOP I MANJI MONITORI
-   ========================================== */
-@media (max-height: 900px) and (min-width: 951px) {
-    .letter {
-        transform: translate(-50%, -50%) scale(0.8);
-        transform-origin: center center;
-        top: 48%;
-    }
-}
-
-@media (max-height: 780px) and (min-width: 951px) {
-    .letter {
-        transform: translate(-50%, -50%) scale(0.68);
-        transform-origin: center center;
-    }
-}
-
-/* ==========================================
-   15. RESPONSIVE - MOBILNI UREDJAJI
-   ========================================== */
-@media (max-device-width: 950px), (max-width: 950px) {
-    body {
-        overflow: auto;
-    }
-
-    #opened::before {
-        background-position: center center;
-        background-size: cover;
-    }
-
-    @media (orientation: portrait) {
-        .letter {
-            transform: translate(-50%, -50%) scale(1);
-            transform-origin: center center;
-        }
-    }
-}
-
-@media (max-device-height: 550px) and (orientation: landscape),
-       (max-height: 550px) and (orientation: landscape) {
-    .letter {
-        transform: translate(-50%, -50%) scale(0.48);
-        transform-origin: center center;
-    }
-}
+        transform: translate(-50%, -50%) scale(1) 
