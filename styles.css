@@ -23,7 +23,7 @@ body {
     inset: 0;
     opacity: 0;
     pointer-events: none;
-    transition: 1.5s ease;
+    transition: opacity 1.5s ease;
     background-color: black;
     display: flex;
     justify-content: center;
@@ -38,40 +38,25 @@ body {
 }
 
 #intro {
-    /* FIX ZA PC I TEL: contain i fiksne proporcije sprečavaju rastezanje i širenje buketa */
-    background: url('assets/picturepage1.png') center center/contain no-repeat;
+    /* contain cuva proporcije buketa bez rastezanja */
+    background: url('assets/picturepage1.png') center center / contain no-repeat;
     background-color: #000000;
-    width: 100vw;
-    height: 100vh;
-    max-width: 100%;
-    max-height: 100%;
 }
 
 #opened {
-  background-color: #000000;
-  width: 100vw;
-  height: 100vh;
-  position: relative; 
-  z-index: 1; /* Otvara novi sloj */
+    background-color: #000000;
+    position: relative;
+    z-index: 1;
 }
 
+/* Pozadinska slika sa animacijom tinjanja — iza svega */
 #opened::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat;
-  z-index: -1; /* Gura sliku SKROZ NAZAD, iza papira i muzike */
-  animation: tinjanjeSlike 4s infinite ease-in-out;
-}
-
-.overlay {
+    content: "";
     position: absolute;
     inset: 0;
-    background: transparent !important; 
-}
-
-.overlay.dark {
-    background: transparent !important;
+    background: url('assets/picturepage2.png') center center / 100vw 100vh no-repeat;
+    z-index: -1;
+    animation: tinjanjeSlike 4s infinite ease-in-out;
 }
 
 /* ==========================================
@@ -79,9 +64,9 @@ body {
    ========================================== */
 .hero {
     position: absolute;
-    top: 50%; 
+    top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 10;
     text-align: center;
 }
@@ -89,11 +74,11 @@ body {
 .glass {
     padding: 18px 34px;
     border-radius: 50px;
-    background: rgba(0,0,0,.50);
+    background: rgba(0, 0, 0, 0.50);
     backdrop-filter: blur(10px);
     font-size: 32px;
     color: #f6d6ac;
-    box-shadow: 0 0 30px rgba(0,0,0,.4);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
 }
 
 .rose {
@@ -110,13 +95,13 @@ body {
 }
 
 /* ==========================================
-   4. FLORIST CARD
+   4. LETTER CARD (WRAPPER)
    ========================================== */
 .letter {
     position: absolute;
-    top: 46%; 
+    top: 46%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 20;
     animation: show 1.5s ease;
     width: 660px;
@@ -125,61 +110,53 @@ body {
     align-items: center;
 }
 
+/* ==========================================
+   5. PAPER (CARD BODY)
+   ========================================== */
 .paper {
     position: relative;
-    width: 100% !important; 
-    height: auto !important; 
-    min-height: 400px !important;
-    padding: 40px 45px !important; 
-    border-radius: 2px !important; 
-    display: flex !important;
-    flex-direction: row-reverse !important; 
-    justify-content: space-between !important;
-    align-items: center !important;
-    gap: 30px !important;
-    left: 0 !important;
-    top: 0 !important;
-    background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%) !important; 
-    border: 1px solid rgba(100, 70, 40, 0.22) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(70, 40, 15, 0.2) !important;
-}
-
-.paper:before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: .07; 
-    pointer-events: none;
-    background: url('https://transparenttextures.com');
-    mix-blend-mode: multiply;
-    z-index: 1;
+    width: 100%;
+    min-height: 400px;
+    padding: 40px 45px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%);
+    border: 1px solid rgba(100, 70, 40, 0.22);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.55),
+        0 25px 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 40px rgba(70, 40, 15, 0.2);
 }
 
 /* ==========================================
-   5. CONTENT & MESSAGE
+   6. CONTENT & MESSAGE TEXT
    ========================================== */
 .content {
-    flex: 1.2 !important;
-    height: auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
     z-index: 3;
 }
 
 #message {
     white-space: pre-wrap;
-    font-size: 21px !important; 
-    line-height: 1.6 !important;
-    color: #2b1407 !important; 
+    font-size: 21px;
+    line-height: 1.6;
+    color: #2b1407;
     font-family: 'Marck Script', cursive;
     text-align: left;
-    font-weight: 600 !important;
-    letter-spacing: 0.8px !important;
-    text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2) !important;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
 }
 
+/* Ruzica ispod poruke */
 #message::after {
     content: '🌹';
     display: block;
@@ -189,42 +166,42 @@ body {
 }
 
 /* ==========================================
-   6. PHOTO FRAME & IMAGE (Polaroid)
+   7. PHOTO FRAME (GLAVNI POLAROID)
    ========================================== */
 .photo-frame {
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    background: #ffffff !important; 
-    padding: 10px 10px 42px 10px !important; 
-    transform: rotate(3deg) !important; 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.35) !important;
+    position: relative;
+    background: #ffffff;
+    padding: 10px 10px 42px 10px;
+    transform: rotate(3deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
     z-index: 4;
-    width: 185px !important; 
-    min-width: 185px !important;
-    display: flex !important;
-    flex-direction: column !important;
+    width: 185px;
+    min-width: 185px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    cursor: pointer;
 }
 
 .photo-frame img {
-    width: 100% !important;
-    height: 215px !important;
-    object-fit: cover !important;
-    display: block !important;
+    width: 100%;
+    height: 215px;
+    object-fit: cover;
+    display: block;
 }
 
+/* Metalna spajalica iznad polaroida */
 .clip {
     position: absolute;
     top: -12px;
     left: 45%;
-    transform: rotate(-6deg) !important;
+    transform: rotate(-6deg);
     width: 14px;
     height: 34px;
-    border: 1.5px solid #8a8a8a !important;
-    border-radius: 10px !important;
-    background: transparent !important;
-    box-shadow: -1px 1px 2px rgba(0,0,0,0.15) !important;
+    border: 1.5px solid #8a8a8a;
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .clip::after {
@@ -238,38 +215,82 @@ body {
     border-radius: 0 6px 6px 0;
 }
 
+/* Potpis ispod slike */
 #signature {
-    position: absolute !important;
-    bottom: 8px !important;
-    margin-top: 0 !important;
-    width: 90% !important;
-    text-align: center !important;
-    font-size: 22px !important;
-    color: #2b1407 !important;
+    position: absolute;
+    bottom: 8px;
+    width: 90%;
+    text-align: center;
+    font-size: 22px;
+    color: #2b1407;
     font-family: 'Marck Script', cursive;
 }
 
 /* ==========================================
-   7. ANIMATIONS
+   8. MALI POLAROIDI (STRANI UGAONI)
    ========================================== */
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.08); }
+.mali-polaroid {
+    position: absolute;
+    width: 95px;
+    background: white;
+    padding: 6px 6px 22px 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 15;
+    transition: transform 0.3s ease;
 }
 
-@keyframes show {
-    from { opacity: 0; transform: translate(-50%,-45%) scale(.85); }
-    to { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+.mali-polaroid img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    background: #000000;
+    display: block;
 }
+
+.mali-polaroid:hover {
+    transform: scale(1.15) rotate(0deg) !important;
+    z-index: 50;
+    cursor: pointer;
+}
+
+/* Pozicije 4 mala polaroida */
+.slika-1 { top: 5%;    right: 28%; transform: rotate(-10deg); }
+.slika-2 { top: 15%;   right: 3%;  transform: rotate(15deg);  }
+.slika-3 { bottom: 12%; right: 28%; transform: rotate(8deg);  }
+.slika-4 { bottom: 5%;  right: 3%;  transform: rotate(-12deg); }
 
 /* ==========================================
-   8. CORNER MUSIC BUTTON STYLING
+   9. MUZICKI DUGME I KLIZAC JACINE
    ========================================== */
-.music-btn {
+.volume-container {
     position: absolute;
     top: 25px;
     right: 25px;
-    z-index: 100;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Resetuje apsolutnu poziciju dugmeta kad je unutar volume-container */
+.volume-container #music-toggle {
+    position: static;
+}
+
+#volume-slider {
+    width: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    accent-color: #f6d6ac;
+}
+
+.volume-container:hover #volume-slider {
+    width: 80px;
+    opacity: 1;
+}
+
+.music-btn {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(246, 214, 172, 0.3);
@@ -278,19 +299,31 @@ body {
     padding: 10px 14px;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease, transform 0.3s ease;
 }
-.music-btn:hover { background: rgba(0, 0, 0, 0.7); transform: scale(1.1); }
-.music-btn.muted { opacity: 0.5; text-decoration: line-through; }
+
+.music-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
+.music-btn.muted {
+    opacity: 0.5;
+}
+
+/* Plesanje note dok muzika svira */
+.music-btn.playing {
+    animation: plesiNota 2s infinite ease-in-out;
+}
 
 /* ==========================================
-   9. TIMELINE PLAYER
+   10. TIMELINE PLEJER
    ========================================== */
 .player-container {
-    position: absolute !important; 
-    bottom: -65px; 
-    width: 480px; 
+    position: absolute;
+    bottom: -65px;
+    width: 480px;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -312,7 +345,10 @@ body {
     width: 25px;
     transition: transform 0.2s;
 }
-.player-btn:hover { transform: scale(1.15); }
+
+.player-btn:hover {
+    transform: scale(1.15);
+}
 
 .progress-container {
     flex: 1;
@@ -326,7 +362,7 @@ body {
 .progress {
     height: 100%;
     width: 0%;
-    background: #e4ce9f; 
+    background: #e4ce9f;
     border-radius: 2px;
     position: absolute;
     top: 0;
@@ -334,52 +370,22 @@ body {
 }
 
 /* ==========================================
-   10. MOBILE RESPONSIVE ENGINE (PERFECT SYMMETRY)
+   11. KARAOKE TEKST PESME
    ========================================== */
-@media (max-device-width: 950px), (max-width: 950px) {
-    #opened::before {
-        background-position: center center !important;
-        background-size: cover !important; /* Vraća ruže u normalan, okrugao oblik */
-    }
-
-    body {
-        overflow: auto !important;
-    }
-
-    /* 10.1 PORTRAIT MODE STYLING */
-    @media (orientation: portrait) {
-        .letter {
-            transform: translate(-50%, -50%) scale(1) !important;
-            transform-origin: center center !important;
-        }
-        #opened::before {
-            background-size: cover !important; /* Sprečava pravljenje jajeta na uskim ekranima */
-        }
-    }
-}
-
-/* 10.2 STRICT LANDSCAPE CARD SCALE ONLY */
-@media (max-device-height: 550px) and (orientation: landscape), (max-height: 550px) and (orientation: landscape) {
-    .letter {
-        transform: translate(-50%, -50%) scale(0.48) !important;
-        transform-origin: center center !important;
-    }
-}
-
 #tekst-pesme {
     position: absolute;
-    bottom: -15px; /* Podignuto nagore da sedne tačno na ivicu */
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.75); /* Malo tamniji overlay za bolji kontrast */
+    background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(244, 236, 216, 0.12);
     padding: 6px 25px;
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-    font-size: 24px; /* Veća i jasnija slova */
+    font-size: 24px;
     color: #ff4d6d;
-    font-family: 'Caveat', cursive; /* Novi, čitljivi ruski pisani font */
+    font-family: 'Caveat', cursive;
     font-weight: 700;
     text-align: center;
     white-space: nowrap;
@@ -388,168 +394,19 @@ body {
 }
 
 /* ==========================================
-   12. EXTRA POLAROIDS (RANDOM ROTATION)
+   12. VATROMET OD SRCA (KLIK NA SLIKU)
    ========================================== */
-.mali-polaroid {
-    position: absolute !important;
-    width: 95px !important;
-    background: white !important;
-    padding: 6px 6px 22px 6px !important; /* Ostavlja prostor za retro beli rub na dnu */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-    z-index: 15 !important;
-    transition: transform 0.3s ease !important;
-}
 
-.mali-polaroid img {
-    width: 100% !important;
-    height: 100px !important; /* Povećana visina da slike prodišu */
-    object-fit: contain !important; /* Prikazuje cele fotke bez sečenja i zumiranja */
-    background: #000000 !important; /* Crna pozadina popunjava prazan prostor ako je slika preširoka ili dugačka */
-    display: block !important;
-}
-
-.mali-polaroid:hover {
-    transform: scale(1.15) rotate(0deg) !important;
-    z-index: 50 !important;
-    cursor: pointer;
-}
-
-/* Pozicioniranje u plave zone koje si označio na telefonu */
-.slika-1 {
-    top: 5% !important;
-    right: 28% !important;
-    transform: rotate(-10deg) !important;
-}
-
-.slika-2 {
-    top: 15% !important;
-    right: 3% !important;
-    transform: rotate(15deg) !important;
-}
-
-.slika-3 {
-    bottom: 12% !important;
-    right: 28% !important;
-    transform: rotate(8deg) !important;
-}
-
-.slika-4 {
-    bottom: 5% !important;
-    right: 3% !important;
-    transform: rotate(-12deg) !important;
-}
-
-@keyframes tinjanjeSlike {
-  0%, 100% { filter: brightness(80%); }
-  50% { filter: brightness(115%); }
-}
-/* ==========================================
-   13. FIX ZA LAPTOPOVE I MANJE MONITORE
-   ========================================== */
-@media (max-height: 900px) and (min-width: 951px) {
-    .letter {
-        /* Blago smanjuje celo pismo i polaroide za laptop ekrane da sve stane bez sudaranja */
-        transform: translate(-50%, -50%) scale(0.8) !important;
-        transform-origin: center center !important;
-        top: 48% !important;
-    }
-}
-
-@media (max-height: 780px) and (min-width: 951px) {
-    .letter {
-        /* Dodatno smanjenje za baš male laptopove (npr. 13 inča sa 1366x768 rezolucijom) */
-        transform: translate(-50%, -50%) scale(0.68) !important;
-    }
-}
-
-/* ==========================================
-   14. VOLUME SLIDER ON HOVER & DANCING NOTE
-   ========================================== */
-.volume-container {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    z-index: 9999 !important;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.volume-container #music-toggle {
-    position: static !important; 
-}
-
-#volume-slider {
-    width: 0;
-    opacity: 0;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    accent-color: #f6d6ac; 
-}
-
-.volume-container:hover #volume-slider {
-    width: 80px;
-    opacity: 1;
-}
-
-.music-btn.playing {
-    animation: plesiNota 2s infinite ease-in-out;
-}
-
-@keyframes plesiNota {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(-15deg) scale(1.05); }
-    75% { transform: rotate(15deg) scale(1.05); }
-/* ==========================================
-   14. VOLUME SLIDER ON HOVER & DANCING NOTE
-   ========================================== */
-.volume-container {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    z-index: 9999 !important;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.volume-container #music-toggle {
-    position: static !important; 
-}
-
-#volume-slider {
-    width: 0;
-    opacity: 0;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    accent-color: #f6d6ac; 
-}
-
-.volume-container:hover #volume-slider {
-    width: 80px;
-    opacity: 1;
-}
-
-.music-btn.playing {
-    animation: plesiNota 2s infinite ease-in-out;
-}
-
-@keyframes plesiNota {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(-15deg) scale(1.05); }
-    75% { transform: rotate(15deg) scale(1.05); }
-} 
-
-/* ==========================================
-   17. ANIMACIJA ZA LOKALNA SRCA NA KLIK
-   ========================================== */
+/* FIX: Srca su position:fixed sa z-index:999999 ali nisu bila vidljiva
+   jer je @keyframes letiIizbledi bio zarobljen unutar nezatvorenog
+   @keyframes plesiNota bloka. Sada su oba ispravno odvojena. */
 .klik-srce {
-    position: fixed !important;
-    pointer-events: none !important; /* Da srca ne blokiraju nove klikove */
-    z-index: 999999 !important; /* Iskaču ispred apsolutno svega na ekranu */
-    width: auto;
-    height: auto;
-    transform: translate(-50%, -50%); /* Centriranje srca tačno na vrh kursora */
+    position: fixed;
+    pointer-events: none;
+    z-index: 999999;
+    line-height: 1;
+    /* Centriranje emoji tacno na kursor */
+    transform: translate(-50%, -50%);
     animation: letiIizbledi 1.2s forwards ease-out;
 }
 
@@ -559,8 +416,81 @@ body {
         opacity: 1;
     }
     100% {
-        /* Ekstrudira srca u stranu i nagore na osnovu nasumičnih JS brojeva */
+        /* --x i --y su postavljeni inline kroz JS za svako srce */
         transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(45deg);
         opacity: 0;
+    }
+}
+
+/* ==========================================
+   13. ANIMACIJE
+   ========================================== */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.08); }
+}
+
+@keyframes show {
+    from { opacity: 0; transform: translate(-50%, -45%) scale(0.85); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes tinjanjeSlike {
+    0%, 100% { filter: brightness(80%); }
+    50%       { filter: brightness(115%); }
+}
+
+/* FIX: Ovaj @keyframes je ranije bio nepropisno zatvoren — duplikat i
+   nedostajuca } su uzrokovali da browser ignorise .klik-srce i letiIizbledi */
+@keyframes plesiNota {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25%       { transform: rotate(-15deg) scale(1.05); }
+    75%       { transform: rotate(15deg) scale(1.05); }
+}
+
+/* ==========================================
+   14. RESPONSIVE — LAPTOP I MANJI MONITORI
+   ========================================== */
+@media (max-height: 900px) and (min-width: 951px) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.8);
+        transform-origin: center center;
+        top: 48%;
+    }
+}
+
+@media (max-height: 780px) and (min-width: 951px) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.68);
+        transform-origin: center center;
+    }
+}
+
+/* ==========================================
+   15. RESPONSIVE — MOBILNI UREDJAJI
+   ========================================== */
+@media (max-device-width: 950px), (max-width: 950px) {
+    body {
+        overflow: auto;
+    }
+
+    #opened::before {
+        background-position: center center;
+        background-size: cover;
+    }
+
+    @media (orientation: portrait) {
+        .letter {
+            transform: translate(-50%, -50%) scale(1);
+            transform-origin: center center;
+        }
+    }
+}
+
+@media (max-device-height: 550px) and (orientation: landscape),
+       (max-height: 550px) and (orientation: landscape) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.48);
+        transform-origin: center center;
     }
 }
