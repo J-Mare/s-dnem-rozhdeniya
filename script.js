@@ -25,10 +25,9 @@ function setScale() {
     const letter = document.querySelector('.letter');
     if (!letter) return;
 
-    const vw = window.innerWidth;
-    // Koristimo screen.height umesto innerHeight —
-    // innerHeight se menja kad URL bar dolazi/odlazi i pravi jiggle
-    const vh = window.screen.height;
+    // visualViewport daje tacno vidljivi deo ekrana — bez URL bara, bez nav bara
+    const vw = window.visualViewport ? window.visualViewport.width  : window.innerWidth;
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
     // Desktop — ne diramo, CSS media query handles it
     if (vw > 950) {
@@ -42,8 +41,8 @@ function setScale() {
     const CARD_W = 660;
     const CARD_H = 610; // paper ~480 + player 65 + karaoke 40 + margine
 
-    const scaleW = (vw * 0.90) / CARD_W;
-    const scaleH = (vh * 0.88) / CARD_H; // 88% jer screen.height ne racuna URL bar
+    const scaleW = (vw * 0.92) / CARD_W;
+    const scaleH = (vh * 0.92) / CARD_H;
     const scale  = Math.min(scaleW, scaleH, 1);
 
     letter.style.position  = 'fixed';
@@ -52,11 +51,14 @@ function setScale() {
     letter.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(4)})`;
 }
 
-// Racunamo scale samo jednom na load i na promenu orijentacije.
-// NE na resize — jer resize puca svaki put kad se URL bar sakriva/pojavljuje
-// na mobilnom, sto uzrokuje "jiggle" efekat.
 setScale();
-window.addEventListener('orientationchange', () => setTimeout(setScale, 300));
+// visualViewport.resize je tacan event — okida se samo kad se stvarno menja
+// vidljivi prostor (orijentacija, keyboard), ne pri scroll/URL bar hide
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', setScale);
+} else {
+    window.addEventListener('orientationchange', () => setTimeout(setScale, 300));
+}
 
 // ==========================================
 // 3. PUNJENJE TEKSTA IZ message.js
