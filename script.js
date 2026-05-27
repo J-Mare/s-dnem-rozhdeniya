@@ -74,55 +74,59 @@ if (progressContainer && music) {
     });
 }
 
-const lyricsData = {
-    10: "Ты погасила свечи на тортике",
-    14: "Вспомнила, как было нехорошо",
-    18: "Как сидела грустно на бортике",
-    22: "Обнимаясь год со своей душой",
-    26: "Знаешь, я уверена, что не зря",
-    29: "Время пролетало по дресс-коду",
-    33: "Теперь с тобой такие друзья",
-    37: "Что ты можешь в огонь и в воду",
-    40: "Hey, happy birthday, girl",
-    44: "Я желаю тебе жизнь из любимого фильма",
-    48: "Happy birthday, girl",
-    51: "Я желаю тебе петь, танцевать и гулять",
-    55: "Hey, happy birthday, girl",
-    59: "И пускай те, кто нужен, горят тобой сильно",
-    63: "Happy birthday, girl",
-    66: "Не разреши себя потерять",
-    76: "Я знаю, ты не хочешь все поскорей",
-    80: "Главное, чтоб вовремя, но всегда",
-    83: "Я тебя прошу, больше не болей",
-    87: "Остальное все мы разрулим, да",
-    91: "Карты лягут так, как ты кинешь их",
-    95: "А ты кинула их джокером на крыши",
-    98: "И голоса из прошлого стихли",
-    102: "Ведь больше ты их не слышишь",
-    106: "Hey, happy birthday, girl",
-    110: "Я желаю тебе жизнь из любимого фильма",
-    114: "Happy birthday, girl",
-    117: "Я желаю тебе петь, танцевать и гулять",
-    121: "Hey, happy birthday, girl",
-    125: "И пускай те, кто нужен, горят тобой сильно",
-    129: "Happy birthday, girl",
-    132: "Не разреши себя потерять",
-    136: "Happy birthday",
-    140: "Happy birthday",
-    144: "Happy birthday 🎵"
-};
+const lyricsData = [
+    { time: 0.17, text: "Happy Birthday!" },
+    { time: 5.59, text: "Happy Birthday to you!" },
+    { time: 10.84, text: "Ты погасила свечи на тортике" },
+    { time: 13.51, text: "Вспомнила, как было не хорошо" },
+    { time: 16.11, text: "Как сидела грустно на бортике" },
+    { time: 18.45, text: "Обнимаясь год со своей душой" },
+    { time: 20.81, text: "Знаешь, я уверена, что не зря" },
+    { time: 22.93, text: "Время пролетало по дресс-коду" },
+    { time: 25.45, text: "Теперь с тобой такие друзья" },
+    { time: 27.46, text: "Что ты можешь в огонь и в воду" },
+    { time: 29.28, text: "Hey, Happy Birthday, girl" },
+    { time: 31.19, text: "Я желаю тебе жизнь из любимого фильма" },
+    { time: 34.16, text: "Happy Birthday, girl" },
+    { time: 36.23, text: "Я желаю тебе петь, танцевать и гулять" },
+    { time: 38.80, text: "Hey, Happy Birthday, girl" },
+    { time: 41.27, text: "И пускай те, кто нужен, горят тобой сильно" },
+    { time: 44.09, text: "Happy Birthday, girl" },
+    { time: 46.16, text: "Не разреши себя потерять" },
+    { time: 69.54, text: "Я знаю, ты не хочешь всё поскорей" },
+    { time: 72.13, text: "Главное, чтоб вовремя, но всегда" },
+    { time: 74.68, text: "Я тебя прошу, больше не болей" },
+    { time: 77.21, text: "Остальное всё мы разрулим, да" },
+    { time: 79.27, text: "Карты лягут так, как ты кинешь их" },
+    { time: 81.59, text: "А ты кинула их джокером на крыши" },
+    { time: 84.56, text: "И голоса из прошлого стихли" },
+    { time: 86.50, text: "Ведь больше ты их не слышишь" },
+    { time: 87.59, text: "Hey, Happy Birthday, girl" },
+    { time: 90.41, text: "Я желаю тебе жизнь из любимого фильма" },
+    { time: 93.21, text: "Happy Birthday, girl" },
+    { time: 95.36, text: "Я желаю тебе петь, танцевать и гулять" },
+    { time: 97.92, text: "Hey, Happy Birthday, girl" },
+    { time: 100.10, text: "И пускай те, кто нужен, горят тобой сильно" },
+    { time: 102.66, text: "Happy Birthday, girl" },
+    { time: 105.11, text: "Не разреши себя потерять" },
+    { time: 107.65, text: "Happy birthday" },
+    { time: 112.59, text: "Happy birthday" },
+    { time: 122.63, text: "Happy birthday 🎵" }
+];
 
 const lyricsContainer = document.getElementById('tekst-pesme');
 
 if (music && lyricsContainer) {
     music.addEventListener('timeupdate', () => {
-        const currentSecond = Math.floor(music.currentTime);
+        const currentTime = music.currentTime;
         let activeLyric = "Мари Краймбрери - Happy Birthday, Girl! 🎵";
-        for (const second in lyricsData) {
-            if (currentSecond >= parseInt(second)) {
-                activeLyric = lyricsData[second];
+        
+        for (let i = 0; i < lyricsData.length; i++) {
+            if (currentTime >= lyricsData[i].time) {
+                activeLyric = lyricsData[i].text;
             }
         }
+        
         if (lyricsContainer.innerText !== activeLyric) {
             lyricsContainer.innerText = activeLyric;
         }
