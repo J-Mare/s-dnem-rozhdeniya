@@ -1,362 +1,499 @@
-// ==========================================
-// 1. SELEKTORI
-// ==========================================
-const intro              = document.getElementById('intro');
-const opened             = document.getElementById('opened');
-const music              = document.getElementById('bg-music');
-const musicToggle        = document.getElementById('music-toggle');
-const playerPlay         = document.getElementById('player-play');
-const progressBar        = document.getElementById('progress-bar');
-const progressContainer  = document.querySelector('.progress-container');
-const volumeSlider       = document.getElementById('volume-slider');
-const lyricsContainer    = document.getElementById('tekst-pesme');
-const glavnaSlika        = document.getElementById('glavna-slika');
+@charset "UTF-8";
 
-// ==========================================
-// 2. PUNJENJE TEKSTA IZ message.js
-// ==========================================
-document.getElementById('message').innerText   = window.customMessage;
-document.getElementById('signature').innerText = window.customSignature;
+/* ==========================================
+   1. RESET AND BASE STYLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-// ==========================================
-// 3. PRELAZ SA STRANE 1 NA STRANU 2
-// ==========================================
-document.querySelector('.click-area').addEventListener('click', () => {
-    intro.classList.remove('active');
+body {
+    overflow: hidden;
+    background: black;
+    font-family: 'Cormorant Garamond', serif;
+    width: 100vw;
+    height: 100vh;
+}
 
-    setTimeout(() => {
-        if (music) {
-            music.volume = 0.2;
-            music.play()
-                .then(() => updateButtonStates())
-                .catch(err => console.log('Audio play blocked:', err));
-        }
-    }, 2500);
+/* ==========================================
+   2. PAGES & BACKGROUNDS
+   ========================================== */
+.page {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
 
-    setTimeout(() => {
-        opened.classList.add('active');
-    }, 1000);
-});
+.page.active {
+    opacity: 1;
+    pointer-events: auto;
+}
 
-// ==========================================
-// 4. STANJA DUGMADI ZA MUZIKU
-// ==========================================
-function updateButtonStates() {
-    if (!music) return;
+#intro {
+    /* contain cuva proporcije buketa bez rastezanja */
+    background: url('assets/picturepage1.png') center center / contain no-repeat;
+    background-color: #000000;
+}
 
-    if (music.paused) {
-        if (playerPlay)  playerPlay.innerText = '▶';
-        if (musicToggle) {
-            musicToggle.innerText = '🔇';
-            musicToggle.classList.add('muted');
-            musicToggle.classList.remove('playing');
-        }
-    } else {
-        if (playerPlay)  playerPlay.innerText = '⏸';
-        if (musicToggle) {
-            musicToggle.innerText = '🎵';
-            musicToggle.classList.remove('muted');
-            musicToggle.classList.add('playing');
+#opened {
+    background-color: #000000;
+    position: relative;
+    z-index: 1;
+}
+
+/* Pozadinska slika sa animacijom tinjanja - iza svega */
+#opened::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('assets/picturepage2.png') center center / 100vw 100vh no-repeat;
+    z-index: -1;
+    animation: tinjanjeSlike 4s infinite ease-in-out;
+}
+
+/* ==========================================
+   3. INTRO HERO ELEMENTS
+   ========================================== */
+.hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+}
+
+.glass {
+    padding: 18px 34px;
+    border-radius: 50px;
+    background: rgba(0, 0, 0, 0.50);
+    backdrop-filter: blur(10px);
+    font-size: 32px;
+    color: #f6d6ac;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+}
+
+.rose {
+    font-size: 65px;
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+}
+
+.click-area {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    z-index: 50;
+}
+
+/* ==========================================
+   4. LETTER CARD (WRAPPER)
+   ========================================== */
+.letter {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    animation: show 1.5s ease;
+    width: 660px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ==========================================
+   5. PAPER (CARD BODY)
+   ========================================== */
+.paper {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    padding: 40px 45px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%);
+    border: 1px solid rgba(100, 70, 40, 0.22);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.55),
+        0 25px 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 40px rgba(70, 40, 15, 0.2);
+}
+
+/* ==========================================
+   6. CONTENT & MESSAGE TEXT
+   ========================================== */
+.content {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 3;
+}
+
+#message {
+    white-space: pre-wrap;
+    font-size: 21px;
+    line-height: 1.6;
+    color: #2b1407;
+    font-family: 'Lora', serif;
+    font-style: italic;
+    text-align: left;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
+}
+
+/* Ruzica ispod poruke */
+#message::after {
+    content: '\1F339';
+    display: block;
+    font-size: 22px;
+    margin-top: 12px;
+    text-align: left;
+}
+
+/* ==========================================
+   7. PHOTO FRAME (GLAVNI POLAROID)
+   ========================================== */
+.photo-frame {
+    position: relative;
+    background: #ffffff;
+    padding: 10px 10px 42px 10px;
+    transform: rotate(3deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    z-index: 4;
+    width: 185px;
+    min-width: 185px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 215px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Metalna spajalica iznad polaroida */
+.clip {
+    position: absolute;
+    top: -12px;
+    left: 45%;
+    transform: rotate(-6deg);
+    width: 14px;
+    height: 34px;
+    border: 1.5px solid #8a8a8a;
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.clip::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: 6px;
+    height: 20px;
+    border-right: 1.5px solid #666;
+    border-radius: 0 6px 6px 0;
+}
+
+/* Potpis ispod slike */
+#signature {
+    position: absolute;
+    bottom: 8px;
+    width: 90%;
+    text-align: center;
+    font-size: 22px;
+    color: #2b1407;
+    font-family: 'Dancing Script', cursive;
+}
+
+/* ==========================================
+   8. MALI POLAROIDI (STRANI UGAONI)
+   ========================================== */
+.mali-polaroid {
+    position: absolute;
+    width: 95px;
+    background: white;
+    padding: 6px 6px 22px 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 15;
+    transition: transform 0.3s ease;
+}
+
+.mali-polaroid img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    background: #000000;
+    display: block;
+}
+
+.mali-polaroid:hover {
+    transform: scale(1.15) rotate(0deg) !important;
+    z-index: 50;
+    cursor: pointer;
+}
+
+/* Pozicije 4 mala polaroida */
+.slika-1 { top: 5%;    right: 28%; transform: rotate(-10deg); }
+.slika-2 { top: 15%;   right: 3%;  transform: rotate(15deg);  }
+.slika-3 { bottom: 12%; right: 28%; transform: rotate(8deg);  }
+.slika-4 { bottom: 5%;  right: 3%;  transform: rotate(-12deg); }
+
+/* ==========================================
+   9. MUZICKI DUGME I KLIZAC JACINE
+   ========================================== */
+.volume-container {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Resetuje apsolutnu poziciju dugmeta kad je unutar volume-container */
+.volume-container #music-toggle {
+    position: static;
+}
+
+#volume-slider {
+    width: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    accent-color: #f6d6ac;
+}
+
+.volume-container:hover #volume-slider {
+    width: 80px;
+    opacity: 1;
+}
+
+.music-btn {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(246, 214, 172, 0.3);
+    color: #f6d6ac;
+    font-size: 20px;
+    padding: 10px 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.music-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
+.music-btn.muted {
+    opacity: 0.5;
+}
+
+/* Plesanje note dok muzika svira */
+.music-btn.playing {
+    animation: plesiNota 2s infinite ease-in-out;
+}
+
+/* ==========================================
+   10. TIMELINE PLEJER
+   ========================================== */
+.player-container {
+    position: absolute;
+    bottom: -65px;
+    width: 480px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(244, 236, 216, 0.12);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    z-index: 25;
+}
+
+.player-btn {
+    background: transparent;
+    border: none;
+    color: #e4ce9f;
+    font-size: 18px;
+    cursor: pointer;
+    width: 25px;
+    transition: transform 0.2s;
+}
+
+.player-btn:hover {
+    transform: scale(1.15);
+}
+
+.progress-container {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: #e4ce9f;
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* ==========================================
+   11. KARAOKE TEKST PESME
+   ========================================== */
+#tekst-pesme {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(244, 236, 216, 0.12);
+    padding: 6px 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    font-size: 24px;
+    color: #ff4d6d;
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 30;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   12. VATROMET OD SRCA (KLIK NA SLIKU)
+   ========================================== */
+
+/* FIX: Srca su position:fixed sa z-index:999999 ali nisu bila vidljiva
+   jer je @keyframes letiIizbledi bio zarobljen unutar nezatvorenog
+   @keyframes plesiNota bloka. Sada su oba ispravno odvojena. */
+.klik-srce {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999999;
+    line-height: 1;
+    /* Centriranje emoji tacno na kursor */
+    transform: translate(-50%, -50%);
+    animation: letiIizbledi 1.2s forwards ease-out;
+}
+
+@keyframes letiIizbledi {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        /* --x i --y su postavljeni inline kroz JS za svako srce */
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* ==========================================
+   13. ANIMACIJE
+   ========================================== */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.08); }
+}
+
+@keyframes show {
+    from { opacity: 0; transform: translate(-50%, -45%) scale(0.85); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes tinjanjeSlike {
+    0%, 100% { filter: brightness(80%); }
+    50%       { filter: brightness(115%); }
+}
+
+/* FIX: Ovaj @keyframes je ranije bio nepropisno zatvoren - duplikat i
+   nedostajuca } su uzrokovali da browser ignorise .klik-srce i letiIizbledi */
+@keyframes plesiNota {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25%       { transform: rotate(-15deg) scale(1.05); }
+    75%       { transform: rotate(15deg) scale(1.05); }
+}
+
+/* ==========================================
+   14. RESPONSIVE - LAPTOP I MANJI MONITORI
+   ========================================== */
+@media (max-height: 900px) and (min-width: 951px) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.8);
+        transform-origin: center center;
+        top: 48%;
+    }
+}
+
+@media (max-height: 780px) and (min-width: 951px) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.68);
+        transform-origin: center center;
+    }
+}
+
+/* ==========================================
+   15. RESPONSIVE - MOBILNI UREDJAJI
+   ========================================== */
+@media (max-device-width: 950px), (max-width: 950px) {
+    body {
+        overflow: auto;
+    }
+
+    #opened::before {
+        background-position: center center;
+        background-size: cover;
+    }
+
+    @media (orientation: portrait) {
+        .letter {
+            transform: translate(-50%, -50%) scale(1);
+            transform-origin: center center;
         }
     }
 }
 
-// ==========================================
-// 5. KONTROLE MUZIKE
-// ==========================================
-if (musicToggle && music) {
-    musicToggle.addEventListener('click', () => {
-        music.paused ? music.play() : music.pause();
-        updateButtonStates();
-    });
-}
-
-if (playerPlay && music) {
-    playerPlay.addEventListener('click', () => {
-        music.paused ? music.play() : music.pause();
-        updateButtonStates();
-    });
-}
-
-if (music && progressBar) {
-    music.addEventListener('timeupdate', () => {
-        const pct = (music.currentTime / music.duration) * 100;
-        progressBar.style.width = pct + '%';
-    });
-}
-
-if (progressContainer && music) {
-    progressContainer.addEventListener('click', (e) => {
-        if (music.duration) {
-            music.currentTime = (e.offsetX / progressContainer.clientWidth) * music.duration;
-        }
-    });
-}
-
-if (volumeSlider && music) {
-    volumeSlider.addEventListener('input', (e) => {
-        music.volume = e.target.value;
-    });
-
-    music.addEventListener('volumechange', () => {
-        if (music.volume !== parseFloat(volumeSlider.value)) {
-            volumeSlider.value = music.volume;
-        }
-    });
-}
-
-// ==========================================
-// 6. KARAOKE — TEKST PESME
-// ==========================================
-const lyricsData = [
-    { time: 0.17,   text: "Happy Birthday!" },
-    { time: 5.59,   text: "Happy Birthday to you!" },
-    { time: 10.84,  text: "Ты погасила свечи на тортике" },
-    { time: 13.51,  text: "Вспомнила, как было не хорошо" },
-    { time: 16.11,  text: "Как сидела грустно на бортике" },
-    { time: 18.45,  text: "Обнимаясь год со своей душой" },
-    { time: 20.81,  text: "Знаешь, я уверена, что не зря" },
-    { time: 22.93,  text: "Время пролетало по дресс-коду" },
-    { time: 25.45,  text: "Теперь с тобой такие друзья" },
-    { time: 27.46,  text: "Что ты можешь в огонь и в воду" },
-    { time: 29.28,  text: "Hey, Happy Birthday, girl" },
-    { time: 31.19,  text: "Я желаю тебе жизнь из любимого фильма" },
-    { time: 34.16,  text: "Happy Birthday, girl" },
-    { time: 36.23,  text: "Я желаю тебе петь, танцевать и гулять" },
-    { time: 38.80,  text: "Hey, Happy Birthday, girl" },
-    { time: 41.27,  text: "И пускай те, кто нужен, горят тобой сильно" },
-    { time: 44.09,  text: "Happy Birthday, girl" },
-    { time: 46.16,  text: "Не разреши себя потерять" },
-    { time: 49.50,  text: "" },
-    { time: 69.54,  text: "Я знаю, ты не хочешь всё поскорей" },
-    { time: 72.13,  text: "Главное, чтоб вовремя, но всегда" },
-    { time: 74.68,  text: "Я тебя прошу, больше не болей" },
-    { time: 77.21,  text: "Остальное всё мы разрулим, да" },
-    { time: 79.27,  text: "Карты лягут так, как ты кинешь их" },
-    { time: 81.59,  text: "А ты кинула их джокером на крыши" },
-    { time: 84.56,  text: "И голоса из прошлого стихли" },
-    { time: 86.50,  text: "Ведь больше ты их не слышишь" },
-    { time: 87.59,  text: "Hey, Happy Birthday, girl" },
-    { time: 90.41,  text: "Я желаю тебе жизнь из любимого фильма" },
-    { time: 93.21,  text: "Happy Birthday, girl" },
-    { time: 95.36,  text: "Я желаю тебе петь, танцевать и гулять" },
-    { time: 97.92,  text: "Hey, Happy Birthday, girl" },
-    { time: 100.10, text: "И пускай те, кто нужен, горят тобой сильно" },
-    { time: 102.66, text: "Happy Birthday, girl" },
-    { time: 105.11, text: "Не разреши себя потерять" },
-    { time: 107.65, text: "Happy birthday" },
-    { time: 112.59, text: "Happy birthday" },
-    { time: 122.63, text: "Happy birthday 🎵" }
-];
-
-if (music && lyricsContainer) {
-    music.addEventListener('timeupdate', () => {
-        const t = music.currentTime;
-        let activeLyric = "";
-
-        for (let i = 0; i < lyricsData.length; i++) {
-            if (t >= lyricsData[i].time) activeLyric = lyricsData[i].text;
-        }
-
-        if (lyricsContainer.innerText !== activeLyric) {
-            lyricsContainer.innerText = activeLyric;
-            lyricsContainer.style.display = activeLyric === "" ? "none" : "block";
-        }
-    });
-}
-
-// ==========================================
-// 7. VATROMET OD SRCA — KLIK NA GLAVNU SLIKU
-// ==========================================
-if (glavnaSlika) {
-    glavnaSlika.addEventListener('click', (e) => {
-        for (let i = 0; i < 15; i++) {
-            stvoriSrce(e.clientX, e.clientY);
-        }
-    });
-}
-
-function stvoriSrce(x, y) {
-    const srce = document.createElement('div');
-    srce.classList.add('klik-srce');
-    srce.innerText = '❤️';
-
-    srce.style.left     = x + 'px';
-    srce.style.top      = y + 'px';
-    srce.style.fontSize = (Math.random() * 20 + 15) + 'px';
-
-    srce.style.setProperty('--x', ((Math.random() - 0.5) * 300) + 'px');
-    srce.style.setProperty('--y', (-(Math.random() * 250 + 100)) + 'px');
-
-    document.body.appendChild(srce);
-    setTimeout(() => srce.remove(), 1200);
-}
-
-// ==========================================
-// 8. ZOOM — MALI POLAROIDI
-// ==========================================
-(function () {
-
-    const overlay       = document.getElementById('zoomOverlay');
-    const maliPolaroidi = document.querySelectorAll('.mali-polaroid');
-
-    // Koji polaroid je trenutno uvecan i njegovi originalni stilovi
-    let trenutnoUvecan  = null;
-    let originalniRect  = null;   // getBoundingClientRect() pre zoom-a
-    let originalniInline = null;  // inline stilovi pre zoom-a
-    let zakacen         = false;  // true = klik ga je zakacio (ne vraca se na mouseleave)
-    let hoverTimeout    = null;
-
-    // ---- Uvelicaj ----
-    function uvelicaj(polaroid) {
-        if (trenutnoUvecan === polaroid) return;
-
-        // Ako je vec neko drugi uvecan, vrati ga tiho
-        if (trenutnoUvecan) {
-            vratiTiho(trenutnoUvecan);
-        }
-
-        // Zapamti gde je polaroid BIO (fixed koordinate)
-        originalniRect = polaroid.getBoundingClientRect();
-
-        // Zapamti originalne inline stilove da ih mozemo potpuno obnoviti
-        originalniInline = {
-            position:   polaroid.style.position,
-            top:        polaroid.style.top,
-            left:       polaroid.style.left,
-            width:      polaroid.style.width,
-            height:     polaroid.style.height,
-            zIndex:     polaroid.style.zIndex,
-            transform:  polaroid.style.transform,
-            transition: polaroid.style.transition,
-        };
-
-        // Korak 1: Privremeno postavi fixed na TACNU trenutnu poziciju
-        //          i iskljuci tranziciju — browser vidi "isti" element
-        polaroid.style.transition = 'none';
-        polaroid.style.position   = 'fixed';
-        polaroid.style.top        = originalniRect.top  + 'px';
-        polaroid.style.left       = originalniRect.left + 'px';
-        polaroid.style.width      = originalniRect.width + 'px';
-        polaroid.style.height     = originalniRect.height + 'px';
-        polaroid.style.transform  = 'rotate(0deg)';
-        polaroid.style.zIndex     = '999';
-
-        // Korak 2: Forsiramo reflow — browser "vidi" pocetnu poziciju
-        polaroid.getBoundingClientRect();
-
-        // Korak 3: Dodajemo klasu — CSS tranzicija animira put do centra
-        requestAnimationFrame(() => {
-            polaroid.classList.add('uvecan');
-            overlay.classList.add('aktivni');
-            trenutnoUvecan = polaroid;
-        });
+@media (max-device-height: 550px) and (orientation: landscape),
+       (max-height: 550px) and (orientation: landscape) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.48);
+        transform-origin: center center;
     }
-
-    // ---- Vrati na mesto (sa animacijom) ----
-    function vrati(polaroid) {
-        if (!polaroid) return;
-
-        polaroid.classList.remove('uvecan');
-        overlay.classList.remove('aktivni');
-        polaroid.style.cursor = 'zoom-in';
-
-        // Cekamo da CSS tranzicija zavrsi (45ms rezerva)
-        setTimeout(() => {
-            if (!polaroid.classList.contains('uvecan')) {
-                obnovi(polaroid);
-            }
-        }, 500);
-
-        trenutnoUvecan = null;
-        zakacen        = false;
-    }
-
-    // ---- Vrati tiho (bez animacije overlay-a, za zamenu) ----
-    function vratiTiho(polaroid) {
-        polaroid.classList.remove('uvecan');
-        polaroid.classList.remove('kliknuto');
-        setTimeout(() => {
-            if (!polaroid.classList.contains('uvecan')) {
-                obnovi(polaroid);
-            }
-        }, 500);
-    }
-
-    // ---- Obnovi originalne inline stilove ----
-    function obnovi(polaroid) {
-        if (!originalniInline) return;
-        polaroid.style.position   = originalniInline.position;
-        polaroid.style.top        = originalniInline.top;
-        polaroid.style.left       = originalniInline.left;
-        polaroid.style.width      = originalniInline.width;
-        polaroid.style.height     = originalniInline.height;
-        polaroid.style.zIndex     = originalniInline.zIndex;
-        polaroid.style.transform  = originalniInline.transform;
-        polaroid.style.transition = originalniInline.transition;
-        originalniInline          = null;
-    }
-
-    // ---- Event listeneri na svaki mali polaroid ----
-    maliPolaroidi.forEach(polaroid => {
-
-        // HOVER IN: uvelicaj posle kratkog delaya
-        polaroid.addEventListener('mouseenter', function () {
-            // Ako je nesto zakaceno klikom, ignorisi hover
-            if (zakacen) return;
-
-            hoverTimeout = setTimeout(() => {
-                uvelicaj(this);
-            }, 120);
-        });
-
-        // HOVER OUT: vrati ako nije zakacen klikom
-        polaroid.addEventListener('mouseleave', function () {
-            clearTimeout(hoverTimeout);
-            hoverTimeout = null;
-
-            if (zakacen) return;
-
-            if (trenutnoUvecan === this) {
-                vrati(this);
-            }
-        });
-
-        // KLIK: zakaci/otkaci
-        polaroid.addEventListener('click', function (e) {
-            e.stopPropagation();
-
-            if (zakacen && trenutnoUvecan === this) {
-                // Vec zakacen — otkaci i vrati
-                zakacen = false;
-                vrati(this);
-            } else if (trenutnoUvecan === this) {
-                // Uvecan hover-om — zakaci
-                zakacen = true;
-            } else {
-                // Nije uvecan — uvelicaj i zakaci
-                uvelicaj(this);
-                // Malo cekamo da uvelicaj zavrsi pre zakacivanja
-                setTimeout(() => { zakacen = true; }, 50);
-            }
-        });
-
-    });
-
-    // ---- Klik na overlay — vrati ----
-    overlay.addEventListener('click', () => {
-        if (trenutnoUvecan) {
-            zakacen = false;
-            vrati(trenutnoUvecan);
-        }
-    });
-
-    // ---- ESC taster — vrati ----
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && trenutnoUvecan) {
-            zakacen = false;
-            vrati(trenutnoUvecan);
-        }
-    });
-
-})();
+}
