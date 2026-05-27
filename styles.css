@@ -40,7 +40,6 @@ body {
 }
 
 #intro {
-    /* contain cuva proporcije buketa bez rastezanja */
     background: url('assets/picturepage1.png') center center / contain no-repeat;
     background-color: #000000;
 }
@@ -51,7 +50,6 @@ body {
     z-index: 1;
 }
 
-/* Pozadinska slika sa animacijom tinjanja - iza svega */
 #opened::before {
     content: "";
     position: absolute;
@@ -134,9 +132,6 @@ body {
         inset 0 0 40px rgba(70, 40, 15, 0.2);
 }
 
-/* ==========================================
-   6. CONTENT & MESSAGE TEXT
-   ========================================== */
 .content {
     flex: 1.2;
     display: flex;
@@ -159,7 +154,6 @@ body {
     text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
 }
 
-/* Ruzica ispod poruke */
 #message::after {
     content: '\1F339';
     display: block;
@@ -168,9 +162,6 @@ body {
     text-align: left;
 }
 
-/* ==========================================
-   7. PHOTO FRAME (GLAVNI POLAROID)
-   ========================================== */
 .photo-frame {
     position: relative;
     background: #ffffff;
@@ -193,7 +184,6 @@ body {
     display: block;
 }
 
-/* Metalna spajalica iznad polaroida */
 .clip {
     position: absolute;
     top: -12px;
@@ -218,7 +208,6 @@ body {
     border-radius: 0 6px 6px 0;
 }
 
-/* Potpis ispod slike */
 #signature {
     position: absolute;
     bottom: 8px;
@@ -229,9 +218,6 @@ body {
     font-family: 'Dancing Script', cursive;
 }
 
-/* ==========================================
-   8. MALI POLAROIDI (STRANI UGAONI)
-   ========================================== */
 .mali-polaroid {
     position: absolute;
     width: 95px;
@@ -256,15 +242,11 @@ body {
     cursor: pointer;
 }
 
-/* Pozicije 4 mala polaroida */
-.slika-1 { top: 5%;    right: 28%; transform: rotate(-10deg); }
-.slika-2 { top: 15%;   right: 3%;  transform: rotate(15deg);  }
-.slika-3 { bottom: 12%; right: 28%; transform: rotate(8deg);  }
-.slika-4 { bottom: 5%;  right: 3%;  transform: rotate(-12deg); }
+.slika-1 { top: 5%; right: 28%; transform: rotate(-10deg); }
+.slika-2 { top: 15%; right: 3%; transform: rotate(15deg); }
+.slika-3 { bottom: 12%; right: 28%; transform: rotate(8deg); }
+.slika-4 { bottom: 5%; right: 3%; transform: rotate(-12deg); }
 
-/* ==========================================
-   9. MUZICKI DUGME I KLIZAC JACINE
-   ========================================== */
 .volume-container {
     position: absolute;
     top: 25px;
@@ -275,7 +257,6 @@ body {
     gap: 10px;
 }
 
-/* Resetuje apsolutnu poziciju dugmeta kad je unutar volume-container */
 .volume-container #music-toggle {
     position: static;
 }
@@ -315,14 +296,10 @@ body {
     opacity: 0.5;
 }
 
-/* Plesanje note dok muzika svira */
 .music-btn.playing {
     animation: plesiNota 2s infinite ease-in-out;
 }
 
-/* ==========================================
-   10. TIMELINE PLEJER
-   ========================================== */
 .player-container {
     position: absolute;
     bottom: -65px;
@@ -372,9 +349,6 @@ body {
     left: 0;
 }
 
-/* ==========================================
-   11. KARAOKE TEKST PESME
-   ========================================== */
 #tekst-pesme {
     position: absolute;
     bottom: -15px;
@@ -396,19 +370,11 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* ==========================================
-   12. VATROMET OD SRCA (KLIK NA SLIKU)
-   ========================================== */
-
-/* FIX: Srca su position:fixed sa z-index:999999 ali nisu bila vidljiva
-   jer je @keyframes letiIizbledi bio zarobljen unutar nezatvorenog
-   @keyframes plesiNota bloka. Sada su oba ispravno odvojena. */
 .klik-srce {
     position: fixed;
     pointer-events: none;
     z-index: 999999;
     line-height: 1;
-    /* Centriranje emoji tacno na kursor */
     transform: translate(-50%, -50%);
     animation: letiIizbledi 1.2s forwards ease-out;
 }
@@ -419,41 +385,36 @@ body {
         opacity: 1;
     }
     100% {
-        /* --x i --y su postavljeni inline kroz JS za svako srce */
         transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(45deg);
         opacity: 0;
     }
 }
 
-/* ==========================================
-   13. ANIMACIJE
-   ========================================== */
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
-    50%       { transform: scale(1.08); }
+    50% { transform: scale(1.08); }
 }
 
 @keyframes show {
     from { opacity: 0; transform: translate(-50%, -45%) scale(0.85); }
-    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 @keyframes tinjanjeSlike {
     0%, 100% { filter: brightness(80%); }
-    50%       { filter: brightness(115%); }
+    50% { filter: brightness(115%); }
 }
 
-/* FIX: Ovaj @keyframes je ranije bio nepropisno zatvoren - duplikat i
-   nedostajuca } su uzrokovali da browser ignorise .klik-srce i letiIizbledi */
 @keyframes plesiNota {
     0%, 100% { transform: rotate(0deg) scale(1); }
-    25%       { transform: rotate(-15deg) scale(1.05); }
-    75%       { transform: rotate(15deg) scale(1.05); }
+    25% { transform: rotate(-15deg) scale(1.05); }
+    75% { transform: rotate(15deg) scale(1.05); }
 }
 
 /* ==========================================
-   14. RESPONSIVE - LAPTOP I MANJI MONITORI
+   RESPONSIVE
    ========================================== */
+
 @media (max-height: 900px) and (min-width: 951px) {
     .letter {
         transform: translate(-50%, -50%) scale(0.8) !important;
@@ -469,17 +430,13 @@ body {
     }
 }
 
-
-
-/* ==========================================
-   MOBILE FIX FINAL
-   ========================================== */
+/* MOBILE */
 
 @media (max-width: 950px) {
 
     html,
     body {
-        overflow-x: hidden;
+        overflow-x: hidden !important;
         width: 100%;
         min-height: 100dvh;
     }
@@ -494,20 +451,17 @@ body {
         overflow: hidden;
     }
 
-    /* Prva strana */
     #intro {
         background-position: center center !important;
         background-repeat: no-repeat !important;
         background-size: contain !important;
     }
 
-    /* Ruze pozadina */
     #opened::before {
         background-position: center center !important;
         background-size: cover !important;
     }
 
-    /* GLAVNI FIX */
     .letter {
         left: 50% !important;
         top: 50% !important;
@@ -524,7 +478,6 @@ body {
 }
 
 @media (max-width: 700px) {
-
     .letter {
         transform:
             translate(-50%, -50%)
@@ -551,7 +504,6 @@ body {
 }
 
 @media (max-width: 430px) {
-
     .letter {
         transform:
             translate(-50%, -50%)
@@ -559,19 +511,7 @@ body {
     }
 }
 
-@media (max-height: 700px) and (orientation: landscape) {
-
-    .letter {
-        transform:
-            translate(-50%, -50%)
-            scale(0.55) !important;
-    }
-}
-
-
-/* ==========================================
-   LANDSCAPE PHONE FIX
-   ========================================== */
+/* LANDSCAPE PHONE */
 
 @media (max-height: 500px) and (orientation: landscape) {
 
@@ -591,43 +531,16 @@ body {
     }
 }
 
-
-/* ==========================================
-   MOBILE SCROLL IMPROVEMENT
-   ========================================== */
+/* PORTRAIT SCROLL FIX */
 
 @media (max-width: 950px) and (orientation: portrait) {
 
     html,
     body {
-        overflow-x: hidden !important;
         overflow-y: auto !important;
-        min-height: 100dvh;
-        background: #000;
     }
 
-    .page {
-        min-height: 100dvh;
-        height: auto !important;
-        overflow: visible !important;
-        padding-bottom: 140px;
-    }
-
-    .letter {
-        top: 0 !important;
-        margin-top: 40px;
-        margin-bottom: 120px;
-
-        transform:
-            translateX(-50%)
-            scale(0.72) !important;
-    }
-
-    .player-container {
-        bottom: -78px !important;
-    }
-
-    #tekst-pesme {
-        bottom: -32px !important;
+    #opened {
+        padding-bottom: 120px;
     }
 }
