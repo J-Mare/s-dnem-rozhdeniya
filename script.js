@@ -14,52 +14,45 @@ const glavnaSlika       = document.getElementById('glavna-slika');
 
 // ==========================================
 // 2. MOBILE SCALE FIX
-// Kartica je 660px široka, plejer 480px.
-// Ukupna "visina" kartice (paper + plejer + karaoke) ≈ 580px.
-// Racunamo koliki scale treba da stane u ekran sa padinjem.
+//
+// Kartica (.letter) je 660px siroka.
+// Ukupna visina sa plejerom i karaoke ≈ 610px.
+// JS meri ekran, racuna scale koji staje u oba smera,
+// i postavlja ga direktno kao inline transform.
+// CSS animacija (show) ne dira transform — samo opacity.
 // ==========================================
-function setMobileScale() {
+function setScale() {
     const letter = document.querySelector('.letter');
     if (!letter) return;
 
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    // Na desktopu ne diramo
+    // Desktop — ne diramo, CSS media query handles it
     if (vw > 950) {
-        letter.style.removeProperty('--s');
+        letter.style.removeProperty('transform');
         letter.style.removeProperty('top');
         letter.style.removeProperty('left');
-        letter.style.removeProperty('transform');
         return;
     }
 
-    // Stvarna sirina kartice (paper 660 + margina) i visina (paper ~480 + plejer 65 + karaoke 50 + padding)
-    const CARD_W = 720;
-    const CARD_H = 640;
+    // Dimenzije kartice sa padinjem 5% sa svake strane
+    const CARD_W = 660;
+    const CARD_H = 610; // paper ~480 + player 65 + karaoke 40 + margine
 
-    // Scale koji staje u oba smera, sa 4% paddinga
-    const scale = Math.min((vw * 0.96) / CARD_W, (vh * 0.96) / CARD_H, 1);
+    const scaleW = (vw * 0.90) / CARD_W;
+    const scaleH = (vh * 0.90) / CARD_H;
+    const scale  = Math.min(scaleW, scaleH, 1);
 
-    // Postavljamo scale
-    letter.style.setProperty('--s', scale.toFixed(4));
-
-    // Tacno centriranje: letter je 660px sirok i ~580px visok pre scale
-    // Nakon scale, zauzima 660*scale x 580*scale
-    // Pozicioniramo ga tacno na sredinu ekrana
     letter.style.position  = 'fixed';
     letter.style.top       = '50%';
     letter.style.left      = '50%';
     letter.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(4)})`;
 }
 
-// Pokrecemo na load i na svaku promenu orijentacije/velicine
-setMobileScale();
-window.addEventListener('resize', setMobileScale);
-window.addEventListener('orientationchange', () => {
-    // Malo kasnjenje jer browser ne azurira dimenzije odmah
-    setTimeout(setMobileScale, 150);
-});
+setScale();
+window.addEventListener('resize', setScale);
+window.addEventListener('orientationchange', () => setTimeout(setScale, 200));
 
 // ==========================================
 // 3. PUNJENJE TEKSTA IZ message.js
@@ -84,6 +77,9 @@ document.querySelector('.click-area').addEventListener('click', () => {
 
     setTimeout(() => {
         opened.classList.add('active');
+        // Dodajemo visible klasu koja pokrece fade-in animaciju
+        const letter = document.querySelector('.letter');
+        if (letter) letter.classList.add('visible');
     }, 1000);
 });
 
@@ -92,7 +88,6 @@ document.querySelector('.click-area').addEventListener('click', () => {
 // ==========================================
 function updateButtonStates() {
     if (!music) return;
-
     if (music.paused) {
         if (playerPlay)  playerPlay.innerText = '▶';
         if (musicToggle) {
@@ -146,7 +141,6 @@ if (volumeSlider && music) {
     volumeSlider.addEventListener('input', (e) => {
         music.volume = e.target.value;
     });
-
     music.addEventListener('volumechange', () => {
         if (music.volume !== parseFloat(volumeSlider.value)) {
             volumeSlider.value = music.volume;
@@ -202,11 +196,9 @@ if (music && lyricsContainer) {
     music.addEventListener('timeupdate', () => {
         const t = music.currentTime;
         let activeLyric = "";
-
         for (let i = 0; i < lyricsData.length; i++) {
             if (t >= lyricsData[i].time) activeLyric = lyricsData[i].text;
         }
-
         if (lyricsContainer.innerText !== activeLyric) {
             lyricsContainer.innerText = activeLyric;
             lyricsContainer.style.display = activeLyric === "" ? "none" : "block";
@@ -219,9 +211,7 @@ if (music && lyricsContainer) {
 // ==========================================
 if (glavnaSlika) {
     glavnaSlika.addEventListener('click', (e) => {
-        for (let i = 0; i < 15; i++) {
-            stvoriSrce(e.clientX, e.clientY);
-        }
+        for (let i = 0; i < 15; i++) stvoriSrce(e.clientX, e.clientY);
     });
 }
 
@@ -229,13 +219,11 @@ function stvoriSrce(x, y) {
     const srce = document.createElement('div');
     srce.classList.add('klik-srce');
     srce.innerText = '❤️';
-
-    srce.style.left = x + 'px';
-    srce.style.top  = y + 'px';
+    srce.style.left     = x + 'px';
+    srce.style.top      = y + 'px';
     srce.style.fontSize = (Math.random() * 20 + 15) + 'px';
     srce.style.setProperty('--x', ((Math.random() - 0.5) * 300) + 'px');
     srce.style.setProperty('--y', (-(Math.random() * 250 + 100)) + 'px');
-
     document.body.appendChild(srce);
     setTimeout(() => srce.remove(), 1200);
 }
