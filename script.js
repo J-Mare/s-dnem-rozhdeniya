@@ -75,7 +75,6 @@ if (progressContainer && music) {
 }
 
 const lyricsData = {
-    0: "Mary Gu - Happy Birthday 🎵",
     10: "Ты погасила свечи на тортике",
     14: "Вспомнила, как было нехорошо",
     18: "Как сидела грустно на бортике",
@@ -118,12 +117,14 @@ const lyricsContainer = document.getElementById('tekst-pesme');
 if (music && lyricsContainer) {
     music.addEventListener('timeupdate', () => {
         const currentSecond = Math.floor(music.currentTime);
-        let activeLyric = "";
+        
+        let activeLyric = "Мари Краймбрери - Happy Birthday, Girl! 🎵";
         for (const second in lyricsData) {
             if (currentSecond >= parseInt(second)) {
                 activeLyric = lyricsData[second];
             }
         }
+        
         if (lyricsContainer.innerText !== activeLyric) {
             lyricsContainer.innerText = activeLyric;
         }
