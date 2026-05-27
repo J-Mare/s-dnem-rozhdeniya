@@ -119,7 +119,7 @@ const lyricsData = [
     { time: 72.13, text: "Главное, чтоб вовремя, но всегда" },
     { time: 74.68, text: "Я тебя прошу, больше не болей" },
     { time: 77.21, text: "Остальное всё мы разрулим, да" },
-    { time: 79.27, text: "Карты лягут так, как ты кинешь ich" },
+    { time: 79.27, text: "Карты лягут так, как ты кинешь их" },
     { time: 81.59, text: "А ты кинула их джокером на крыши" },
     { time: 84.56, text: "И голоса из прошлого стихли" },
     { time: 86.50, text: "Ведь больше ты их не слышишь" },
@@ -161,6 +161,7 @@ if (music && lyricsContainer) {
     });
 }
 
+// LOGIKA ZA VATROMET: Koristi clientX/Y i šalje impulse u CSS
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
@@ -174,9 +175,8 @@ if (glavnaSlika) {
 function stvoriSrce(x, y) {
     const srce = document.createElement('div');
     srce.classList.add('klik-srce');
-    srce.innerText = '❤️'; 
+    srce.innerText = '❤️';
     
-    // Pozicioniranje direktno preko x i y koordinata klika
     srce.style.left = x + 'px';
     srce.style.top = y + 'px';
     
