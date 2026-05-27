@@ -1,30 +1,67 @@
 // ==========================================
 // 1. SELEKTORI
 // ==========================================
-const intro           = document.getElementById('intro');
-const opened          = document.getElementById('opened');
-const music           = document.getElementById('bg-music');
-const musicToggle     = document.getElementById('music-toggle');
-const playerPlay      = document.getElementById('player-play');
-const progressBar     = document.getElementById('progress-bar');
+const intro             = document.getElementById('intro');
+const opened            = document.getElementById('opened');
+const music             = document.getElementById('bg-music');
+const musicToggle       = document.getElementById('music-toggle');
+const playerPlay        = document.getElementById('player-play');
+const progressBar       = document.getElementById('progress-bar');
 const progressContainer = document.querySelector('.progress-container');
-const volumeSlider    = document.getElementById('volume-slider');
-const lyricsContainer = document.getElementById('tekst-pesme');
-const glavnaSlika     = document.getElementById('glavna-slika');
+const volumeSlider      = document.getElementById('volume-slider');
+const lyricsContainer   = document.getElementById('tekst-pesme');
+const glavnaSlika       = document.getElementById('glavna-slika');
 
 // ==========================================
-// 2. PUNJENJE TEKSTA IZ message.js
+// 2. MOBILE SCALE FIX
+// Kartica je 660px široka, plejer 480px.
+// Ukupna "visina" kartice (paper + plejer + karaoke) ≈ 580px.
+// Racunamo koliki scale treba da stane u ekran sa padinjem.
+// ==========================================
+function setMobileScale() {
+    const letter = document.querySelector('.letter');
+    if (!letter) return;
+
+    const CARD_W = 760;  // kartica 660 + malo margine sa strana
+    const CARD_H = 620;  // ukupna visina sa plejerom i karaoke
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Na desktopu (siroko) ne diramo — desktop media query handles it
+    if (vw > 950) {
+        letter.style.removeProperty('--s');
+        return;
+    }
+
+    // Fitujemo i po sirini i po visini, uzimamo manji scale
+    const scaleW = vw / CARD_W;
+    const scaleH = vh / CARD_H;
+    const scale  = Math.min(scaleW, scaleH, 1); // nikad vece od 1
+
+    letter.style.setProperty('--s', scale.toFixed(4));
+}
+
+// Pokrecemo na load i na svaku promenu orijentacije/velicine
+setMobileScale();
+window.addEventListener('resize', setMobileScale);
+window.addEventListener('orientationchange', () => {
+    // Malo kasnjenje jer browser ne azurira dimenzije odmah
+    setTimeout(setMobileScale, 150);
+});
+
+// ==========================================
+// 3. PUNJENJE TEKSTA IZ message.js
 // ==========================================
 document.getElementById('message').innerText   = window.customMessage;
 document.getElementById('signature').innerText = window.customSignature;
 
 // ==========================================
-// 3. PRELAZ SA STRANE 1 NA STRANU 2
+// 4. PRELAZ SA STRANE 1 NA STRANU 2
 // ==========================================
 document.querySelector('.click-area').addEventListener('click', () => {
     intro.classList.remove('active');
 
-    // Muzika krece malo posle animacije prelaza
     setTimeout(() => {
         if (music) {
             music.volume = 0.2;
@@ -34,14 +71,13 @@ document.querySelector('.click-area').addEventListener('click', () => {
         }
     }, 2500);
 
-    // Pismo se pojavljuje dok se intro fade-uje
     setTimeout(() => {
         opened.classList.add('active');
     }, 1000);
 });
 
 // ==========================================
-// 4. STANJA DUGMADI ZA MUZIKU
+// 5. STANJA DUGMADI ZA MUZIKU
 // ==========================================
 function updateButtonStates() {
     if (!music) return;
@@ -64,7 +100,7 @@ function updateButtonStates() {
 }
 
 // ==========================================
-// 5. KONTROLE MUZIKE
+// 6. KONTROLE MUZIKE
 // ==========================================
 if (musicToggle && music) {
     musicToggle.addEventListener('click', () => {
@@ -80,7 +116,6 @@ if (playerPlay && music) {
     });
 }
 
-// Traka napretka
 if (music && progressBar) {
     music.addEventListener('timeupdate', () => {
         const pct = (music.currentTime / music.duration) * 100;
@@ -88,7 +123,6 @@ if (music && progressBar) {
     });
 }
 
-// Klik na traku — premotavanje
 if (progressContainer && music) {
     progressContainer.addEventListener('click', (e) => {
         if (music.duration) {
@@ -97,13 +131,11 @@ if (progressContainer && music) {
     });
 }
 
-// Klizac jacine zvuka
 if (volumeSlider && music) {
     volumeSlider.addEventListener('input', (e) => {
         music.volume = e.target.value;
     });
 
-    // Ako se volume promeni negde drugde, klizac se sinhronizuje
     music.addEventListener('volumechange', () => {
         if (music.volume !== parseFloat(volumeSlider.value)) {
             volumeSlider.value = music.volume;
@@ -112,7 +144,7 @@ if (volumeSlider && music) {
 }
 
 // ==========================================
-// 6. KARAOKE — TEKST PESME
+// 7. KARAOKE — TEKST PESME
 // ==========================================
 const lyricsData = [
     { time: 0.17,   text: "Happy Birthday!" },
@@ -165,21 +197,15 @@ if (music && lyricsContainer) {
         }
 
         if (lyricsContainer.innerText !== activeLyric) {
-            lyricsContainer.innerText  = activeLyric;
+            lyricsContainer.innerText = activeLyric;
             lyricsContainer.style.display = activeLyric === "" ? "none" : "block";
         }
     });
 }
 
 // ==========================================
-// 7. VATROMET OD SRCA — KLIK NA GLAVNU SLIKU
+// 8. VATROMET OD SRCA — KLIK NA GLAVNU SLIKU
 // ==========================================
-
-// FIX: Srca sada rade jer je CSS ispravno parsiran.
-// Ranije je @keyframes plesiNota bio nezatvoren sto je uzrokovalo
-// da browser ignorise .klik-srce i @keyframes letiIizbledi koji su
-// dolazili posle njega u CSS fajlu.
-
 if (glavnaSlika) {
     glavnaSlika.addEventListener('click', (e) => {
         for (let i = 0; i < 15; i++) {
@@ -193,19 +219,12 @@ function stvoriSrce(x, y) {
     srce.classList.add('klik-srce');
     srce.innerText = '❤️';
 
-    // Pozicija tacno na kursor
     srce.style.left = x + 'px';
     srce.style.top  = y + 'px';
-
-    // Nasumicna velicina
     srce.style.fontSize = (Math.random() * 20 + 15) + 'px';
-
-    // Nasumican vektor leta (CSS custom properties koje koristi @keyframes letiIizbledi)
     srce.style.setProperty('--x', ((Math.random() - 0.5) * 300) + 'px');
     srce.style.setProperty('--y', (-(Math.random() * 250 + 100)) + 'px');
 
     document.body.appendChild(srce);
-
-    // Uklanjamo element iz DOM-a nakon sto animacija zavrsi
     setTimeout(() => srce.remove(), 1200);
 }
