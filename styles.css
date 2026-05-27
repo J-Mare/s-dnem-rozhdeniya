@@ -40,7 +40,6 @@ body {
 }
 
 #intro {
-    /* contain cuva proporcije buketa bez rastezanja */
     background: url('assets/picturepage1.png') center center / contain no-repeat;
     background-color: #000000;
 }
@@ -51,7 +50,6 @@ body {
     z-index: 1;
 }
 
-/* Pozadinska slika sa animacijom tinjanja - iza svega */
 #opened::before {
     content: "";
     position: absolute;
@@ -159,7 +157,6 @@ body {
     text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
 }
 
-/* Ruzica ispod poruke */
 #message::after {
     content: '\1F339';
     display: block;
@@ -193,7 +190,6 @@ body {
     display: block;
 }
 
-/* Metalna spajalica iznad polaroida */
 .clip {
     position: absolute;
     top: -12px;
@@ -218,7 +214,6 @@ body {
     border-radius: 0 6px 6px 0;
 }
 
-/* Potpis ispod slike */
 #signature {
     position: absolute;
     bottom: 8px;
@@ -230,7 +225,7 @@ body {
 }
 
 /* ==========================================
-   8. MALI POLAROIDI (STRANI UGAONI)
+   8. MALI POLAROIDI
    ========================================== */
 .mali-polaroid {
     position: absolute;
@@ -256,7 +251,6 @@ body {
     cursor: pointer;
 }
 
-/* Pozicije 4 mala polaroida */
 .slika-1 { top: 5%;    right: 28%; transform: rotate(-10deg); }
 .slika-2 { top: 15%;   right: 3%;  transform: rotate(15deg);  }
 .slika-3 { bottom: 12%; right: 28%; transform: rotate(8deg);  }
@@ -275,7 +269,6 @@ body {
     gap: 10px;
 }
 
-/* Resetuje apsolutnu poziciju dugmeta kad je unutar volume-container */
 .volume-container #music-toggle {
     position: static;
 }
@@ -315,7 +308,6 @@ body {
     opacity: 0.5;
 }
 
-/* Plesanje note dok muzika svira */
 .music-btn.playing {
     animation: plesiNota 2s infinite ease-in-out;
 }
@@ -397,18 +389,13 @@ body {
 }
 
 /* ==========================================
-   12. VATROMET OD SRCA (KLIK NA SLIKU)
+   12. VATROMET OD SRCA
    ========================================== */
-
-/* FIX: Srca su position:fixed sa z-index:999999 ali nisu bila vidljiva
-   jer je @keyframes letiIizbledi bio zarobljen unutar nezatvorenog
-   @keyframes plesiNota bloka. Sada su oba ispravno odvojena. */
 .klik-srce {
     position: fixed;
     pointer-events: none;
     z-index: 999999;
     line-height: 1;
-    /* Centriranje emoji tacno na kursor */
     transform: translate(-50%, -50%);
     animation: letiIizbledi 1.2s forwards ease-out;
 }
@@ -419,7 +406,6 @@ body {
         opacity: 1;
     }
     100% {
-        /* --x i --y su postavljeni inline kroz JS za svako srce */
         transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(45deg);
         opacity: 0;
     }
@@ -443,8 +429,6 @@ body {
     50%       { filter: brightness(115%); }
 }
 
-/* FIX: Ovaj @keyframes je ranije bio nepropisno zatvoren - duplikat i
-   nedostajuca } su uzrokovali da browser ignorise .klik-srce i letiIizbledi */
 @keyframes plesiNota {
     0%, 100% { transform: rotate(0deg) scale(1); }
     25%       { transform: rotate(-15deg) scale(1.05); }
@@ -469,47 +453,47 @@ body {
     }
 }
 
-
-
 /* ==========================================
-   15. MOBILE FIX (MINIMAL)
+   15. MOBILE — SCALE DA IZGLEDA KAO DESKTOP
+       Kartica je 660px široka + plejer 480px
+       Racunamo scale = dostupna sirina / 760
+       (760 = kartica 660 + malo margine)
    ========================================== */
 
+/* Tablet / veci telefon horizontalno */
 @media (max-width: 950px) {
-
-    body {
-        overflow: hidden;
-    }
-
-    /* Ostavi isti izgled kao desktop */
-    #intro {
-        background-position: center center;
-        background-size: contain;
-        background-repeat: no-repeat;
-    }
-
-    #opened::before {
-        background-position: center center;
-        background-size: cover;
-    }
-
-    /* Samo malo smanji karticu da stane */
     .letter {
-        width: min(660px, 92vw);
-        transform: translate(-50%, -50%) scale(0.88);
+        transform: translate(-50%, -50%) scale(calc(min(100vw, 100vh * 1.4) / 900));
         transform-origin: center center;
-        top: 50%;
     }
 }
 
-@media (max-width: 650px) {
+/* Telefon portret — dinamicki scale po sirini */
+@media (max-width: 700px) {
     .letter {
-        transform: translate(-50%, -50%) scale(0.78);
+        transform: translate(-50%, -50%) scale(calc(100vw / 780));
+        transform-origin: center center;
+    }
+    /* Karaoke tekst skaliramo obrnuto da ostane citljiv */
+    #tekst-pesme {
+        font-size: 18px;
+        white-space: normal;
+        max-width: 85vw;
     }
 }
 
-@media (max-height: 700px) and (orientation: landscape) {
+/* Uski telefoni (iPhone SE, 375px i sl.) */
+@media (max-width: 400px) {
     .letter {
-        transform: translate(-50%, -50%) scale(0.58) !important;
+        transform: translate(-50%, -50%) scale(calc(100vw / 800));
+        transform-origin: center center;
+    }
+}
+
+/* Landscape na telefonu — scale po visini jer je ona ogranicavajuca */
+@media (max-height: 500px) and (orientation: landscape) {
+    .letter {
+        transform: translate(-50%, -50%) scale(calc(100vh / 620)) !important;
+        transform-origin: center center;
     }
 }
