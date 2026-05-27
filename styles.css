@@ -8,6 +8,8 @@
 
 html {
     touch-action: manipulation;
+    overflow: hidden; /* Sprecava scroll koji triggeruje URL bar hide/show jiggle */
+    height: 100%;
 }
 
 body {
@@ -89,19 +91,28 @@ body {
     z-index: 50;
 }
 
-/* --s se postavlja kroz JS */
+/* ==========================================
+   LETTER — pozicija i scale
+   JS postavlja inline style: top, left, transform
+   CSS samo definise fallback za desktop
+   ========================================== */
 .letter {
-    position: absolute;
-    top: 46%;
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(var(--s, 1));
+    transform: translate(-50%, -50%);
     transform-origin: center center;
     z-index: 20;
-    animation: show 1.5s ease;
     width: 660px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* Animacija kroz posebnu klasu da ne bije sa JS transform */
+    opacity: 0;
+}
+
+.letter.visible {
+    animation: show 1.5s ease forwards;
 }
 
 .paper {
@@ -239,7 +250,7 @@ body {
 .slika-4 { bottom: 5%;  right: 3%;  transform: rotate(-12deg); }
 
 .volume-container {
-    position: absolute;
+    position: fixed;
     top: 25px;
     right: 25px;
     z-index: 9999;
@@ -276,7 +287,7 @@ body {
     transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.music-btn:hover { background: rgba(0, 0, 0, 0.7); transform: scale(1.1); }
+.music-btn:hover  { background: rgba(0, 0, 0, 0.7); transform: scale(1.1); }
 .music-btn.muted  { opacity: 0.5; }
 .music-btn.playing { animation: plesiNota 2s infinite ease-in-out; }
 
@@ -367,9 +378,10 @@ body {
     50%       { transform: scale(1.08); }
 }
 
+/* show animacija NE menja transform — JS ga vec postavio ispravno */
 @keyframes show {
-    from { opacity: 0; transform: translate(-50%, -45%) scale(calc(var(--s, 1) * 0.85)); }
-    to   { opacity: 1; transform: translate(-50%, -50%) scale(var(--s, 1)); }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 @keyframes tinjanjeSlike {
@@ -383,9 +395,9 @@ body {
     75%       { transform: rotate(15deg) scale(1.05); }
 }
 
-/* Desktop responsive */
+/* Desktop — veci monitori sa manjom visinom */
 @media (max-height: 900px) and (min-width: 951px) {
-    .letter { transform: translate(-50%, -50%) scale(0.8) !important; top: 48% !important; }
+    .letter { transform: translate(-50%, -50%) scale(0.8) !important; top: 50% !important; }
 }
 @media (max-height: 780px) and (min-width: 951px) {
     .letter { transform: translate(-50%, -50%) scale(0.68) !important; }
