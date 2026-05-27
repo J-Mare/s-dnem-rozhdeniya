@@ -18,7 +18,7 @@ document.querySelector('.click-area').addEventListener('click', ()=>{
 
     setTimeout(() => {
         if (music) {
-            music.volume = 0.3; 
+            music.volume = 0.2; 
             music.play().then(() => {
                 updateButtonStates(); // NOVO: Pokreće plesanje note odmah na startu
             }).catch(error => console.log("Audio play blocked:", error));
