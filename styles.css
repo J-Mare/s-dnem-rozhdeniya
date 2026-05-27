@@ -52,7 +52,8 @@ body {
   background-color: #000000;
   width: 100vw;
   height: 100vh;
-  animation: blagoTinjanje 5s infinite ease-in-out; /* Dodato */
+  /* Brisanje filtera, sada animiramo boju pozadine koja probija kroz sliku */
+  animation: tinjanjePozadine 5s infinite ease-in-out;
 }
 
 .overlay {
@@ -429,10 +430,7 @@ body {
     transform: rotate(-12deg) !important;
 }
 
-/* ==========================================
-   11. ANIMACIJA ZA LAMPICE (TINJANJE)
-   ========================================== */
-@keyframes blagoTinjanje {
-  0%, 100% { filter: brightness(90%); }
-  50% { filter: brightness(120%); }
+@keyframes tinjanjePozadine {
+  0%, 100% { background-color: #000000; } /* Normalno mračno */
+  50% { background-color: #3a1a1a; }    /* Blagi crvenkasto-topli sjaj koji imitira lampice */
 }
