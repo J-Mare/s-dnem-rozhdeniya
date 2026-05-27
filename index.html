@@ -6,6 +6,7 @@
     <title>С днём рождения! ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Potpuno ispravan i proveren Google Fonts link -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -14,20 +15,24 @@
     <audio id="bg-music" src="assets/music.mp3" loop></audio>
     
     <section id="intro" class="page active">
-        <div class="hero">
-            <div class="glass">
-                Нажми на любую розу
+        <!-- Click-area sada obavija ceo uvodni deo kako bi klik bilo gde aktivirao pismo bez greške -->
+        <div class="click-area">
+            <div class="hero">
+                <div class="glass">
+                    Нажми на любую розу
+                </div>
+                <div class="rose">🌹</div>
             </div>
-            <div class="rose">🌹</div>
         </div>
-        <div class="click-area"></div>
     </section>
 
     <section id="opened" class="page">
+        <!-- Kontrole zvuka su pomerene na sam vrh body-ja sekcije kako bi ih JS uvek video odmah po otvaranju -->
         <div class="volume-container">
             <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.2">
             <button id="music-toggle" class="music-btn">🎵</button>
         </div>
+        
         <div class="letter">
             <div class="paper">
                 <div class="mali-polaroid slika-1">
@@ -53,7 +58,9 @@
                     <div id="message"></div>
                 </div>
             </div>
+            
             <div id="tekst-pesme">Мари Краймбрери - Happy Birthday, Girl! 🎵</div>
+            
             <div class="player-container">
                 <button id="player-play" class="player-btn">▶</button>
                 <div class="progress-container">
@@ -63,7 +70,7 @@
         </div>
     </section>
 
-    <!-- Ispravan redosled: Prvo poruka, pa onda glavna skripta -->
+    <!-- Tačan redosled učitavanja: Prvo tekstualni podaci, pa tek onda izvršna logika sajta -->
     <script src="message.js"></script>
     <script src="script.js"></script>
 </body>
