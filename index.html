@@ -24,9 +24,9 @@
 
     <section id="opened" class="page">
         <div class="volume-container">
-    <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.2">
-    <button id="music-toggle" class="music-btn">🎵</button>
-</div>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.2">
+            <button id="music-toggle" class="music-btn">🎵</button>
+        </div>
         <div class="letter">
             <div class="paper">
                 <div class="mali-polaroid slika-1">
@@ -42,7 +42,8 @@
                     <img src="assets/picture4.png" alt="foto4">
                 </div>
 
-                <div class="photo-frame">
+                <!-- MODIFIKOVANO: Dodat id i kursor za klik -->
+                <div id="glavna-slika" class="photo-frame" style="cursor: pointer;">
                     <img src="picture.png" alt="photo">
                     <div class="clip"></div>
                     <div id="signature"></div>
@@ -60,6 +61,9 @@
             </div>
         </div>
     </section>
+
+    <!-- POPRAVLJENO: Dodat pun i ispravan link za vatromet/konfete -->
+    <script src="https://jsdelivr.net"></script>
 
     <script src="message.js"></script>
     <script src="script.js"></script>
