@@ -545,18 +545,12 @@ body {
    ========================================== */
 .klik-srce {
     position: fixed !important;
-    pointer-events: none !important; /* Da srca ne ometaju nove klikove */
-    z-index: 999999 !important; /* Gura ih ispred apsolutno svih slika na čestitki */
+    pointer-events: none !important; /* Da srca ne blokiraju nove klikove */
+    z-index: 999999 !important; /* Iskaču ispred apsolutno svega na ekranu */
     width: auto;
     height: auto;
-    display: inline-block;
-}
-
-/* KROZ PSEUDO-ELEMENT UBACUJEMO IZGLED SRCADIMA */
-.klik-srce::before {
-    content: '❤️' !important;
-    display: block;
-    animation: letiIizbledi 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+    transform: translate(-50%, -50%); /* Centriranje srca tačno na vrh kursora */
+    animation: letiIizbledi 1.2s forwards ease-out;
 }
 
 @keyframes letiIizbledi {
@@ -564,12 +558,9 @@ body {
         transform: translate(-50%, -50%) scale(1) rotate(0deg);
         opacity: 1;
     }
-    80% {
-        opacity: 0.9;
-    }
     100% {
-        /* Širi srca u stranu i ka gore, smanjuje ih na nulu i gasi */
-        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(30deg);
+        /* Ekstrudira srca u stranu i nagore na osnovu nasumičnih JS brojeva */
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(45deg);
         opacity: 0;
     }
 }
