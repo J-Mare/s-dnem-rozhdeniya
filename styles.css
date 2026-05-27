@@ -48,12 +48,20 @@ body {
 }
 
 #opened {
-  background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat;
   background-color: #000000;
   width: 100vw;
   height: 100vh;
-  /* Brisanje filtera, sada animiramo boju pozadine koja probija kroz sliku */
-  animation: tinjanjePozadine 5s infinite ease-in-out;
+  position: relative; 
+  z-index: 1; /* Otvara novi sloj */
+}
+
+#opened::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat;
+  z-index: -1; /* Gura sliku SKROZ NAZAD, iza papira i muzike */
+  animation: tinjanjeSlike 4s infinite ease-in-out;
 }
 
 .overlay {
@@ -430,7 +438,8 @@ body {
     transform: rotate(-12deg) !important;
 }
 
-@keyframes tinjanjePozadine {
-  0%, 100% { background-color: #000000; } /* Normalno mračno */
-  50% { background-color: #3a1a1a; }    /* Blagi crvenkasto-topli sjaj koji imitira lampice */
+@keyframes tinjanjeSlike {
+  0%, 100% { filter: brightness(80%); }
+  50% { filter: brightness(115%); }
 }
+
