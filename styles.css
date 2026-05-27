@@ -358,23 +358,20 @@ body {
 
 #tekst-pesme {
     position: absolute;
-    bottom: 60px;
+    bottom: -32px; /* Spušteno skroz dole u međuprostor */
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(244, 236, 216, 0.12);
-    padding: 8px 25px;
+    padding: 6px 20px;
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
     font-size: 20px;
-    color: #f6d6ac; /* Promenjeno u zlatnu boju da se slaže sa plejerom */
-    font-family: 'Cormorant Garamond', serif; /* Elegantni serifni font */
-    font-weight: 600;
+    color: #ff4d6d;
+    font-family: 'Marck Script', cursive;
+    font-weight: bold;
     text-align: center;
     white-space: nowrap;
     z-index: 30;
-    letter-spacing: 1px;
 }
-
-
