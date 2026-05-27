@@ -103,7 +103,7 @@ const lyricsData = [
     { time: 16.11, text: "Как сидела грустно на бортике" },
     { time: 18.45, text: "Обнимаясь год со своей душой" },
     { time: 20.81, text: "Знаешь, я уверена, что не зря" },
-    { time: 22.93, text: "Время пролетало по дресс-коду" },
+    { time: 22.93, text: "Время пролетало по дресс-коdu" },
     { time: 25.45, text: "Теперь с тобой такие друзья" },
     { time: 27.46, text: "Что ты можешь в огонь и в vodu" },
     { time: 29.28, text: "Hey, Happy Birthday, girl" },
@@ -161,13 +161,14 @@ if (music && lyricsContainer) {
     });
 }
 
-// OSIGURANO: Vatromet puca samo na klik glavne slike i ne beži pri skrolovanju
+// POTPUNO BEZBEDNO: Vatromet puca bez menjanja ijednog CSS stila ili pozicije slika
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
     glavnaSlika.addEventListener('click', (e) => {
         for (let i = 0; i < 15; i++) {
-            stvoriSrce(e.clientX, e.clientY);
+            // e.pageX i e.pageY prate apsolutnu poziciju miša na ekranu
+            stvoriSrce(e.pageX, e.pageY);
         }
     });
 }
@@ -177,9 +178,9 @@ function stvoriSrce(x, y) {
     srce.classList.add('klik-srce');
     srce.innerText = '❤️';
     
-    // Uračunat skrol za perfektno pozicioniranje
-    srce.style.left = (x + window.scrollX) + 'px';
-    srce.style.top = (y + window.scrollY) + 'px';
+    // Pozicioniranje direktno na mesto klika na celoj stranici
+    srce.style.left = x + 'px';
+    srce.style.top = y + 'px';
     
     const velicina = Math.random() * 20 + 15; 
     srce.style.fontSize = velicina + 'px';
