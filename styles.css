@@ -507,7 +507,7 @@ body {
     .letter {
         transform:
             translate(-50%, -50%)
-            scale(0.56) !important;
+            scale(0.52) !important;
     }
 }
 
@@ -518,7 +518,7 @@ body {
     .letter {
         transform:
             translate(-50%, -50%)
-            scale(0.48) !important;
+            scale(0.44) !important;
     }
 
     .player-container {
@@ -531,16 +531,4 @@ body {
     }
 }
 
-/* PORTRAIT SCROLL FIX */
 
-@media (max-width: 950px) and (orientation: portrait) {
-
-    html,
-    body {
-        overflow-y: auto !important;
-    }
-
-    #opened {
-        padding-bottom: 120px;
-    }
-}
