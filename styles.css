@@ -381,10 +381,10 @@ body {
    12. EXTRA POLAROIDS (RANDOM ROTATION)
    ========================================== */
 .mali-polaroid {
-    position: absolute !important; /* Prisilno ih vadi iz flex rasporeda */
-    width: 90px !important;
+    position: absolute !important;
+    width: 95px !important;
     background: white !important;
-    padding: 6px 6px 18px 6px !important;
+    padding: 6px 6px 22px 6px !important; /* Ostavlja prostor za retro beli rub na dnu */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
     z-index: 15 !important;
     transition: transform 0.3s ease !important;
@@ -392,8 +392,9 @@ body {
 
 .mali-polaroid img {
     width: 100% !important;
-    height: 90px !important;
-    object-fit: cover !important;
+    height: 100px !important; /* Povećana visina da slike prodišu */
+    object-fit: contain !important; /* Prikazuje cele fotke bez sečenja i zumiranja */
+    background: #000000 !important; /* Crna pozadina popunjava prazan prostor ako je slika preširoka ili dugačka */
     display: block !important;
 }
 
