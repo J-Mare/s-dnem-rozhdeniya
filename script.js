@@ -1,392 +1,230 @@
-@charset "UTF-8";
+// ==========================================
+// 1. SELEKTORI
+// ==========================================
+const intro             = document.getElementById('intro');
+const opened            = document.getElementById('opened');
+const music             = document.getElementById('bg-music');
+const musicToggle       = document.getElementById('music-toggle');
+const playerPlay        = document.getElementById('player-play');
+const progressBar       = document.getElementById('progress-bar');
+const progressContainer = document.querySelector('.progress-container');
+const volumeSlider      = document.getElementById('volume-slider');
+const lyricsContainer   = document.getElementById('tekst-pesme');
+const glavnaSlika       = document.getElementById('glavna-slika');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+// ==========================================
+// 2. MOBILE SCALE FIX
+// Kartica je 660px široka, plejer 480px.
+// Ukupna "visina" kartice (paper + plejer + karaoke) ≈ 580px.
+// Racunamo koliki scale treba da stane u ekran sa padinjem.
+// ==========================================
+function setMobileScale() {
+    const letter = document.querySelector('.letter');
+    if (!letter) return;
+
+    const CARD_W = 760;  // kartica 660 + malo margine sa strana
+    const CARD_H = 620;  // ukupna visina sa plejerom i karaoke
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Na desktopu (siroko) ne diramo — desktop media query handles it
+    if (vw > 950) {
+        letter.style.removeProperty('--s');
+        return;
+    }
+
+    // Fitujemo i po sirini i po visini, uzimamo manji scale
+    const scaleW = vw / CARD_W;
+    const scaleH = vh / CARD_H;
+    const scale  = Math.min(scaleW, scaleH, 1); // nikad vece od 1
+
+    letter.style.setProperty('--s', scale.toFixed(4));
 }
 
-html {
-    touch-action: manipulation;
+// Pokrecemo na load i na svaku promenu orijentacije/velicine
+setMobileScale();
+window.addEventListener('resize', setMobileScale);
+window.addEventListener('orientationchange', () => {
+    // Malo kasnjenje jer browser ne azurira dimenzije odmah
+    setTimeout(setMobileScale, 150);
+});
+
+// ==========================================
+// 3. PUNJENJE TEKSTA IZ message.js
+// ==========================================
+document.getElementById('message').innerText   = window.customMessage;
+document.getElementById('signature').innerText = window.customSignature;
+
+// ==========================================
+// 4. PRELAZ SA STRANE 1 NA STRANU 2
+// ==========================================
+document.querySelector('.click-area').addEventListener('click', () => {
+    intro.classList.remove('active');
+
+    setTimeout(() => {
+        if (music) {
+            music.volume = 0.2;
+            music.play()
+                .then(() => updateButtonStates())
+                .catch(err => console.log('Audio play blocked:', err));
+        }
+    }, 2500);
+
+    setTimeout(() => {
+        opened.classList.add('active');
+    }, 1000);
+});
+
+// ==========================================
+// 5. STANJA DUGMADI ZA MUZIKU
+// ==========================================
+function updateButtonStates() {
+    if (!music) return;
+
+    if (music.paused) {
+        if (playerPlay)  playerPlay.innerText = '▶';
+        if (musicToggle) {
+            musicToggle.innerText = '🔇';
+            musicToggle.classList.add('muted');
+            musicToggle.classList.remove('playing');
+        }
+    } else {
+        if (playerPlay)  playerPlay.innerText = '⏸';
+        if (musicToggle) {
+            musicToggle.innerText = '🎵';
+            musicToggle.classList.remove('muted');
+            musicToggle.classList.add('playing');
+        }
+    }
 }
 
-body {
-    overflow: hidden;
-    background: black;
-    font-family: 'Cormorant Garamond', serif;
-    width: 100vw;
-    height: 100vh;
+// ==========================================
+// 6. KONTROLE MUZIKE
+// ==========================================
+if (musicToggle && music) {
+    musicToggle.addEventListener('click', () => {
+        music.paused ? music.play() : music.pause();
+        updateButtonStates();
+    });
 }
 
-.page {
-    position: fixed;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 1.5s ease;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
+if (playerPlay && music) {
+    playerPlay.addEventListener('click', () => {
+        music.paused ? music.play() : music.pause();
+        updateButtonStates();
+    });
 }
 
-.page.active {
-    opacity: 1;
-    pointer-events: auto;
+if (music && progressBar) {
+    music.addEventListener('timeupdate', () => {
+        const pct = (music.currentTime / music.duration) * 100;
+        progressBar.style.width = pct + '%';
+    });
 }
 
-#intro {
-    background: url('assets/picturepage1.png') center center / contain no-repeat;
-    background-color: #000000;
+if (progressContainer && music) {
+    progressContainer.addEventListener('click', (e) => {
+        if (music.duration) {
+            music.currentTime = (e.offsetX / progressContainer.clientWidth) * music.duration;
+        }
+    });
 }
 
-#opened {
-    background-color: #000000;
-    position: relative;
-    z-index: 1;
+if (volumeSlider && music) {
+    volumeSlider.addEventListener('input', (e) => {
+        music.volume = e.target.value;
+    });
+
+    music.addEventListener('volumechange', () => {
+        if (music.volume !== parseFloat(volumeSlider.value)) {
+            volumeSlider.value = music.volume;
+        }
+    });
 }
 
-#opened::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url('assets/picturepage2.png') center center / 100vw 100vh no-repeat;
-    z-index: -1;
-    animation: tinjanjeSlike 4s infinite ease-in-out;
+// ==========================================
+// 7. KARAOKE — TEKST PESME
+// ==========================================
+const lyricsData = [
+    { time: 0.17,   text: "Happy Birthday!" },
+    { time: 5.59,   text: "Happy Birthday to you!" },
+    { time: 10.84,  text: "Ты погасила свечи на тортике" },
+    { time: 13.51,  text: "Вспомнила, как было не хорошо" },
+    { time: 16.11,  text: "Как сидела грустно на бортике" },
+    { time: 18.45,  text: "Обнимаясь год со своей душой" },
+    { time: 20.81,  text: "Знаешь, я уверена, что не зря" },
+    { time: 22.93,  text: "Время пролетало по дресс-коду" },
+    { time: 25.45,  text: "Теперь с тобой такие друзья" },
+    { time: 27.46,  text: "Что ты можешь в огонь и в воду" },
+    { time: 29.28,  text: "Hey, Happy Birthday, girl" },
+    { time: 31.19,  text: "Я желаю тебе жизнь из любимого фильма" },
+    { time: 34.16,  text: "Happy Birthday, girl" },
+    { time: 36.23,  text: "Я желаю тебе петь, танцевать и гулять" },
+    { time: 38.80,  text: "Hey, Happy Birthday, girl" },
+    { time: 41.27,  text: "И пускай те, кто нужен, горят тобой сильно" },
+    { time: 44.09,  text: "Happy Birthday, girl" },
+    { time: 46.16,  text: "Не разреши себя потерять" },
+    { time: 49.50,  text: "" },
+    { time: 69.54,  text: "Я знаю, ты не хочешь всё поскорей" },
+    { time: 72.13,  text: "Главное, чтоб вовремя, но всегда" },
+    { time: 74.68,  text: "Я тебя прошу, больше не болей" },
+    { time: 77.21,  text: "Остальное всё мы разрулим, да" },
+    { time: 79.27,  text: "Карты лягут так, как ты кинешь их" },
+    { time: 81.59,  text: "А ты кинула их джокером на крыши" },
+    { time: 84.56,  text: "И голоса из прошлого стихли" },
+    { time: 86.50,  text: "Ведь больше ты их не слышишь" },
+    { time: 87.59,  text: "Hey, Happy Birthday, girl" },
+    { time: 90.41,  text: "Я желаю тебе жизнь из любимого фильма" },
+    { time: 93.21,  text: "Happy Birthday, girl" },
+    { time: 95.36,  text: "Я желаю тебе петь, танцевать и гулять" },
+    { time: 97.92,  text: "Hey, Happy Birthday, girl" },
+    { time: 100.10, text: "И пускай те, кто нужен, горят тобой сильно" },
+    { time: 102.66, text: "Happy Birthday, girl" },
+    { time: 105.11, text: "Не разреши себя потерять" },
+    { time: 107.65, text: "Happy birthday" },
+    { time: 112.59, text: "Happy birthday" },
+    { time: 122.63, text: "Happy birthday 🎵" }
+];
+
+if (music && lyricsContainer) {
+    music.addEventListener('timeupdate', () => {
+        const t = music.currentTime;
+        let activeLyric = "";
+
+        for (let i = 0; i < lyricsData.length; i++) {
+            if (t >= lyricsData[i].time) activeLyric = lyricsData[i].text;
+        }
+
+        if (lyricsContainer.innerText !== activeLyric) {
+            lyricsContainer.innerText = activeLyric;
+            lyricsContainer.style.display = activeLyric === "" ? "none" : "block";
+        }
+    });
 }
 
-.hero {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    text-align: center;
+// ==========================================
+// 8. VATROMET OD SRCA — KLIK NA GLAVNU SLIKU
+// ==========================================
+if (glavnaSlika) {
+    glavnaSlika.addEventListener('click', (e) => {
+        for (let i = 0; i < 15; i++) {
+            stvoriSrce(e.clientX, e.clientY);
+        }
+    });
 }
 
-.glass {
-    padding: 18px 34px;
-    border-radius: 50px;
-    background: rgba(0, 0, 0, 0.50);
-    backdrop-filter: blur(10px);
-    font-size: 32px;
-    color: #f6d6ac;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-}
+function stvoriSrce(x, y) {
+    const srce = document.createElement('div');
+    srce.classList.add('klik-srce');
+    srce.innerText = '❤️';
 
-.rose {
-    font-size: 65px;
-    margin-top: 20px;
-    animation: pulse 2s infinite;
-}
+    srce.style.left = x + 'px';
+    srce.style.top  = y + 'px';
+    srce.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    srce.style.setProperty('--x', ((Math.random() - 0.5) * 300) + 'px');
+    srce.style.setProperty('--y', (-(Math.random() * 250 + 100)) + 'px');
 
-.click-area {
-    position: absolute;
-    inset: 0;
-    cursor: pointer;
-    z-index: 50;
-}
-
-/* --s se postavlja kroz JS */
-.letter {
-    position: absolute;
-    top: 46%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(var(--s, 1));
-    transform-origin: center center;
-    z-index: 20;
-    animation: show 1.5s ease;
-    width: 660px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.paper {
-    position: relative;
-    width: 100%;
-    min-height: 400px;
-    padding: 40px 45px;
-    border-radius: 2px;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-    background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%);
-    border: 1px solid rgba(100, 70, 40, 0.22);
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.55),
-        0 25px 60px rgba(0, 0, 0, 0.7),
-        inset 0 0 40px rgba(70, 40, 15, 0.2);
-}
-
-.content {
-    flex: 1.2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    z-index: 3;
-}
-
-#message {
-    white-space: pre-wrap;
-    font-size: 21px;
-    line-height: 1.6;
-    color: #2b1407;
-    font-family: 'Lora', serif;
-    font-style: italic;
-    text-align: left;
-    font-weight: 400;
-    letter-spacing: 0.3px;
-    text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
-}
-
-#message::after {
-    content: '\1F339';
-    display: block;
-    font-size: 22px;
-    margin-top: 12px;
-    text-align: left;
-}
-
-.photo-frame {
-    position: relative;
-    background: #ffffff;
-    padding: 10px 10px 42px 10px;
-    transform: rotate(3deg);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-    z-index: 4;
-    width: 185px;
-    min-width: 185px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-}
-
-.photo-frame img {
-    width: 100%;
-    height: 215px;
-    object-fit: cover;
-    display: block;
-}
-
-.clip {
-    position: absolute;
-    top: -12px;
-    left: 45%;
-    transform: rotate(-6deg);
-    width: 14px;
-    height: 34px;
-    border: 1.5px solid #8a8a8a;
-    border-radius: 10px;
-    background: transparent;
-    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.15);
-}
-
-.clip::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 2px;
-    width: 6px;
-    height: 20px;
-    border-right: 1.5px solid #666;
-    border-radius: 0 6px 6px 0;
-}
-
-#signature {
-    position: absolute;
-    bottom: 8px;
-    width: 90%;
-    text-align: center;
-    font-size: 22px;
-    color: #2b1407;
-    font-family: 'Dancing Script', cursive;
-}
-
-.mali-polaroid {
-    position: absolute;
-    width: 95px;
-    background: white;
-    padding: 6px 6px 22px 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    z-index: 15;
-    transition: transform 0.3s ease;
-}
-
-.mali-polaroid img {
-    width: 100%;
-    height: 100px;
-    object-fit: contain;
-    background: #000000;
-    display: block;
-}
-
-.mali-polaroid:hover {
-    transform: scale(1.15) rotate(0deg) !important;
-    z-index: 50;
-    cursor: pointer;
-}
-
-.slika-1 { top: 5%;     right: 28%; transform: rotate(-10deg); }
-.slika-2 { top: 15%;    right: 3%;  transform: rotate(15deg);  }
-.slika-3 { bottom: 12%; right: 28%; transform: rotate(8deg);   }
-.slika-4 { bottom: 5%;  right: 3%;  transform: rotate(-12deg); }
-
-.volume-container {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.volume-container #music-toggle { position: static; }
-
-#volume-slider {
-    width: 0;
-    opacity: 0;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    accent-color: #f6d6ac;
-}
-
-.volume-container:hover #volume-slider {
-    width: 80px;
-    opacity: 1;
-}
-
-.music-btn {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(246, 214, 172, 0.3);
-    color: #f6d6ac;
-    font-size: 20px;
-    padding: 10px 14px;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.music-btn:hover { background: rgba(0, 0, 0, 0.7); transform: scale(1.1); }
-.music-btn.muted  { opacity: 0.5; }
-.music-btn.playing { animation: plesiNota 2s infinite ease-in-out; }
-
-.player-container {
-    position: absolute;
-    bottom: -65px;
-    width: 480px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(12px);
-    padding: 10px 20px;
-    border-radius: 30px;
-    border: 1px solid rgba(244, 236, 216, 0.12);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-    z-index: 25;
-}
-
-.player-btn {
-    background: transparent;
-    border: none;
-    color: #e4ce9f;
-    font-size: 18px;
-    cursor: pointer;
-    width: 25px;
-    transition: transform 0.2s;
-}
-
-.player-btn:hover { transform: scale(1.15); }
-
-.progress-container {
-    flex: 1;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 2px;
-    position: relative;
-    cursor: pointer;
-}
-
-.progress {
-    height: 100%;
-    width: 0%;
-    background: #e4ce9f;
-    border-radius: 2px;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-#tekst-pesme {
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(244, 236, 216, 0.12);
-    padding: 6px 25px;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-    font-size: 24px;
-    color: #ff4d6d;
-    font-family: 'Caveat', cursive;
-    font-weight: 700;
-    text-align: center;
-    white-space: nowrap;
-    z-index: 30;
-    letter-spacing: 0.5px;
-}
-
-.klik-srce {
-    position: fixed;
-    pointer-events: none;
-    z-index: 999999;
-    line-height: 1;
-    transform: translate(-50%, -50%);
-    animation: letiIizbledi 1.2s forwards ease-out;
-}
-
-@keyframes letiIizbledi {
-    0%   { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
-    100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(45deg); opacity: 0; }
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50%       { transform: scale(1.08); }
-}
-
-@keyframes show {
-    from { opacity: 0; transform: translate(-50%, -45%) scale(calc(var(--s, 1) * 0.85)); }
-    to   { opacity: 1; transform: translate(-50%, -50%) scale(var(--s, 1)); }
-}
-
-@keyframes tinjanjeSlike {
-    0%, 100% { filter: brightness(80%); }
-    50%       { filter: brightness(115%); }
-}
-
-@keyframes plesiNota {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    25%       { transform: rotate(-15deg) scale(1.05); }
-    75%       { transform: rotate(15deg) scale(1.05); }
-}
-
-/* Desktop responsive */
-@media (max-height: 900px) and (min-width: 951px) {
-    .letter { transform: translate(-50%, -50%) scale(0.8) !important; top: 48% !important; }
-}
-@media (max-height: 780px) and (min-width: 951px) {
-    .letter { transform: translate(-50%, -50%) scale(0.68) !important; }
+    document.body.appendChild(srce);
+    setTimeout(() => srce.remove(), 1200);
 }
