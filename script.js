@@ -75,59 +75,54 @@ if (progressContainer && music) {
 }
 
 const lyricsData = {
-    5: "Ты погасила свечи на тортике",
-    9: "Вспомнила, как было нехорошо",
-    13: "Как сидела грустно на бортике",
-    17: "Обнимаясь год со своей душой",
-    21: "Знаешь, я уверена, что не зря",
-    24: "Время пролетало по дресс-коду",
-    28: "Теперь с тобой такие друзья",
-    32: "Что ты можешь в огонь и в воду",
-    35: "Hey, happy birthday, girl",
-    39: "Я желаю тебе жизнь из любимого фильма",
-    43: "Happy birthday, girl",
-    46: "Я желаю тебе петь, танцевать и гулять",
-    50: "Hey, happy birthday, girl",
-    54: "И пускай те, кто нужен, горят тобой сильно",
-    58: "Happy birthday, girl",
-    61: "Не разреши себя потерять",
-    71: "Я знаю, ты не хочешь все поскорей",
-    75: "Главное, чтоб вовремя, но всегда",
-    78: "Я тебя прошу, больше не болей",
-    82: "Остальное все мы разрулим, да",
-    86: "Карты лягут так, как ты кинешь их",
-    90: "А ты кинула их джокером на крыши",
-    93: "И голоса из прошлого стихли",
-    97: "Ведь больше ты их не слышишь",
-    101: "Hey, happy birthday, girl",
-    105: "Я желаю тебе жизнь из любимого фильма",
-    109: "Happy birthday, girl",
-    112: "Я желаю тебе петь, танцевать и гулять",
-    116: "Hey, happy birthday, girl",
-    120: "И пускай те, кто нужен, горят тобой сильно",
-    124: "Happy birthday, girl",
-    127: "Не разреши себя потерять",
-    131: "Happy birthday",
-    135: "Happy birthday",
-    139: "Happy birthday 🎵"
+    10: "Ты погасила свечи на тортике",
+    14: "Вспомнила, как было нехорошо",
+    18: "Как сидела грустно на бортике",
+    22: "Обнимаясь год со своей душой",
+    26: "Знаешь, я уверена, что не зря",
+    29: "Время пролетало по дресс-коду",
+    33: "Теперь с тобой такие друзья",
+    37: "Что ты можешь в огонь и в воду",
+    40: "Hey, happy birthday, girl",
+    44: "Я желаю тебе жизнь из любимого фильма",
+    48: "Happy birthday, girl",
+    51: "Я желаю тебе петь, танцевать и гулять",
+    55: "Hey, happy birthday, girl",
+    59: "И пускай те, кто нужен, горят тобой сильно",
+    63: "Happy birthday, girl",
+    66: "Не разреши себя потерять",
+    76: "Я знаю, ты не хочешь все поскорей",
+    80: "Главное, чтоб вовремя, но всегда",
+    83: "Я тебя прошу, больше не болей",
+    87: "Остальное все мы разрулим, да",
+    91: "Карты лягут так, как ты кинешь их",
+    95: "А ты кинула их джокером на крыши",
+    98: "И голоса из прошлого стихли",
+    102: "Ведь больше ты их не слышишь",
+    106: "Hey, happy birthday, girl",
+    110: "Я желаю тебе жизнь из любимого фильма",
+    114: "Happy birthday, girl",
+    117: "Я желаю тебе петь, танцевать и гулять",
+    121: "Hey, happy birthday, girl",
+    125: "И пускай те, кто нужен, горят тобой сильно",
+    129: "Happy birthday, girl",
+    132: "Не разреши себя потерять",
+    136: "Happy birthday",
+    140: "Happy birthday",
+    144: "Happy birthday 🎵"
 };
 
 const lyricsContainer = document.getElementById('tekst-pesme');
 
 if (music && lyricsContainer) {
     music.addEventListener('timeupdate', () => {
-        const prvaRecKreceU = 10; 
-        const originalniOffset = 5;
-        const razlikaUVremenu = originalniOffset - prvaRecKreceU;
-        const currentSecond = Math.floor(music.currentTime) + razlikaUVremenu;
-        
+        const currentSecond = Math.floor(music.currentTime);
         let activeLyric = "Мари Краймбрери - Happy Birthday, Girl! 🎵";
         for (const second in lyricsData) {
             if (currentSecond >= parseInt(second)) {
                 activeLyric = lyricsData[second];
             }
         }
-        
         if (lyricsContainer.innerText !== activeLyric) {
             lyricsContainer.innerText = activeLyric;
         }
