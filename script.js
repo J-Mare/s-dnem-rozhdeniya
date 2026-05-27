@@ -116,7 +116,10 @@ const lyricsContainer = document.getElementById('tekst-pesme');
 
 if (music && lyricsContainer) {
     music.addEventListener('timeupdate', () => {
-        const currentSecond = Math.floor(music.currentTime);
+        const prvaRecKreceU = 10; 
+        const originalniOffset = 5;
+        const razlikaUVremenu = originalniOffset - prvaRecKreceU;
+        const currentSecond = Math.floor(music.currentTime) + razlikaUVremenu;
         
         let activeLyric = "Мари Краймбрери - Happy Birthday, Girl! 🎵";
         for (const second in lyricsData) {
