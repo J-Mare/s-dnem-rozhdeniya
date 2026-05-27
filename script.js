@@ -1,16 +1,16 @@
 // ==========================================
 // 1. SELEKTORI
 // ==========================================
-const intro              = document.getElementById('intro');
-const opened             = document.getElementById('opened');
-const music              = document.getElementById('bg-music');
-const musicToggle        = document.getElementById('music-toggle');
-const playerPlay         = document.getElementById('player-play');
-const progressBar        = document.getElementById('progress-bar');
-const progressContainer  = document.querySelector('.progress-container');
-const volumeSlider       = document.getElementById('volume-slider');
-const lyricsContainer    = document.getElementById('tekst-pesme');
-const glavnaSlika        = document.getElementById('glavna-slika');
+const intro           = document.getElementById('intro');
+const opened          = document.getElementById('opened');
+const music           = document.getElementById('bg-music');
+const musicToggle     = document.getElementById('music-toggle');
+const playerPlay      = document.getElementById('player-play');
+const progressBar     = document.getElementById('progress-bar');
+const progressContainer = document.querySelector('.progress-container');
+const volumeSlider    = document.getElementById('volume-slider');
+const lyricsContainer = document.getElementById('tekst-pesme');
+const glavnaSlika     = document.getElementById('glavna-slika');
 
 // ==========================================
 // 2. PUNJENJE TEKSTA IZ message.js
@@ -24,6 +24,7 @@ document.getElementById('signature').innerText = window.customSignature;
 document.querySelector('.click-area').addEventListener('click', () => {
     intro.classList.remove('active');
 
+    // Muzika krece malo posle animacije prelaza
     setTimeout(() => {
         if (music) {
             music.volume = 0.2;
@@ -33,6 +34,7 @@ document.querySelector('.click-area').addEventListener('click', () => {
         }
     }, 2500);
 
+    // Pismo se pojavljuje dok se intro fade-uje
     setTimeout(() => {
         opened.classList.add('active');
     }, 1000);
@@ -78,6 +80,7 @@ if (playerPlay && music) {
     });
 }
 
+// Traka napretka
 if (music && progressBar) {
     music.addEventListener('timeupdate', () => {
         const pct = (music.currentTime / music.duration) * 100;
@@ -85,6 +88,7 @@ if (music && progressBar) {
     });
 }
 
+// Klik na traku — premotavanje
 if (progressContainer && music) {
     progressContainer.addEventListener('click', (e) => {
         if (music.duration) {
@@ -93,11 +97,13 @@ if (progressContainer && music) {
     });
 }
 
+// Klizac jacine zvuka
 if (volumeSlider && music) {
     volumeSlider.addEventListener('input', (e) => {
         music.volume = e.target.value;
     });
 
+    // Ako se volume promeni negde drugde, klizac se sinhronizuje
     music.addEventListener('volumechange', () => {
         if (music.volume !== parseFloat(volumeSlider.value)) {
             volumeSlider.value = music.volume;
@@ -159,7 +165,7 @@ if (music && lyricsContainer) {
         }
 
         if (lyricsContainer.innerText !== activeLyric) {
-            lyricsContainer.innerText = activeLyric;
+            lyricsContainer.innerText  = activeLyric;
             lyricsContainer.style.display = activeLyric === "" ? "none" : "block";
         }
     });
@@ -168,6 +174,12 @@ if (music && lyricsContainer) {
 // ==========================================
 // 7. VATROMET OD SRCA — KLIK NA GLAVNU SLIKU
 // ==========================================
+
+// FIX: Srca sada rade jer je CSS ispravno parsiran.
+// Ranije je @keyframes plesiNota bio nezatvoren sto je uzrokovalo
+// da browser ignorise .klik-srce i @keyframes letiIizbledi koji su
+// dolazili posle njega u CSS fajlu.
+
 if (glavnaSlika) {
     glavnaSlika.addEventListener('click', (e) => {
         for (let i = 0; i < 15; i++) {
@@ -181,182 +193,19 @@ function stvoriSrce(x, y) {
     srce.classList.add('klik-srce');
     srce.innerText = '❤️';
 
-    srce.style.left     = x + 'px';
-    srce.style.top      = y + 'px';
+    // Pozicija tacno na kursor
+    srce.style.left = x + 'px';
+    srce.style.top  = y + 'px';
+
+    // Nasumicna velicina
     srce.style.fontSize = (Math.random() * 20 + 15) + 'px';
 
+    // Nasumican vektor leta (CSS custom properties koje koristi @keyframes letiIizbledi)
     srce.style.setProperty('--x', ((Math.random() - 0.5) * 300) + 'px');
     srce.style.setProperty('--y', (-(Math.random() * 250 + 100)) + 'px');
 
     document.body.appendChild(srce);
+
+    // Uklanjamo element iz DOM-a nakon sto animacija zavrsi
     setTimeout(() => srce.remove(), 1200);
 }
-
-// ==========================================
-// 8. ZOOM — MALI POLAROIDI
-// ==========================================
-(function () {
-
-    const overlay       = document.getElementById('zoomOverlay');
-    const maliPolaroidi = document.querySelectorAll('.mali-polaroid');
-
-    // Koji polaroid je trenutno uvecan i njegovi originalni stilovi
-    let trenutnoUvecan  = null;
-    let originalniRect  = null;   // getBoundingClientRect() pre zoom-a
-    let originalniInline = null;  // inline stilovi pre zoom-a
-    let zakacen         = false;  // true = klik ga je zakacio (ne vraca se na mouseleave)
-    let hoverTimeout    = null;
-
-    // ---- Uvelicaj ----
-    function uvelicaj(polaroid) {
-        if (trenutnoUvecan === polaroid) return;
-
-        // Ako je vec neko drugi uvecan, vrati ga tiho
-        if (trenutnoUvecan) {
-            vratiTiho(trenutnoUvecan);
-        }
-
-        // Zapamti gde je polaroid BIO (fixed koordinate)
-        originalniRect = polaroid.getBoundingClientRect();
-
-        // Zapamti originalne inline stilove da ih mozemo potpuno obnoviti
-        originalniInline = {
-            position:   polaroid.style.position,
-            top:        polaroid.style.top,
-            left:       polaroid.style.left,
-            width:      polaroid.style.width,
-            height:     polaroid.style.height,
-            zIndex:     polaroid.style.zIndex,
-            transform:  polaroid.style.transform,
-            transition: polaroid.style.transition,
-        };
-
-        // Korak 1: Privremeno postavi fixed na TACNU trenutnu poziciju
-        //          i iskljuci tranziciju — browser vidi "isti" element
-        polaroid.style.transition = 'none';
-        polaroid.style.position   = 'fixed';
-        polaroid.style.top        = originalniRect.top  + 'px';
-        polaroid.style.left       = originalniRect.left + 'px';
-        polaroid.style.width      = originalniRect.width + 'px';
-        polaroid.style.height     = originalniRect.height + 'px';
-        polaroid.style.transform  = 'rotate(0deg)';
-        polaroid.style.zIndex     = '999';
-
-        // Korak 2: Forsiramo reflow — browser "vidi" pocetnu poziciju
-        polaroid.getBoundingClientRect();
-
-        // Korak 3: Dodajemo klasu — CSS tranzicija animira put do centra
-        requestAnimationFrame(() => {
-            polaroid.classList.add('uvecan');
-            overlay.classList.add('aktivni');
-            trenutnoUvecan = polaroid;
-        });
-    }
-
-    // ---- Vrati na mesto (sa animacijom) ----
-    function vrati(polaroid) {
-        if (!polaroid) return;
-
-        polaroid.classList.remove('uvecan');
-        overlay.classList.remove('aktivni');
-        polaroid.style.cursor = 'zoom-in';
-
-        // Cekamo da CSS tranzicija zavrsi (45ms rezerva)
-        setTimeout(() => {
-            if (!polaroid.classList.contains('uvecan')) {
-                obnovi(polaroid);
-            }
-        }, 500);
-
-        trenutnoUvecan = null;
-        zakacen        = false;
-    }
-
-    // ---- Vrati tiho (bez animacije overlay-a, za zamenu) ----
-    function vratiTiho(polaroid) {
-        polaroid.classList.remove('uvecan');
-        polaroid.classList.remove('kliknuto');
-        setTimeout(() => {
-            if (!polaroid.classList.contains('uvecan')) {
-                obnovi(polaroid);
-            }
-        }, 500);
-    }
-
-    // ---- Obnovi originalne inline stilove ----
-    function obnovi(polaroid) {
-        if (!originalniInline) return;
-        polaroid.style.position   = originalniInline.position;
-        polaroid.style.top        = originalniInline.top;
-        polaroid.style.left       = originalniInline.left;
-        polaroid.style.width      = originalniInline.width;
-        polaroid.style.height     = originalniInline.height;
-        polaroid.style.zIndex     = originalniInline.zIndex;
-        polaroid.style.transform  = originalniInline.transform;
-        polaroid.style.transition = originalniInline.transition;
-        originalniInline          = null;
-    }
-
-    // ---- Event listeneri na svaki mali polaroid ----
-    maliPolaroidi.forEach(polaroid => {
-
-        // HOVER IN: uvelicaj posle kratkog delaya
-        polaroid.addEventListener('mouseenter', function () {
-            // Ako je nesto zakaceno klikom, ignorisi hover
-            if (zakacen) return;
-
-            hoverTimeout = setTimeout(() => {
-                uvelicaj(this);
-            }, 120);
-        });
-
-        // HOVER OUT: vrati ako nije zakacen klikom
-        polaroid.addEventListener('mouseleave', function () {
-            clearTimeout(hoverTimeout);
-            hoverTimeout = null;
-
-            if (zakacen) return;
-
-            if (trenutnoUvecan === this) {
-                vrati(this);
-            }
-        });
-
-        // KLIK: zakaci/otkaci
-        polaroid.addEventListener('click', function (e) {
-            e.stopPropagation();
-
-            if (zakacen && trenutnoUvecan === this) {
-                // Vec zakacen — otkaci i vrati
-                zakacen = false;
-                vrati(this);
-            } else if (trenutnoUvecan === this) {
-                // Uvecan hover-om — zakaci
-                zakacen = true;
-            } else {
-                // Nije uvecan — uvelicaj i zakaci
-                uvelicaj(this);
-                // Malo cekamo da uvelicaj zavrsi pre zakacivanja
-                setTimeout(() => { zakacen = true; }, 50);
-            }
-        });
-
-    });
-
-    // ---- Klik na overlay — vrati ----
-    overlay.addEventListener('click', () => {
-        if (trenutnoUvecan) {
-            zakacen = false;
-            vrati(trenutnoUvecan);
-        }
-    });
-
-    // ---- ESC taster — vrati ----
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && trenutnoUvecan) {
-            zakacen = false;
-            vrati(trenutnoUvecan);
-        }
-    });
-
-})();
