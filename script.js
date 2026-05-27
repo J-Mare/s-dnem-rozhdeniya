@@ -7,7 +7,7 @@ const playerPlay = document.getElementById('player-play');
 const progressBar = document.getElementById('progress-bar');
 const progressContainer = document.querySelector('.progress-container');
 
-// NOVO: Selektor za klizač jačine zvuka
+// Selektor za klizač jačine zvuka
 const volumeSlider = document.getElementById('volume-slider');
 
 document.getElementById('message').innerText = window.customMessage;
@@ -20,7 +20,7 @@ document.querySelector('.click-area').addEventListener('click', ()=>{
         if (music) {
             music.volume = 0.2; 
             music.play().then(() => {
-                updateButtonStates(); // NOVO: Pokreće plesanje note odmah na startu
+                updateButtonStates(); // Pokreće plesanje note odmah na startu
             }).catch(error => console.log("Audio play blocked:", error));
         }
     }, 2500);
@@ -30,7 +30,7 @@ document.querySelector('.click-area').addEventListener('click', ()=>{
     },1000);
 });
 
-// MODIFIKOVANO: Dodato paljenje i gašenje .playing klase za plesanje note
+// Paljenje i gašenje .playing klase za plesanje note
 function updateButtonStates() {
     if (music.paused) {
         if (playerPlay) playerPlay.innerText = '▶';
@@ -81,7 +81,7 @@ if (progressContainer && music) {
     });
 }
 
-// NOVO: Logika koja kontroliše jačinu zvuka pomeranjem klizača i prati promenu
+// Kontrola jačine zvuka pomeranjem klizača i prateći promenu
 if (volumeSlider && music) {
     volumeSlider.addEventListener('input', (e) => {
         music.volume = e.target.value;
@@ -105,7 +105,7 @@ const lyricsData = [
     { time: 20.81, text: "Знаешь, я уверена, что не зря" },
     { time: 22.93, text: "Время пролетало по дресс-коду" },
     { time: 25.45, text: "Теперь с тобой такие друзья" },
-    { time: 27.46, text: "Что ты можешь в огонь и в воду" },
+    { time: 27.46, text: "Что ты можешь в огонь и в vodu" },
     { time: 29.28, text: "Hey, Happy Birthday, girl" },
     { time: 31.19, text: "Я желаю тебе жизнь из любимого фильма" },
     { time: 34.16, text: "Happy Birthday, girl" },
@@ -161,7 +161,7 @@ if (music && lyricsContainer) {
     });
 }
 
-// POPRAVLJENO: 100% lokalni vatromet srca bez zavisnosti od eksternog interneta
+// OSIGURANO: Vatromet puca samo na klik glavne slike i ne beži pri skrolovanju
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
@@ -177,14 +177,15 @@ function stvoriSrce(x, y) {
     srce.classList.add('klik-srce');
     srce.innerText = '❤️';
     
-    srce.style.left = x + 'px';
-    srce.style.top = y + 'px';
+    // Uračunat skrol za perfektno pozicioniranje
+    srce.style.left = (x + window.scrollX) + 'px';
+    srce.style.top = (y + window.scrollY) + 'px';
     
-    const velicina = Math.random() * 20 + 10; 
+    const velicina = Math.random() * 20 + 15; 
     srce.style.fontSize = velicina + 'px';
     
-    const pomerajX = (Math.random() - 0.5) * 200; 
-    const pomerajY = -(Math.random() * 200 + 100); 
+    const pomerajX = (Math.random() - 0.5) * 300; 
+    const pomerajY = -(Math.random() * 250 + 100); 
     
     srce.style.setProperty('--x', pomerajX + 'px');
     srce.style.setProperty('--y', pomerajY + 'px');
@@ -193,5 +194,5 @@ function stvoriSrce(x, y) {
     
     setTimeout(() => {
         srce.remove();
-    }, 1500);
+    }, 1200);
 }
