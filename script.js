@@ -75,7 +75,7 @@ if (progressContainer && music) {
 }
 
 // ==========================================
-// KARAOKE SISTEM (TEKST PESME ZA RUSKINJU)
+
 // ==========================================
 const lyricsData = {
     0: "🎵 (Вступление) 🎵",
@@ -122,7 +122,6 @@ if (music && lyricsContainer) {
     music.addEventListener('timeupdate', () => {
         const currentSecond = Math.floor(music.currentTime);
         
-        // Nalazi poslednji stih koji je trebao da se pojavi do ove sekunde (radi i ako premotaju pesmu)
         let activeLyric = "";
         for (const second in lyricsData) {
             if (currentSecond >= parseInt(second)) {
