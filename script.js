@@ -93,6 +93,7 @@ const lyricsData = [
     { time: 41.27, text: "И пускай те, кто нужен, горят тобой сильно" },
     { time: 44.09, text: "Happy Birthday, girl" },
     { time: 46.16, text: "Не разреши себя потерять" },
+    { time: 49.50, text: "" }, // Muzička pauza između refrena i drugog dela (briše tekst)
     { time: 69.54, text: "Я знаю, ты не хочешь всё поскорей" },
     { time: 72.13, text: "Главное, чтоб вовремя, но всегда" },
     { time: 74.68, text: "Я тебя прошу, больше не болей" },
@@ -119,7 +120,7 @@ const lyricsContainer = document.getElementById('tekst-pesme');
 if (music && lyricsContainer) {
     music.addEventListener('timeupdate', () => {
         const currentTime = music.currentTime;
-        let activeLyric = "Мари Краймбрери - Happy Birthday, Girl! 🎵";
+        let activeLyric = "";
         
         for (let i = 0; i < lyricsData.length; i++) {
             if (currentTime >= lyricsData[i].time) {
@@ -129,6 +130,13 @@ if (music && lyricsContainer) {
         
         if (lyricsContainer.innerText !== activeLyric) {
             lyricsContainer.innerText = activeLyric;
+            
+            // Sakriva ceo crni okvir ako nema teksta (tokom pauze)
+            if (activeLyric === "") {
+                lyricsContainer.style.display = "none";
+            } else {
+                lyricsContainer.style.display = "block";
+            }
         }
     });
 }
