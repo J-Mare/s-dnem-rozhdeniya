@@ -500,4 +500,66 @@ body {
     0%, 100% { transform: rotate(0deg) scale(1); }
     25% { transform: rotate(-15deg) scale(1.05); }
     75% { transform: rotate(15deg) scale(1.05); }
+/* ==========================================
+   14. VOLUME SLIDER ON HOVER & DANCING NOTE
+   ========================================== */
+.volume-container {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    z-index: 9999 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
+.volume-container #music-toggle {
+    position: static !important; 
+}
+
+#volume-slider {
+    width: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    accent-color: #f6d6ac; 
+}
+
+.volume-container:hover #volume-slider {
+    width: 80px;
+    opacity: 1;
+}
+
+.music-btn.playing {
+    animation: plesiNota 2s infinite ease-in-out;
+}
+
+@keyframes plesiNota {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-15deg) scale(1.05); }
+    75% { transform: rotate(15deg) scale(1.05); }
+} 
+
+/* ==========================================
+   17. ANIMACIJA ZA LOKALNA SRCA NA KLIK
+   ========================================== */
+.klik-srce {
+    position: fixed;
+    pointer-events: none; /* Da srca ne blokiraju klikove */
+    z-index: 10005; /* Iskaču ispred svega na ekranu */
+    animation: letiIizbledi 1.5s forwards ease-out;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes letiIizbledi {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        /* Pomera srce nagore i u stranu na osnovu nasumičnih JS vrednosti */
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4) rotate(45deg);
+        opacity: 0;
+    }
+}
+
