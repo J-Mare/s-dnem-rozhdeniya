@@ -472,44 +472,98 @@ body {
 
 
 /* ==========================================
-   15. MOBILE FIX (MINIMAL)
+   MOBILE FIX FINAL
    ========================================== */
 
 @media (max-width: 950px) {
 
+    html,
     body {
+        overflow-x: hidden;
+        width: 100%;
+        min-height: 100dvh;
+    }
+
+    body {
+        overflow-y: auto;
+    }
+
+    .page {
+        width: 100vw;
+        height: 100dvh;
         overflow: hidden;
     }
 
-    /* Ostavi isti izgled kao desktop */
+    /* Prva strana */
     #intro {
-        background-position: center center;
-        background-size: contain;
-        background-repeat: no-repeat;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        background-size: contain !important;
     }
 
+    /* Ruze pozadina */
     #opened::before {
-        background-position: center center;
-        background-size: cover;
+        background-position: center center !important;
+        background-size: cover !important;
     }
 
-    /* Samo malo smanji karticu da stane */
+    /* GLAVNI FIX */
     .letter {
-        width: min(660px, 92vw);
-        transform: translate(-50%, -50%) scale(0.88);
-        transform-origin: center center;
-        top: 50%;
+        left: 50% !important;
+        top: 50% !important;
+
+        width: 660px !important;
+        max-width: 660px !important;
+
+        transform-origin: center center !important;
+
+        transform:
+            translate(-50%, -50%)
+            scale(calc(100vw / 900)) !important;
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
+
     .letter {
-        transform: translate(-50%, -50%) scale(0.78);
+        transform:
+            translate(-50%, -50%)
+            scale(0.72) !important;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .letter {
+        transform:
+            translate(-50%, -50%)
+            scale(0.62) !important;
+    }
+
+    .glass {
+        font-size: 22px;
+        padding: 16px 24px;
+    }
+
+    .rose {
+        font-size: 52px;
+    }
+}
+
+@media (max-width: 430px) {
+
+    .letter {
+        transform:
+            translate(-50%, -50%)
+            scale(0.56) !important;
     }
 }
 
 @media (max-height: 700px) and (orientation: landscape) {
+
     .letter {
-        transform: translate(-50%, -50%) scale(0.58) !important;
+        transform:
+            translate(-50%, -50%)
+            scale(0.55) !important;
     }
 }
