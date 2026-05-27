@@ -590,3 +590,44 @@ body {
         font-size: 18px !important;
     }
 }
+
+
+/* ==========================================
+   MOBILE SCROLL IMPROVEMENT
+   ========================================== */
+
+@media (max-width: 950px) and (orientation: portrait) {
+
+    html,
+    body {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        min-height: 100dvh;
+        background: #000;
+    }
+
+    .page {
+        min-height: 100dvh;
+        height: auto !important;
+        overflow: visible !important;
+        padding-bottom: 140px;
+    }
+
+    .letter {
+        top: 0 !important;
+        margin-top: 40px;
+        margin-bottom: 120px;
+
+        transform:
+            translateX(-50%)
+            scale(0.72) !important;
+    }
+
+    .player-container {
+        bottom: -78px !important;
+    }
+
+    #tekst-pesme {
+        bottom: -32px !important;
+    }
+}
