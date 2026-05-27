@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>С днём рождения! ❤️</title>
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <!-- Popravljen link za Google Fonts (ubacio sam Montserrat kao primer, možeš posle menjati) -->
-    <link href="https://googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -44,7 +43,7 @@
                     <img src="assets/picture4.png" alt="foto4">
                 </div>
 
-                <!-- Vraćeno na picture.png jer je slika u glavnom folderu pored index.html -->
+                <!-- Glavna slika na koju se klikće za vatromet -->
                 <div id="glavna-slika" class="photo-frame" style="cursor: pointer;">
                     <img src="picture.png" alt="photo">
                     <div class="clip"></div>
@@ -64,9 +63,8 @@
         </div>
     </section>
 
-    <!-- Promenjen redosled skripti: prvo ide glavni JS, pa onda message -->
-    <script src="script.js"></script>
+    <!-- Ispravan redosled: Prvo poruka, pa onda glavna skripta -->
     <script src="message.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
