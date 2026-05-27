@@ -161,7 +161,6 @@ if (music && lyricsContainer) {
     });
 }
 
-// SREĐENO: Koristimo clientX i clientY jer savršeno rade sa fixed pozicijom u CSS-u
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
@@ -175,12 +174,12 @@ if (glavnaSlika) {
 function stvoriSrce(x, y) {
     const srce = document.createElement('div');
     srce.classList.add('klik-srce');
-    srce.innerText = '❤️';
     
-    // Pozicioniranje u odnosu na trenutni prozor ekrana
+    // Pozicioniramo tačno na mesto vrha kursora na ekranu
     srce.style.left = x + 'px';
     srce.style.top = y + 'px';
     
+    // Nasumična veličina i uglovi eksplozije
     const velicina = Math.random() * 20 + 15; 
     srce.style.fontSize = velicina + 'px';
     
@@ -192,6 +191,7 @@ function stvoriSrce(x, y) {
     
     document.body.appendChild(srce);
     
+    // Briše srce čim se animacija završi
     setTimeout(() => {
         srce.remove();
     }, 1200);
