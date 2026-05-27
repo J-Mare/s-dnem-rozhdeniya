@@ -161,19 +161,37 @@ if (music && lyricsContainer) {
     });
 }
 
-// Vatromet/konfete na klik velike slike
+// POPRAVLJENO: 100% lokalni vatromet srca bez zavisnosti od eksternog interneta
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
     glavnaSlika.addEventListener('click', (e) => {
-        // Ispucava vatromet srca na poziciji klika
-        confetti({
-            particleCount: 50,
-            angle: 90,
-            spread: 60,
-            origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight },
-            colors: ['#ff4d6d', '#ff758f', '#ff8fa3', '#fff0f3'] // Roze i crvene nijanse
-        });
+        for (let i = 0; i < 15; i++) {
+            stvoriSrce(e.clientX, e.clientY);
+        }
     });
 }
 
+function stvoriSrce(x, y) {
+    const srce = document.createElement('div');
+    srce.classList.add('klik-srce');
+    srce.innerText = '❤️';
+    
+    srce.style.left = x + 'px';
+    srce.style.top = y + 'px';
+    
+    const velicina = Math.random() * 20 + 10; 
+    srce.style.fontSize = velicina + 'px';
+    
+    const pomerajX = (Math.random() - 0.5) * 200; 
+    const pomerajY = -(Math.random() * 200 + 100); 
+    
+    srce.style.setProperty('--x', pomerajX + 'px');
+    srce.style.setProperty('--y', pomerajY + 'px');
+    
+    document.body.appendChild(srce);
+    
+    setTimeout(() => {
+        srce.remove();
+    }, 1500);
+}
