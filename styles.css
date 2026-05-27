@@ -469,39 +469,47 @@ body {
     }
 }
 
+
+
 /* ==========================================
-   15. RESPONSIVE - MOBILNI UREDJAJI
+   15. MOBILE FIX (MINIMAL)
    ========================================== */
-@media (max-device-width: 950px), (max-width: 950px) {
+
+@media (max-width: 950px) {
+
     body {
-        overflow: auto !important;
+        overflow: hidden;
     }
 
-    /* POPRAVLJENO: Dodato contain za prvu stranu da buket ne bude jaje */
+    /* Ostavi isti izgled kao desktop */
     #intro {
-        background-position: center center !important;
-        background-size: contain !important;
+        background-position: center center;
+        background-size: contain;
+        background-repeat: no-repeat;
     }
 
-    /* POPRAVLJENO: Dodat !important da natera telefon da zaokrugli ruže na drugoj strani */
     #opened::before {
-        background-position: center center !important;
-        background-size: cover !important;
+        background-position: center center;
+        background-size: cover;
     }
 
-    @media (orientation: portrait) {
-        .letter {
-            transform: translate(-50%, -50%) scale(1) !important;
-            transform-origin: center center;
-        }
-    }
-}
-
-@media (max-device-height: 550px) and (orientation: landscape),
-       (max-height: 550px) and (orientation: landscape) {
+    /* Samo malo smanji karticu da stane */
     .letter {
-        transform: translate(-50%, -50%) scale(0.48) !important;
+        width: min(660px, 92vw);
+        transform: translate(-50%, -50%) scale(0.88);
         transform-origin: center center;
+        top: 50%;
     }
 }
 
+@media (max-width: 650px) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.78);
+    }
+}
+
+@media (max-height: 700px) and (orientation: landscape) {
+    .letter {
+        transform: translate(-50%, -50%) scale(0.58) !important;
+    }
+}
