@@ -1,211 +1,24 @@
-// ==========================================
-// 1. SELEKTORI
-// ==========================================
-const intro           = document.getElementById('intro');
-const opened          = document.getElementById('opened');
-const music           = document.getElementById('bg-music');
-const musicToggle     = document.getElementById('music-toggle');
-const playerPlay      = document.getElementById('player-play');
-const progressBar     = document.getElementById('progress-bar');
-const progressContainer = document.querySelector('.progress-container');
-const volumeSlider    = document.getElementById('volume-slider');
-const lyricsContainer = document.getElementById('tekst-pesme');
-const glavnaSlika     = document.getElementById('glavna-slika');
+// MOBILE FIXES
 
-// ==========================================
-// 2. PUNJENJE TEKSTA IZ message.js
-// ==========================================
-document.getElementById('message').innerText   = window.customMessage;
-document.getElementById('signature').innerText = window.customSignature;
+// Pointer support
+glavnaSlika.addEventListener('pointerdown', (e) => {
 
-// ==========================================
-// 3. PRELAZ SA STRANE 1 NA STRANU 2
-// ==========================================
-document.querySelector('.click-area').addEventListener('click', () => {
-    intro.classList.remove('active');
+    const isMobile = window.innerWidth < 768;
+    const heartCount = isMobile ? 8 : 15;
 
-    // Muzika krece malo posle animacije prelaza
-    setTimeout(() => {
-        if (music) {
-            music.volume = 0.2;
-            music.play()
-                .then(() => updateButtonStates())
-                .catch(err => console.log('Audio play blocked:', err));
-        }
-    }, 2500);
-
-    // Pismo se pojavljuje dok se intro fade-uje
-    setTimeout(() => {
-        opened.classList.add('active');
-    }, 1000);
+    for (let i = 0; i < heartCount; i++) {
+        stvoriSrce(e.clientX, e.clientY);
+    }
 });
 
-// ==========================================
-// 4. STANJA DUGMADI ZA MUZIKU
-// ==========================================
-function updateButtonStates() {
-    if (!music) return;
-
-    if (music.paused) {
-        if (playerPlay)  playerPlay.innerText = '▶';
-        if (musicToggle) {
-            musicToggle.innerText = '🔇';
-            musicToggle.classList.add('muted');
-            musicToggle.classList.remove('playing');
-        }
-    } else {
-        if (playerPlay)  playerPlay.innerText = '⏸';
-        if (musicToggle) {
-            musicToggle.innerText = '🎵';
-            musicToggle.classList.remove('muted');
-            musicToggle.classList.add('playing');
-        }
-    }
+// Progress fix
+if (music.duration) {
+    const pct = (music.currentTime / music.duration) * 100;
+    progressBar.style.width = pct + '%';
 }
 
-// ==========================================
-// 5. KONTROLE MUZIKE
-// ==========================================
-if (musicToggle && music) {
-    musicToggle.addEventListener('click', () => {
-        music.paused ? music.play() : music.pause();
-        updateButtonStates();
-    });
-}
+// iPhone autoplay fix
+music.volume = 0.2;
+music.playsInline = true;
 
-if (playerPlay && music) {
-    playerPlay.addEventListener('click', () => {
-        music.paused ? music.play() : music.pause();
-        updateButtonStates();
-    });
-}
-
-// Traka napretka
-if (music && progressBar) {
-    music.addEventListener('timeupdate', () => {
-        const pct = (music.currentTime / music.duration) * 100;
-        progressBar.style.width = pct + '%';
-    });
-}
-
-// Klik na traku — premotavanje
-if (progressContainer && music) {
-    progressContainer.addEventListener('click', (e) => {
-        if (music.duration) {
-            music.currentTime = (e.offsetX / progressContainer.clientWidth) * music.duration;
-        }
-    });
-}
-
-// Klizac jacine zvuka
-if (volumeSlider && music) {
-    volumeSlider.addEventListener('input', (e) => {
-        music.volume = e.target.value;
-    });
-
-    // Ako se volume promeni negde drugde, klizac se sinhronizuje
-    music.addEventListener('volumechange', () => {
-        if (music.volume !== parseFloat(volumeSlider.value)) {
-            volumeSlider.value = music.volume;
-        }
-    });
-}
-
-// ==========================================
-// 6. KARAOKE — TEKST PESME
-// ==========================================
-const lyricsData = [
-    { time: 0.17,   text: "Happy Birthday!" },
-    { time: 5.59,   text: "Happy Birthday to you!" },
-    { time: 10.84,  text: "Ты погасила свечи на тортике" },
-    { time: 13.51,  text: "Вспомнила, как было не хорошо" },
-    { time: 16.11,  text: "Как сидела грустно на бортике" },
-    { time: 18.45,  text: "Обнимаясь год со своей душой" },
-    { time: 20.81,  text: "Знаешь, я уверена, что не зря" },
-    { time: 22.93,  text: "Время пролетало по дресс-коду" },
-    { time: 25.45,  text: "Теперь с тобой такие друзья" },
-    { time: 27.46,  text: "Что ты можешь в огонь и в воду" },
-    { time: 29.28,  text: "Hey, Happy Birthday, girl" },
-    { time: 31.19,  text: "Я желаю тебе жизнь из любимого фильма" },
-    { time: 34.16,  text: "Happy Birthday, girl" },
-    { time: 36.23,  text: "Я желаю тебе петь, танцевать и гулять" },
-    { time: 38.80,  text: "Hey, Happy Birthday, girl" },
-    { time: 41.27,  text: "И пускай те, кто нужен, горят тобой сильно" },
-    { time: 44.09,  text: "Happy Birthday, girl" },
-    { time: 46.16,  text: "Не разреши себя потерять" },
-    { time: 49.50,  text: "" },
-    { time: 69.54,  text: "Я знаю, ты не хочешь всё поскорей" },
-    { time: 72.13,  text: "Главное, чтоб вовремя, но всегда" },
-    { time: 74.68,  text: "Я тебя прошу, больше не болей" },
-    { time: 77.21,  text: "Остальное всё мы разрулим, да" },
-    { time: 79.27,  text: "Карты лягут так, как ты кинешь их" },
-    { time: 81.59,  text: "А ты кинула их джокером на крыши" },
-    { time: 84.56,  text: "И голоса из прошлого стихли" },
-    { time: 86.50,  text: "Ведь больше ты их не слышишь" },
-    { time: 87.59,  text: "Hey, Happy Birthday, girl" },
-    { time: 90.41,  text: "Я желаю тебе жизнь из любимого фильма" },
-    { time: 93.21,  text: "Happy Birthday, girl" },
-    { time: 95.36,  text: "Я желаю тебе петь, танцевать и гулять" },
-    { time: 97.92,  text: "Hey, Happy Birthday, girl" },
-    { time: 100.10, text: "И пускай те, кто нужен, горят тобой сильно" },
-    { time: 102.66, text: "Happy Birthday, girl" },
-    { time: 105.11, text: "Не разреши себя потерять" },
-    { time: 107.65, text: "Happy birthday" },
-    { time: 112.59, text: "Happy birthday" },
-    { time: 122.63, text: "Happy birthday 🎵" }
-];
-
-if (music && lyricsContainer) {
-    music.addEventListener('timeupdate', () => {
-        const t = music.currentTime;
-        let activeLyric = "";
-
-        for (let i = 0; i < lyricsData.length; i++) {
-            if (t >= lyricsData[i].time) activeLyric = lyricsData[i].text;
-        }
-
-        if (lyricsContainer.innerText !== activeLyric) {
-            lyricsContainer.innerText  = activeLyric;
-            lyricsContainer.style.display = activeLyric === "" ? "none" : "block";
-        }
-    });
-}
-
-// ==========================================
-// 7. VATROMET OD SRCA — KLIK NA GLAVNU SLIKU
-// ==========================================
-
-// FIX: Srca sada rade jer je CSS ispravno parsiran.
-// Ranije je @keyframes plesiNota bio nezatvoren sto je uzrokovalo
-// da browser ignorise .klik-srce i @keyframes letiIizbledi koji su
-// dolazili posle njega u CSS fajlu.
-
-if (glavnaSlika) {
-    glavnaSlika.addEventListener('click', (e) => {
-        for (let i = 0; i < 15; i++) {
-            stvoriSrce(e.clientX, e.clientY);
-        }
-    });
-}
-
-function stvoriSrce(x, y) {
-    const srce = document.createElement('div');
-    srce.classList.add('klik-srce');
-    srce.innerText = '❤️';
-
-    // Pozicija tacno na kursor
-    srce.style.left = x + 'px';
-    srce.style.top  = y + 'px';
-
-    // Nasumicna velicina
-    srce.style.fontSize = (Math.random() * 20 + 15) + 'px';
-
-    // Nasumican vektor leta (CSS custom properties koje koristi @keyframes letiIizbledi)
-    srce.style.setProperty('--x', ((Math.random() - 0.5) * 300) + 'px');
-    srce.style.setProperty('--y', (-(Math.random() * 250 + 100)) + 'px');
-
-    document.body.appendChild(srce);
-
-    // Uklanjamo element iz DOM-a nakon sto animacija zavrsi
-    setTimeout(() => srce.remove(), 1200);
-}
+music.play();
