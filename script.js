@@ -119,7 +119,7 @@ const lyricsData = [
     { time: 72.13, text: "Главное, чтоб вовремя, но всегда" },
     { time: 74.68, text: "Я тебя прошу, больше не болей" },
     { time: 77.21, text: "Остальное всё мы разрулим, да" },
-    { time: 79.27, text: "Карты лягут так, как ты кинешь их" },
+    { time: 79.27, text: "Карты лягут tak, как ты кинешь их" },
     { time: 81.59, text: "А ты кинула их джокером на крыши" },
     { time: 84.56, text: "И голоса из прошлого стихли" },
     { time: 86.50, text: "Ведь больше ты их не слышишь" },
@@ -161,14 +161,13 @@ if (music && lyricsContainer) {
     });
 }
 
-// POTPUNO BEZBEDNO: Vatromet puca bez menjanja ijednog CSS stila ili pozicije slika
+// SREĐENO: Koristimo clientX i clientY jer savršeno rade sa fixed pozicijom u CSS-u
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
     glavnaSlika.addEventListener('click', (e) => {
         for (let i = 0; i < 15; i++) {
-            // e.pageX i e.pageY prate apsolutnu poziciju miša na ekranu
-            stvoriSrce(e.pageX, e.pageY);
+            stvoriSrce(e.clientX, e.clientY);
         }
     });
 }
@@ -178,7 +177,7 @@ function stvoriSrce(x, y) {
     srce.classList.add('klik-srce');
     srce.innerText = '❤️';
     
-    // Pozicioniranje direktno na mesto klika na celoj stranici
+    // Pozicioniranje u odnosu na trenutni prozor ekrana
     srce.style.left = x + 'px';
     srce.style.top = y + 'px';
     
