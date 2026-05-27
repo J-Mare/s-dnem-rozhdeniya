@@ -544,11 +544,19 @@ body {
    17. ANIMACIJA ZA LOKALNA SRCA NA KLIK
    ========================================== */
 .klik-srce {
-    position: fixed;
-    pointer-events: none; /* Da srca ne blokiraju klikove */
-    z-index: 10005; /* Iskaču ispred svega na ekranu */
-    animation: letiIizbledi 1.5s forwards ease-out;
-    transform: translate(-50%, -50%);
+    position: fixed !important;
+    pointer-events: none !important; /* Da srca ne ometaju nove klikove */
+    z-index: 999999 !important; /* Gura ih ispred apsolutno svih slika na čestitki */
+    width: auto;
+    height: auto;
+    display: inline-block;
+}
+
+/* KROZ PSEUDO-ELEMENT UBACUJEMO IZGLED SRCADIMA */
+.klik-srce::before {
+    content: '❤️' !important;
+    display: block;
+    animation: letiIizbledi 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
 }
 
 @keyframes letiIizbledi {
@@ -556,10 +564,12 @@ body {
         transform: translate(-50%, -50%) scale(1) rotate(0deg);
         opacity: 1;
     }
+    80% {
+        opacity: 0.9;
+    }
     100% {
-        /* Pomera srce nagore i u stranu na osnovu nasumičnih JS vrednosti */
-        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4) rotate(45deg);
+        /* Širi srca u stranu i ka gore, smanjuje ih na nulu i gasi */
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0) rotate(30deg);
         opacity: 0;
     }
 }
-
