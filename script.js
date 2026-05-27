@@ -103,9 +103,9 @@ const lyricsData = [
     { time: 16.11, text: "Как сидела грустно на бортике" },
     { time: 18.45, text: "Обнимаясь год со своей душой" },
     { time: 20.81, text: "Знаешь, я уверена, что не зря" },
-    { time: 22.93, text: "Время пролетало по дресс-коdu" },
+    { time: 22.93, text: "Время пролетало по дресс-коду" },
     { time: 25.45, text: "Теперь с тобой такие друзья" },
-    { time: 27.46, text: "Что ты можешь в огонь и в vodu" },
+    { time: 27.46, text: "Что ты можешь в огонь и в воду" },
     { time: 29.28, text: "Hey, Happy Birthday, girl" },
     { time: 31.19, text: "Я желаю тебе жизнь из любимого фильма" },
     { time: 34.16, text: "Happy Birthday, girl" },
@@ -119,7 +119,7 @@ const lyricsData = [
     { time: 72.13, text: "Главное, чтоб вовремя, но всегда" },
     { time: 74.68, text: "Я тебя прошу, больше не болей" },
     { time: 77.21, text: "Остальное всё мы разрулим, да" },
-    { time: 79.27, text: "Карты лягут tak, как ты кинешь их" },
+    { time: 79.27, text: "Карты лягут так, как ты кинешь ich" },
     { time: 81.59, text: "А ты кинула их джокером на крыши" },
     { time: 84.56, text: "И голоса из прошлого стихли" },
     { time: 86.50, text: "Ведь больше ты их не слышишь" },
@@ -161,6 +161,7 @@ if (music && lyricsContainer) {
     });
 }
 
+// LOGIKA ZA VATROMET: Koristi clientX/Y i šalje impulse u CSS
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
@@ -175,11 +176,9 @@ function stvoriSrce(x, y) {
     const srce = document.createElement('div');
     srce.classList.add('klik-srce');
     
-    // Pozicioniramo tačno na mesto vrha kursora na ekranu
     srce.style.left = x + 'px';
     srce.style.top = y + 'px';
     
-    // Nasumična veličina i uglovi eksplozije
     const velicina = Math.random() * 20 + 15; 
     srce.style.fontSize = velicina + 'px';
     
@@ -191,7 +190,6 @@ function stvoriSrce(x, y) {
     
     document.body.appendChild(srce);
     
-    // Briše srce čim se animacija završi
     setTimeout(() => {
         srce.remove();
     }, 1200);
