@@ -567,3 +567,26 @@ body {
             scale(0.55) !important;
     }
 }
+
+
+/* ==========================================
+   LANDSCAPE PHONE FIX
+   ========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .letter {
+        transform:
+            translate(-50%, -50%)
+            scale(0.48) !important;
+    }
+
+    .player-container {
+        bottom: -62px !important;
+    }
+
+    #tekst-pesme {
+        bottom: -18px !important;
+        font-size: 18px !important;
+    }
+}
