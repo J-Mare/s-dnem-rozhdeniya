@@ -1,24 +1,64 @@
-// MOBILE FIXES
+// ==========================================
+// MOBILE FIXED VERSION
+// ==========================================
 
-// Pointer support
-glavnaSlika.addEventListener('pointerdown', (e) => {
+const intro = document.getElementById('intro');
+const opened = document.getElementById('opened');
+const music = document.getElementById('bg-music');
+const glavnaSlika = document.getElementById('glavna-slika');
 
-    const isMobile = window.innerWidth < 768;
-    const heartCount = isMobile ? 8 : 15;
+// PRELAZ
+document.querySelector('.click-area').addEventListener('click', () => {
 
-    for (let i = 0; i < heartCount; i++) {
-        stvoriSrce(e.clientX, e.clientY);
-    }
+    intro.classList.remove('active');
+
+    setTimeout(() => {
+
+        if (music) {
+
+            music.volume = 0.2;
+            music.playsInline = true;
+
+            music.play().catch(err => {
+                console.log('Audio blocked:', err);
+            });
+        }
+
+    }, 2500);
+
+    setTimeout(() => {
+        opened.classList.add('active');
+    }, 1000);
 });
 
-// Progress fix
-if (music.duration) {
-    const pct = (music.currentTime / music.duration) * 100;
-    progressBar.style.width = pct + '%';
+// SRCA
+if (glavnaSlika) {
+
+    glavnaSlika.addEventListener('pointerdown', (e) => {
+
+        const isMobile = window.innerWidth < 768;
+        const heartCount = isMobile ? 8 : 15;
+
+        for (let i = 0; i < heartCount; i++) {
+            stvoriSrce(e.clientX, e.clientY);
+        }
+    });
 }
 
-// iPhone autoplay fix
-music.volume = 0.2;
-music.playsInline = true;
+function stvoriSrce(x, y) {
 
-music.play();
+    const srce = document.createElement('div');
+
+    srce.classList.add('klik-srce');
+
+    srce.innerText = '❤️';
+
+    srce.style.left = x + 'px';
+    srce.style.top = y + 'px';
+
+    document.body.appendChild(srce);
+
+    setTimeout(() => {
+        srce.remove();
+    }, 1200);
+}
