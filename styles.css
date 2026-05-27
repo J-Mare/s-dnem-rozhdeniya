@@ -456,15 +456,15 @@ body {
    ========================================== */
 @media (max-height: 900px) and (min-width: 951px) {
     .letter {
-        transform: translate(-50%, -50%) scale(0.8);
+        transform: translate(-50%, -50%) scale(0.8) !important;
         transform-origin: center center;
-        top: 48%;
+        top: 48% !important;
     }
 }
 
 @media (max-height: 780px) and (min-width: 951px) {
     .letter {
-        transform: translate(-50%, -50%) scale(0.68);
+        transform: translate(-50%, -50%) scale(0.68) !important;
         transform-origin: center center;
     }
 }
@@ -474,17 +474,24 @@ body {
    ========================================== */
 @media (max-device-width: 950px), (max-width: 950px) {
     body {
-        overflow: auto;
+        overflow: auto !important;
     }
 
+    /* POPRAVLJENO: Dodato contain za prvu stranu da buket ne bude jaje */
+    #intro {
+        background-position: center center !important;
+        background-size: contain !important;
+    }
+
+    /* POPRAVLJENO: Dodat !important da natera telefon da zaokrugli ruže na drugoj strani */
     #opened::before {
-        background-position: center center;
-        background-size: cover;
+        background-position: center center !important;
+        background-size: cover !important;
     }
 
     @media (orientation: portrait) {
         .letter {
-            transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1) !important;
             transform-origin: center center;
         }
     }
@@ -493,7 +500,8 @@ body {
 @media (max-device-height: 550px) and (orientation: landscape),
        (max-height: 550px) and (orientation: landscape) {
     .letter {
-        transform: translate(-50%, -50%) scale(0.48);
+        transform: translate(-50%, -50%) scale(0.48) !important;
         transform-origin: center center;
     }
 }
+
