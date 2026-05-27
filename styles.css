@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /* ==========================================
    1. RESET AND BASE STYLES
    ========================================== */
@@ -49,7 +51,7 @@ body {
     z-index: 1;
 }
 
-/* Pozadinska slika sa animacijom tinjanja — iza svega */
+/* Pozadinska slika sa animacijom tinjanja - iza svega */
 #opened::before {
     content: "";
     position: absolute;
@@ -158,7 +160,7 @@ body {
 
 /* Ruzica ispod poruke */
 #message::after {
-    content: '🌹';
+    content: '\1F339';
     display: block;
     font-size: 22px;
     margin-top: 12px;
@@ -440,7 +442,7 @@ body {
     50%       { filter: brightness(115%); }
 }
 
-/* FIX: Ovaj @keyframes je ranije bio nepropisno zatvoren — duplikat i
+/* FIX: Ovaj @keyframes je ranije bio nepropisno zatvoren - duplikat i
    nedostajuca } su uzrokovali da browser ignorise .klik-srce i letiIizbledi */
 @keyframes plesiNota {
     0%, 100% { transform: rotate(0deg) scale(1); }
@@ -449,7 +451,7 @@ body {
 }
 
 /* ==========================================
-   14. RESPONSIVE — LAPTOP I MANJI MONITORI
+   14. RESPONSIVE - LAPTOP I MANJI MONITORI
    ========================================== */
 @media (max-height: 900px) and (min-width: 951px) {
     .letter {
@@ -467,7 +469,7 @@ body {
 }
 
 /* ==========================================
-   15. RESPONSIVE — MOBILNI UREDJAJI
+   15. RESPONSIVE - MOBILNI UREDJAJI
    ========================================== */
 @media (max-device-width: 950px), (max-width: 950px) {
     body {
