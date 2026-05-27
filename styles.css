@@ -443,3 +443,21 @@ body {
   0%, 100% { filter: brightness(80%); }
   50% { filter: brightness(115%); }
 }
+/* ==========================================
+   13. FIX ZA LAPTOPOVE I MANJE MONITORE
+   ========================================== */
+@media (max-height: 900px) and (min-width: 951px) {
+    .letter {
+        /* Blago smanjuje celo pismo i polaroide za laptop ekrane da sve stane bez sudaranja */
+        transform: translate(-50%, -50%) scale(0.8) !important;
+        transform-origin: center center !important;
+        top: 48% !important;
+    }
+}
+
+@media (max-height: 780px) and (min-width: 951px) {
+    .letter {
+        /* Dodatno smanjenje za baš male laptopove (npr. 13 inča sa 1366x768 rezolucijom) */
+        transform: translate(-50%, -50%) scale(0.68) !important;
+    }
+}
