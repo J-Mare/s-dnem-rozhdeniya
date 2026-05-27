@@ -377,3 +377,54 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* ==========================================
+   12. EXTRA POLAROIDS (RANDOM ROTATION)
+   ========================================== */
+.mali-polaroid {
+    position: absolute !important; /* Prisilno ih vadi iz flex rasporeda */
+    width: 90px !important;
+    background: white !important;
+    padding: 6px 6px 18px 6px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    z-index: 15 !important;
+    transition: transform 0.3s ease !important;
+}
+
+.mali-polaroid img {
+    width: 100% !important;
+    height: 90px !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.mali-polaroid:hover {
+    transform: scale(1.15) rotate(0deg) !important;
+    z-index: 50 !important;
+    cursor: pointer;
+}
+
+/* Pozicioniranje u plave zone koje si označio na telefonu */
+.slika-1 {
+    top: 5% !important;
+    right: 28% !important;
+    transform: rotate(-10deg) !important;
+}
+
+.slika-2 {
+    top: 15% !important;
+    right: 3% !important;
+    transform: rotate(15deg) !important;
+}
+
+.slika-3 {
+    bottom: 12% !important;
+    right: 28% !important;
+    transform: rotate(8deg) !important;
+}
+
+.slika-4 {
+    bottom: 5% !important;
+    right: 3% !important;
+    transform: rotate(-12deg) !important;
+}
+
