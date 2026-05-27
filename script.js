@@ -160,3 +160,20 @@ if (music && lyricsContainer) {
         }
     });
 }
+
+// Vatromet/konfete na klik velike slike
+const glavnaSlika = document.getElementById('glavna-slika');
+
+if (glavnaSlika) {
+    glavnaSlika.addEventListener('click', (e) => {
+        // Ispucava vatromet srca na poziciji klika
+        confetti({
+            particleCount: 50,
+            angle: 90,
+            spread: 60,
+            origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight },
+            colors: ['#ff4d6d', '#ff758f', '#ff8fa3', '#fff0f3'] // Roze i crvene nijanse
+        });
+    });
+}
+
