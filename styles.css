@@ -52,7 +52,7 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-    background: url('assets/picturepage2.png') center center / 100vw 100vh no-repeat;
+    background: url('assets/picturepage2.png') center center / cover no-repeat;
     z-index: -1;
     animation: tinjanjeSlike 4s infinite ease-in-out;
 }
