@@ -48,11 +48,11 @@ body {
 }
 
 #opened {
-    /* Za PC ostaje tvoj savršeni 100vw 100vh koji daje dubinu bez zuma */
-    background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat; 
-    background-color: #000000;
-    width: 100vw;
-    height: 100vh;
+  background: url('assets/picturepage2.png') center center/100vw 100vh no-repeat;
+  background-color: #000000;
+  width: 100vw;
+  height: 100vh;
+  animation: blagoTinjanje 5s infinite ease-in-out; /* Dodato */
 }
 
 .overlay {
@@ -427,4 +427,12 @@ body {
     bottom: 5% !important;
     right: 3% !important;
     transform: rotate(-12deg) !important;
+}
+
+/* ==========================================
+   11. ANIMACIJA ZA LAMPICE (TINJANJE)
+   ========================================== */
+@keyframes blagoTinjanje {
+  0%, 100% { filter: brightness(90%); }
+  50% { filter: brightness(120%); }
 }
