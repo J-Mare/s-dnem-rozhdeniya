@@ -164,18 +164,11 @@ if (music && lyricsContainer) {
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
-    console.log("Glavna slika je uspešno pronađena u HTML-u!");
-    
     glavnaSlika.addEventListener('click', (e) => {
-        // Test prozorčić koji mora da iskoči
-        alert("Kliknuo si na sliku! JS radi, tražimo problem dalje...");
-
         for (let i = 0; i < 15; i++) {
             stvoriSrce(e.clientX, e.clientY);
         }
     });
-} else {
-    console.log("GREŠKA: JS uopšte ne može da nađe element sa id='glavna-slika'!");
 }
 
 function stvoriSrce(x, y) {
@@ -183,6 +176,7 @@ function stvoriSrce(x, y) {
     srce.classList.add('klik-srce');
     srce.innerText = '❤️'; 
     
+    // Pozicioniranje direktno preko x i y koordinata klika
     srce.style.left = x + 'px';
     srce.style.top = y + 'px';
     
