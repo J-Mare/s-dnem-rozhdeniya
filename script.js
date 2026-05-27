@@ -161,20 +161,27 @@ if (music && lyricsContainer) {
     });
 }
 
-// LOGIKA ZA VATROMET: Koristi clientX/Y i šalje impulse u CSS
 const glavnaSlika = document.getElementById('glavna-slika');
 
 if (glavnaSlika) {
+    console.log("Glavna slika je uspešno pronađena u HTML-u!");
+    
     glavnaSlika.addEventListener('click', (e) => {
+        // Test prozorčić koji mora da iskoči
+        alert("Kliknuo si na sliku! JS radi, tražimo problem dalje...");
+
         for (let i = 0; i < 15; i++) {
             stvoriSrce(e.clientX, e.clientY);
         }
     });
+} else {
+    console.log("GREŠKA: JS uopšte ne može da nađe element sa id='glavna-slika'!");
 }
 
 function stvoriSrce(x, y) {
     const srce = document.createElement('div');
     srce.classList.add('klik-srce');
+    srce.innerText = '❤️'; 
     
     srce.style.left = x + 'px';
     srce.style.top = y + 'px';
