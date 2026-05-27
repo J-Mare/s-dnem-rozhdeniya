@@ -22,24 +22,35 @@ function setMobileScale() {
     const letter = document.querySelector('.letter');
     if (!letter) return;
 
-    const CARD_W = 760;  // kartica 660 + malo margine sa strana
-    const CARD_H = 620;  // ukupna visina sa plejerom i karaoke
-
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    // Na desktopu (siroko) ne diramo — desktop media query handles it
+    // Na desktopu ne diramo
     if (vw > 950) {
         letter.style.removeProperty('--s');
+        letter.style.removeProperty('top');
+        letter.style.removeProperty('left');
+        letter.style.removeProperty('transform');
         return;
     }
 
-    // Fitujemo i po sirini i po visini, uzimamo manji scale
-    const scaleW = vw / CARD_W;
-    const scaleH = vh / CARD_H;
-    const scale  = Math.min(scaleW, scaleH, 1); // nikad vece od 1
+    // Stvarna sirina kartice (paper 660 + margina) i visina (paper ~480 + plejer 65 + karaoke 50 + padding)
+    const CARD_W = 720;
+    const CARD_H = 640;
 
+    // Scale koji staje u oba smera, sa 4% paddinga
+    const scale = Math.min((vw * 0.96) / CARD_W, (vh * 0.96) / CARD_H, 1);
+
+    // Postavljamo scale
     letter.style.setProperty('--s', scale.toFixed(4));
+
+    // Tacno centriranje: letter je 660px sirok i ~580px visok pre scale
+    // Nakon scale, zauzima 660*scale x 580*scale
+    // Pozicioniramo ga tacno na sredinu ekrana
+    letter.style.position  = 'fixed';
+    letter.style.top       = '50%';
+    letter.style.left      = '50%';
+    letter.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(4)})`;
 }
 
 // Pokrecemo na load i na svaku promenu orijentacije/velicine
