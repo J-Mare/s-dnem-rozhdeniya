@@ -7,6 +7,9 @@ const playerPlay = document.getElementById('player-play');
 const progressBar = document.getElementById('progress-bar');
 const progressContainer = document.querySelector('.progress-container');
 
+// NOVO: Selektor za klizač jačine zvuka
+const volumeSlider = document.getElementById('volume-slider');
+
 document.getElementById('message').innerText = window.customMessage;
 document.getElementById('signature').innerText = window.customSignature;
 
@@ -16,8 +19,9 @@ document.querySelector('.click-area').addEventListener('click', ()=>{
     setTimeout(() => {
         if (music) {
             music.volume = 0.3; 
-            music.play().catch(error => console.log("Audio play blocked:", error));
-            if (playerPlay) playerPlay.innerText = '⏸';
+            music.play().then(() => {
+                updateButtonStates(); // NOVO: Pokreće plesanje note odmah na startu
+            }).catch(error => console.log("Audio play blocked:", error));
         }
     }, 2500);
 
@@ -26,17 +30,20 @@ document.querySelector('.click-area').addEventListener('click', ()=>{
     },1000);
 });
 
+// MODIFIKOVANO: Dodato paljenje i gašenje .playing klase za plesanje note
 function updateButtonStates() {
     if (music.paused) {
         if (playerPlay) playerPlay.innerText = '▶';
         if (musicToggle) {
             musicToggle.classList.add('muted');
+            musicToggle.classList.remove('playing'); // Nota prestaje da pleše
             musicToggle.innerText = '🔇';
         }
     } else {
         if (playerPlay) playerPlay.innerText = '⏸';
         if (musicToggle) {
             musicToggle.classList.remove('muted');
+            musicToggle.classList.add('playing'); // Nota počinje da pleše
             musicToggle.innerText = '🎵';
         }
     }
@@ -74,6 +81,20 @@ if (progressContainer && music) {
     });
 }
 
+// NOVO: Logika koja kontroliše jačinu zvuka pomeranjem klizača i prati promenu
+if (volumeSlider && music) {
+    volumeSlider.addEventListener('input', (e) => {
+        music.volume = e.target.value;
+    });
+
+    // Ako se zvuk promeni negde drugde, pomera se i klizač
+    music.addEventListener('volumechange', () => {
+        if (music.volume !== parseFloat(volumeSlider.value)) {
+            volumeSlider.value = music.volume;
+        }
+    });
+}
+
 const lyricsData = [
     { time: 0.17, text: "Happy Birthday!" },
     { time: 5.59, text: "Happy Birthday to you!" },
@@ -93,7 +114,7 @@ const lyricsData = [
     { time: 41.27, text: "И пускай те, кто нужен, горят тобой сильно" },
     { time: 44.09, text: "Happy Birthday, girl" },
     { time: 46.16, text: "Не разреши себя потерять" },
-    { time: 49.50, text: "" }, // Muzička pauza između refrena i drugog dela (briše tekst)
+    { time: 49.50, text: "" }, 
     { time: 69.54, text: "Я знаю, ты не хочешь всё поскорей" },
     { time: 72.13, text: "Главное, чтоб вовремя, но всегда" },
     { time: 74.68, text: "Я тебя прошу, больше не болей" },
@@ -131,7 +152,6 @@ if (music && lyricsContainer) {
         if (lyricsContainer.innerText !== activeLyric) {
             lyricsContainer.innerText = activeLyric;
             
-            // Sakriva ceo crni okvir ako nema teksta (tokom pauze)
             if (activeLyric === "") {
                 lyricsContainer.style.display = "none";
             } else {
