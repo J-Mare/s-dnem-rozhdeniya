@@ -6,35 +6,33 @@
     <title>С днём рождения! ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Potpuno ispravan i proveren Google Fonts link -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- FIX: Ucitavamo sva 3 fonta koji se koriste u CSS-u. Montserrat je bio ucitan ali nigde koriscen — uklonjen. -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&family=Marck+Script&family=Caveat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <audio id="bg-music" src="assets/music.mp3" loop></audio>
-    
+
+    <!-- STRANA 1: Uvod sa buketom ruza -->
     <section id="intro" class="page active">
-        <!-- Click-area sada obavija ceo uvodni deo kako bi klik bilo gde aktivirao pismo bez greške -->
         <div class="click-area">
             <div class="hero">
-                <div class="glass">
-                    Нажми на любую розу
-                </div>
+                <div class="glass">Нажми на любую розу</div>
                 <div class="rose">🌹</div>
             </div>
         </div>
     </section>
 
+    <!-- STRANA 2: Pismo sa polaroidima i plejerom -->
     <section id="opened" class="page">
-        <!-- Kontrole zvuka su pomerene na sam vrh body-ja sekcije kako bi ih JS uvek video odmah po otvaranju -->
         <div class="volume-container">
             <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.2">
             <button id="music-toggle" class="music-btn">🎵</button>
         </div>
-        
+
         <div class="letter">
             <div class="paper">
+                <!-- Mali polaroidi u uglovima -->
                 <div class="mali-polaroid slika-1">
                     <img src="assets/picture1.png" alt="foto1">
                 </div>
@@ -48,19 +46,23 @@
                     <img src="assets/picture4.png" alt="foto4">
                 </div>
 
-                <!-- Glavna slika na koju se klikće za vatromet -->
-                <div id="glavna-slika" class="photo-frame" style="cursor: pointer;">
+                <!-- Glavna slika — klik aktivira vatromet od srca -->
+                <div id="glavna-slika" class="photo-frame">
                     <img src="picture.png" alt="photo">
                     <div class="clip"></div>
                     <div id="signature"></div>
                 </div>
+
+                <!-- Tekst poruke (punjeno iz message.js) -->
                 <div class="content">
                     <div id="message"></div>
                 </div>
             </div>
-            
+
+            <!-- Tekst pesme (karaoke) -->
             <div id="tekst-pesme">Мари Краймбрери - Happy Birthday, Girl! 🎵</div>
-            
+
+            <!-- Plejer -->
             <div class="player-container">
                 <button id="player-play" class="player-btn">▶</button>
                 <div class="progress-container">
@@ -70,7 +72,7 @@
         </div>
     </section>
 
-    <!-- Tačan redosled učitavanja: Prvo tekstualni podaci, pa tek onda izvršna logika sajta -->
+    <!-- Redosled je bitan: message.js definise window.customMessage pre nego script.js to pokupi -->
     <script src="message.js"></script>
     <script src="script.js"></script>
 </body>
