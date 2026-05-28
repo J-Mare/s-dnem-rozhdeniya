@@ -135,7 +135,7 @@ function startLetterTyping() {
     if (signatureEl) signatureEl.innerText = '';
 
     // Poruka, pa potpis na polaroidu
-    typeText(messageEl, fullMessage, 52, () => {
+    typeText(messageEl, fullMessage, 70, () => {
         messageEl.classList.add('typing-done');
         setTimeout(() => {
             typeText(signatureEl, fullSignature, 95, null);
@@ -211,7 +211,7 @@ document.querySelector('.click-area').addEventListener('click', () => {
         opened.classList.add('active');
         const letter = document.querySelector('.letter');
         if (letter) letter.classList.add('visible');
-        setTimeout(startLetterTyping, 500);
+        setTimeout(startLetterTyping, 1500);
     }, 1000);
 });
 
