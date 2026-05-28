@@ -61,10 +61,68 @@ if (window.visualViewport) {
 }
 
 // ==========================================
-// 3. PUNJENJE TEKSTA IZ message.js
+// 3. PISANJE PORUKE I POTPIDA (typewriter)
 // ==========================================
-document.getElementById('message').innerText   = window.customMessage;
-document.getElementById('signature').innerText = window.customSignature;
+const messageEl   = document.getElementById('message');
+const signatureEl = document.getElementById('signature');
+const fullMessage   = window.customMessage   || '';
+const fullSignature = window.customSignature || '';
+
+let typeTimer = null;
+
+function clearTypeTimer() {
+    if (typeTimer) clearTimeout(typeTimer);
+    typeTimer = null;
+}
+
+function typeText(element, text, charDelay, onDone) {
+    if (!element) {
+        if (onDone) onDone();
+        return;
+    }
+    clearTypeTimer();
+    element.innerText = '';
+    element.classList.add('is-typing');
+
+    let i = 0;
+    function step() {
+        if (i >= text.length) {
+            element.classList.remove('is-typing');
+            if (onDone) onDone();
+            return;
+        }
+        const ch = text[i++];
+        element.innerText += ch;
+
+        let delay = charDelay;
+        if (ch === '\n') delay = charDelay * 5;
+        else if ('.!?❤️'.includes(ch)) delay = charDelay * 3.5;
+        else if (',;:—'.includes(ch)) delay = charDelay * 2;
+
+        typeTimer = setTimeout(step, delay);
+    }
+    step();
+}
+
+function startLetterTyping() {
+    if (!messageEl) return;
+    if (messageEl) {
+        messageEl.innerText = '';
+        messageEl.classList.remove('typing-done');
+    }
+    if (signatureEl) signatureEl.innerText = '';
+
+    // Poruka, pa potpis na polaroidu
+    typeText(messageEl, fullMessage, 36, () => {
+        messageEl.classList.add('typing-done');
+        setTimeout(() => {
+            typeText(signatureEl, fullSignature, 70, null);
+        }, 450);
+    });
+}
+
+if (messageEl) messageEl.innerText = '';
+if (signatureEl) signatureEl.innerText = '';
 
 // ==========================================
 // 4. PRELAZ SA STRANE 1 NA STRANU 2
@@ -90,6 +148,8 @@ document.querySelector('.click-area').addEventListener('click', () => {
         opened.classList.add('active');
         const letter = document.querySelector('.letter');
         if (letter) letter.classList.add('visible');
+        // Kratka pauza posle fade-in kartice, pa krene pisanje
+        setTimeout(startLetterTyping, 500);
     }, 1000);
 });
 

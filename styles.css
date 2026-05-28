@@ -179,6 +179,17 @@ img {
     font-weight: 400;
     letter-spacing: 0.3px;
     text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
+    min-height: 1.6em;
+}
+
+#message.is-typing,
+#signature.is-typing {
+    border-right: 2px solid rgba(43, 20, 7, 0.4);
+    animation: caret-blink 0.75s step-end infinite;
+}
+
+@keyframes caret-blink {
+    50% { border-color: transparent; }
 }
 
 #message::after {
@@ -187,6 +198,12 @@ img {
     font-size: 22px;
     margin-top: 12px;
     text-align: left;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#message.typing-done::after {
+    opacity: 1;
 }
 
 .photo-frame {
