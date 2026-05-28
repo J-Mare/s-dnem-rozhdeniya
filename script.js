@@ -69,7 +69,12 @@ document.getElementById('signature').innerText = window.customSignature;
 // ==========================================
 // 4. PRELAZ SA STRANE 1 NA STRANU 2
 // ==========================================
+let introOpened = false;
+
 document.querySelector('.click-area').addEventListener('click', () => {
+    if (introOpened) return;
+    introOpened = true;
+
     intro.classList.remove('active');
 
     setTimeout(() => {
@@ -83,7 +88,6 @@ document.querySelector('.click-area').addEventListener('click', () => {
 
     setTimeout(() => {
         opened.classList.add('active');
-        // Dodajemo visible klasu koja pokrece fade-in animaciju
         const letter = document.querySelector('.letter');
         if (letter) letter.classList.add('visible');
     }, 1000);
@@ -125,13 +129,6 @@ if (playerPlay && music) {
     playerPlay.addEventListener('click', () => {
         music.paused ? music.play() : music.pause();
         updateButtonStates();
-    });
-}
-
-if (music && progressBar) {
-    music.addEventListener('timeupdate', () => {
-        const pct = (music.currentTime / music.duration) * 100;
-        progressBar.style.width = pct + '%';
     });
 }
 
@@ -198,16 +195,26 @@ const lyricsData = [
     { time: 122.63, text: "Happy birthday 🎵" }
 ];
 
-if (music && lyricsContainer) {
+function setLyric(text) {
+    if (!lyricsContainer || lyricsContainer.innerText === text) return;
+    lyricsContainer.classList.add('is-updating');
+    lyricsContainer.innerText = text;
+    lyricsContainer.style.display = text === "" ? "none" : "block";
+    requestAnimationFrame(() => lyricsContainer.classList.remove('is-updating'));
+}
+
+if (music) {
     music.addEventListener('timeupdate', () => {
-        const t = music.currentTime;
-        let activeLyric = "";
-        for (let i = 0; i < lyricsData.length; i++) {
-            if (t >= lyricsData[i].time) activeLyric = lyricsData[i].text;
+        if (progressBar && music.duration && isFinite(music.duration)) {
+            progressBar.style.width = (music.currentTime / music.duration) * 100 + '%';
         }
-        if (lyricsContainer.innerText !== activeLyric) {
-            lyricsContainer.innerText = activeLyric;
-            lyricsContainer.style.display = activeLyric === "" ? "none" : "block";
+        if (lyricsContainer) {
+            const t = music.currentTime;
+            let activeLyric = "";
+            for (let i = 0; i < lyricsData.length; i++) {
+                if (t >= lyricsData[i].time) activeLyric = lyricsData[i].text;
+            }
+            setLyric(activeLyric);
         }
     });
 }

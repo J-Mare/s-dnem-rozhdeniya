@@ -1,5 +1,14 @@
 @charset "UTF-8";
 
+:root {
+    --accent: #f6d6ac;
+    --accent-soft: rgba(246, 214, 172, 0.3);
+    --paper: #e4ce9f;
+    --ink: #2b1407;
+    --glass-bg: rgba(0, 0, 0, 0.5);
+    --overlay-border: rgba(244, 236, 216, 0.12);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,6 +19,7 @@ html {
     touch-action: manipulation;
     overflow: hidden; /* Sprecava scroll koji triggeruje URL bar hide/show jiggle */
     height: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -18,6 +28,15 @@ body {
     font-family: 'Cormorant Garamond', serif;
     width: 100vw;
     height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+img {
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .page {
@@ -25,7 +44,7 @@ body {
     inset: 0;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 1.5s ease;
+    transition: opacity 1.5s ease-in-out;
     background-color: black;
     display: flex;
     justify-content: center;
@@ -71,10 +90,11 @@ body {
 .glass {
     padding: 18px 34px;
     border-radius: 50px;
-    background: rgba(0, 0, 0, 0.50);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     font-size: 32px;
-    color: #f6d6ac;
+    color: var(--accent);
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
 }
 
@@ -126,7 +146,7 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 30px;
-    background: linear-gradient(135deg, #e4ce9f 0%, #cca972 100%);
+    background: linear-gradient(135deg, var(--paper) 0%, #cca972 100%);
     border: 1px solid rgba(100, 70, 40, 0.22);
     box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.55),
@@ -143,11 +163,16 @@ body {
     z-index: 3;
 }
 
+#message,
+#signature {
+    user-select: text;
+}
+
 #message {
     white-space: pre-wrap;
     font-size: 21px;
     line-height: 1.6;
-    color: #2b1407;
+    color: var(--ink);
     font-family: 'Lora', serif;
     font-style: italic;
     text-align: left;
@@ -177,6 +202,11 @@ body {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.photo-frame:active {
+    transform: rotate(3deg) scale(0.98);
 }
 
 .photo-frame img {
@@ -216,7 +246,7 @@ body {
     width: 90%;
     text-align: center;
     font-size: 22px;
-    color: #2b1407;
+    color: var(--ink);
     font-family: 'Dancing Script', cursive;
 }
 
@@ -238,7 +268,8 @@ body {
     display: block;
 }
 
-.mali-polaroid:hover {
+.mali-polaroid:hover,
+.mali-polaroid:active {
     transform: scale(1.15) rotate(0deg) !important;
     z-index: 50;
     cursor: pointer;
@@ -266,10 +297,11 @@ body {
     opacity: 0;
     transition: all 0.3s ease;
     cursor: pointer;
-    accent-color: #f6d6ac;
+    accent-color: var(--accent);
 }
 
-.volume-container:hover #volume-slider {
+.volume-container:hover #volume-slider,
+.volume-container:focus-within #volume-slider {
     width: 80px;
     opacity: 1;
 }
@@ -277,8 +309,9 @@ body {
 .music-btn {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(246, 214, 172, 0.3);
-    color: #f6d6ac;
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--accent-soft);
+    color: var(--accent);
     font-size: 20px;
     padding: 10px 14px;
     border-radius: 50%;
@@ -300,9 +333,10 @@ body {
     gap: 15px;
     background: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 10px 20px;
     border-radius: 30px;
-    border: 1px solid rgba(244, 236, 216, 0.12);
+    border: 1px solid var(--overlay-border);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
     z-index: 25;
 }
@@ -310,7 +344,7 @@ body {
 .player-btn {
     background: transparent;
     border: none;
-    color: #e4ce9f;
+    color: var(--paper);
     font-size: 18px;
     cursor: pointer;
     width: 25px;
@@ -331,11 +365,12 @@ body {
 .progress {
     height: 100%;
     width: 0%;
-    background: #e4ce9f;
+    background: var(--paper);
     border-radius: 2px;
     position: absolute;
     top: 0;
     left: 0;
+    transition: width 0.12s linear;
 }
 
 #tekst-pesme {
@@ -345,7 +380,8 @@ body {
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(244, 236, 216, 0.12);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--overlay-border);
     padding: 6px 25px;
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
@@ -357,6 +393,11 @@ body {
     white-space: nowrap;
     z-index: 30;
     letter-spacing: 0.5px;
+    transition: opacity 0.2s ease;
+}
+
+#tekst-pesme.is-updating {
+    opacity: 0.55;
 }
 
 .klik-srce {
@@ -393,6 +434,31 @@ body {
     0%, 100% { transform: rotate(0deg) scale(1); }
     25%       { transform: rotate(-15deg) scale(1.05); }
     75%       { transform: rotate(15deg) scale(1.05); }
+}
+
+/* Mobile — samo manji ekrani; desktop ostaje kao original */
+@media (max-width: 950px) {
+    .glass {
+        padding: clamp(12px, 2.8vw, 18px) clamp(20px, 5vw, 34px);
+        font-size: clamp(18px, 4.5vw, 32px);
+        line-height: 1.25;
+        max-width: 90vw;
+        border: 1px solid var(--accent-soft);
+        letter-spacing: 0.02em;
+    }
+
+    .rose {
+        font-size: clamp(44px, 14vw, 65px);
+        margin-top: clamp(12px, 3vw, 20px);
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+    }
+
+    #tekst-pesme {
+        font-size: clamp(18px, 4.5vw, 24px);
+        white-space: normal;
+        line-height: 1.2;
+        max-width: 92vw;
+    }
 }
 
 /* Desktop — veci monitori sa manjom visinom */
