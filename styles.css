@@ -127,12 +127,13 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Animacija kroz posebnu klasu da ne bije sa JS transform */
-    opacity: 0;
+    /* opacity je 1 — #opened parent vec ima fade-in od 1.5s,
+       dvostruki fade je uzrokovao da karta izgleda tamno i uska tokom prelaza */
+    opacity: 1;
 }
 
 .letter.visible {
-    animation: show 1.5s ease forwards;
+    /* klasa ostaje jer JS je koristi za typewriter — animacija uklonjena */
 }
 
 .paper {
@@ -275,7 +276,6 @@ img {
     transition:
         transform 0.45s cubic-bezier(0.34, 1.35, 0.64, 1),
         box-shadow 0.45s ease;
-    will-change: transform;
 }
 
 .mali-polaroid img {
@@ -294,6 +294,7 @@ img {
         z-index: 60;
         box-shadow: 0 22px 45px rgba(0, 0, 0, 0.65);
         cursor: pointer;
+        will-change: transform;
     }
 }
 
