@@ -184,25 +184,6 @@ img {
     width: 100%;
 }
 
-#message.is-typing {
-    border-right: 2px solid rgba(43, 20, 7, 0.4);
-    animation: caret-blink 0.75s step-end infinite;
-}
-
-#signature.is-typing {
-    animation: caret-blink 0.75s step-end infinite;
-}
-
-#signature.is-typing::after {
-    content: '|';
-    margin-left: 2px;
-    opacity: 0.6;
-}
-
-@keyframes caret-blink {
-    50% { border-color: transparent; }
-}
-
 #message::after {
     content: '\1F339';
     display: block;

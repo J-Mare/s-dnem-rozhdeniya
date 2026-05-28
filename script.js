@@ -82,12 +82,10 @@ function typeText(element, text, charDelay, onDone) {
     }
     clearTypeTimer();
     element.innerText = '';
-    element.classList.add('is-typing');
 
     let i = 0;
     function step() {
         if (i >= text.length) {
-            element.classList.remove('is-typing');
             if (onDone) onDone();
             return;
         }
