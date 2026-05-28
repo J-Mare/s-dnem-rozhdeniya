@@ -2,11 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>С днём рождения! ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Fontovi: Lora za poruku (citljiv serif), Dancing Script za potpis, Caveat za karaoke -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&family=Lora:ital,wght@1,400;1,500&family=Dancing+Script:wght@600&family=Caveat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -32,37 +31,24 @@
 
         <div class="letter">
             <div class="paper">
-                <!-- Mali polaroidi u uglovima -->
-                <div class="mali-polaroid slika-1">
-                    <img src="assets/picture1.png" alt="foto1">
-                </div>
-                <div class="mali-polaroid slika-2">
-                    <img src="assets/picture2.png" alt="foto2">
-                </div>
-                <div class="mali-polaroid slika-3">
-                    <img src="assets/picture3.png" alt="foto3">
-                </div>
-                <div class="mali-polaroid slika-4">
-                    <img src="assets/picture4.png" alt="foto4">
-                </div>
+                <div class="mali-polaroid slika-1"><img src="assets/picture1.png" alt="foto1"></div>
+                <div class="mali-polaroid slika-2"><img src="assets/picture2.png" alt="foto2"></div>
+                <div class="mali-polaroid slika-3"><img src="assets/picture3.png" alt="foto3"></div>
+                <div class="mali-polaroid slika-4"><img src="assets/picture4.png" alt="foto4"></div>
 
-                <!-- Glavna slika — klik aktivira vatromet od srca -->
                 <div id="glavna-slika" class="photo-frame">
                     <img src="picture.png" alt="photo">
                     <div class="clip"></div>
                     <div id="signature"></div>
                 </div>
 
-                <!-- Tekst poruke (punjeno iz message.js) -->
                 <div class="content">
                     <div id="message"></div>
                 </div>
             </div>
 
-            <!-- Tekst pesme (karaoke) -->
             <div id="tekst-pesme">Мари Краймбрери - Happy Birthday, Girl! 🎵</div>
 
-            <!-- Plejer -->
             <div class="player-container">
                 <button id="player-play" class="player-btn">▶</button>
                 <div class="progress-container">
@@ -72,7 +58,6 @@
         </div>
     </section>
 
-    <!-- Redosled je bitan: message.js definise window.customMessage pre nego script.js to pokupi -->
     <script src="message.js"></script>
     <script src="script.js"></script>
 </body>
