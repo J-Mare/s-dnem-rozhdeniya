@@ -190,6 +190,12 @@ document.querySelector('.click-area').addEventListener('click', () => {
     if (introOpened) return;
     introOpened = true;
 
+    // Zakljucava dimenzije papira ODMAH dok je #opened jos nevidljiv.
+    // Bez ovoga, papir bi bio skupljen (prazan tekst) prvih ~500ms
+    // dok ne krene typewriter — korisnik bi video kako se karta rasiri.
+    lockLetterLayout();
+    setScale();
+
     intro.classList.remove('active');
 
     setTimeout(() => {
@@ -205,7 +211,6 @@ document.querySelector('.click-area').addEventListener('click', () => {
         opened.classList.add('active');
         const letter = document.querySelector('.letter');
         if (letter) letter.classList.add('visible');
-        // Kratka pauza posle fade-in kartice, pa krene pisanje
         setTimeout(startLetterTyping, 500);
     }, 1000);
 });
