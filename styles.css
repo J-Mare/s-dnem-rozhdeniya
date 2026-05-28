@@ -144,7 +144,7 @@ img {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 30px;
     background: linear-gradient(135deg, var(--paper) 0%, #cca972 100%);
     border: 1px solid rgba(100, 70, 40, 0.22);
@@ -158,9 +158,11 @@ img {
     flex: 1.2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-self: stretch;
     position: relative;
     z-index: 3;
+    min-width: 0;
 }
 
 #message,
@@ -179,7 +181,7 @@ img {
     font-weight: 400;
     letter-spacing: 0.3px;
     text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.2);
-    min-height: 1.6em;
+    width: 100%;
 }
 
 #message.is-typing,
@@ -215,6 +217,7 @@ img {
     z-index: 4;
     width: 185px;
     min-width: 185px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -467,6 +470,34 @@ img {
     0%, 100% { transform: rotate(0deg) scale(1); }
     25%       { transform: rotate(-15deg) scale(1.05); }
     75%       { transform: rotate(15deg) scale(1.05); }
+}
+
+/* Padajuce latice ruza */
+.petals-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+    overflow: hidden;
+}
+
+.petal {
+    position: absolute;
+    top: -24px;
+    width: 11px;
+    height: 15px;
+    background: radial-gradient(ellipse at 35% 25%, #f06b7a, #8f1d2f 70%);
+    border-radius: 50% 50% 50% 0;
+    opacity: 0.75;
+    animation: petal-fall var(--dur) linear var(--delay) forwards;
+    transform: rotate(var(--rot));
+}
+
+@keyframes petal-fall {
+    to {
+        transform: translateY(110vh) translateX(var(--drift)) rotate(calc(var(--rot) + 420deg));
+        opacity: 0.15;
+    }
 }
 
 /* Mobile — samo manji ekrani; desktop ostaje kao original */

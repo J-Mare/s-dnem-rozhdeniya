@@ -104,25 +104,84 @@ function typeText(element, text, charDelay, onDone) {
     step();
 }
 
+function lockLetterLayout() {
+    const paper = document.querySelector('.paper');
+    if (!paper || !messageEl) return;
+
+    let sigH = 28;
+    if (signatureEl) {
+        signatureEl.innerText = fullSignature;
+        sigH = signatureEl.offsetHeight;
+    }
+
+    messageEl.innerText = fullMessage;
+    messageEl.classList.add('typing-done');
+
+    paper.style.minHeight = paper.offsetHeight + 'px';
+    messageEl.style.minHeight = messageEl.offsetHeight + 'px';
+
+    messageEl.innerText = '';
+    messageEl.classList.remove('typing-done');
+    if (signatureEl) {
+        signatureEl.innerText = '';
+        signatureEl.style.minHeight = sigH + 'px';
+    }
+}
+
 function startLetterTyping() {
     if (!messageEl) return;
-    if (messageEl) {
-        messageEl.innerText = '';
-        messageEl.classList.remove('typing-done');
-    }
+    lockLetterLayout();
+    setScale();
+    messageEl.innerText = '';
+    messageEl.classList.remove('typing-done');
     if (signatureEl) signatureEl.innerText = '';
 
     // Poruka, pa potpis na polaroidu
-    typeText(messageEl, fullMessage, 36, () => {
+    typeText(messageEl, fullMessage, 52, () => {
         messageEl.classList.add('typing-done');
         setTimeout(() => {
-            typeText(signatureEl, fullSignature, 70, null);
+            typeText(signatureEl, fullSignature, 95, null);
         }, 450);
     });
 }
 
 if (messageEl) messageEl.innerText = '';
 if (signatureEl) signatureEl.innerText = '';
+
+// ==========================================
+// 3b. LATICE RUZA (blago, ne dira klik)
+// ==========================================
+function spawnPetal(layer) {
+    const petal = document.createElement('span');
+    petal.className = 'petal';
+    petal.style.left = (Math.random() * 100) + '%';
+    petal.style.setProperty('--dur', (7 + Math.random() * 7) + 's');
+    petal.style.setProperty('--delay', (Math.random() * 4) + 's');
+    petal.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+    petal.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+    layer.appendChild(petal);
+    petal.addEventListener('animationend', () => petal.remove());
+}
+
+function initPetals() {
+    let layer = document.getElementById('petals-layer');
+    if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'petals-layer';
+        layer.className = 'petals-layer';
+        layer.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(layer);
+    }
+    if (layer.dataset.ready) return;
+    layer.dataset.ready = '1';
+
+    for (let i = 0; i < 14; i++) spawnPetal(layer);
+    setInterval(() => {
+        if (layer.childElementCount < 20) spawnPetal(layer);
+    }, 1600);
+}
+
+initPetals();
 
 // ==========================================
 // 4. PRELAZ SA STRANE 1 NA STRANU 2
